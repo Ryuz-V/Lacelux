@@ -656,9 +656,9 @@ nav.scrolled .icon-black {
 .product-rating i, .product-rating svg {
     width: 20px;
     height: 20px;
-    color: #d1d5db; /* Warna abu-abu untuk garis tepi */
-    stroke: #d1d5db; /* Memastikan garis icon mengikuti warna abu-abu */
-    fill: none; /* Memastikan bagian dalam bintang kosong */
+    color: #d1d5db;
+    stroke: #d1d5db; 
+    fill: none;
 }
 
 .product-grid {
@@ -979,59 +979,118 @@ nav.scrolled .icon-black {
     color: #111;
 }
 
-/* Offer Banner */
-.offer-banner {
-    margin: 4rem 5%;
-    background: linear-gradient(135deg, #1e3a8a 0%, #312e81 100%);
-    border-radius: 20px;
+/* --- 1. Section 4 Kotak (Full Width) --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.grid-item {
+    width: 100%;
+    height: 400px; /* Silakan ubah angka ini jika kotaknya kurang tinggi/pendek */
+    overflow: hidden;
+}
+
+.grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Memastikan gambar memenuhi kotak tanpa merusak proporsi */
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.grid-item:hover img {
+    transform: scale(1.05); /* Efek zoom halus saat di-hover */
+}
+
+/* --- 2. Section Offer Banner (Full Width) --- */
+.offer-banner-full {
     display: flex;
     align-items: center;
-    padding: 0 10%;
-    height: 400px;
-    overflow: hidden;
-    color: #fff;
-    position: relative;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #0f0f0f; /* Warna gelap solid sesuai screenshot */
+    margin: 0;
+    /* Padding kiri-kanan agar teks/gambar tidak nempel ujung banget, tapi background tetap mentok ujung */
+    padding: 4rem 8%; 
+    box-sizing: border-box;
 }
 
-.banner-content {
+.offer-banner-full .banner-content {
     flex: 1;
-    position: relative;
-    z-index: 2;
+    max-width: 600px;
+    color: #ffffff;
 }
 
-.banner-content h2 {
-    font-size: 3rem;
-    margin-bottom: 30px;
-    font-weight: 600;
-    line-height: 1.2;
+.offer-banner-full h2 {
+    font-size: 3.8rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
 }
 
-.btn-secondary {
-    background: #fff;
-    color: #1e3a8a;
-    padding: 15px 40px;
+.offer-banner-full .btn-secondary {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 16px 40px;
     border: none;
-    border-radius: 30px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
 }
 
-.btn-secondary:hover {
-    transform: scale(1.05);
+.offer-banner-full .btn-secondary:hover {
+    background-color: #dddddd;
 }
 
-.banner-image {
+.offer-banner-full .banner-image {
     flex: 1;
-    height: 100%;
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: center;
 }
 
-.banner-image img {
-    height: 110%;
-    transform: rotate(-10deg) translateY(20px);
+.offer-banner-full .banner-image img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* --- 3. Responsivitas (Agar aman di Layar HP & Tablet) --- */
+@media (max-width: 1024px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr); /* Jadi 2 kotak sebaris di tablet */
+    }
+    
+    .offer-banner-full {
+        flex-direction: column;
+        text-align: center;
+        padding: 4rem 5%;
+    }
+
+    .offer-banner-full .banner-content {
+        margin-bottom: 3rem;
+    }
+
+    .offer-banner-full h2 {
+        font-size: 2.5rem;
+    }
+    
+    .offer-banner-full .banner-image {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .gallery-grid {
+        grid-template-columns: 1fr; /* Jadi 1 kotak sebaris ke bawah di HP */
+    }
 }
 
 /* Story Section */
