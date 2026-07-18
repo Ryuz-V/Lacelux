@@ -53,6 +53,177 @@ nav.scrolled .header-nav ul li a::after {
     background-color: var(--primary-color) !important;
 }
 
+/* =========================================
+   SEARCH OVERLAY MODAL (PERFORMANCE OPTIMIZED)
+   ========================================= */
+.search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 10000; /* Memastikan overlay di atas segalanya */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    
+    /* Optimasi Performa Animasi */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-15px); /* Efek slide ringan dari atas */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    will-change: transform, opacity; /* Memberitahu GPU untuk bersiap merender */
+}
+
+.search-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Mencegah background halaman scroll saat modal terbuka */
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* Header & Input Search */
+.search-overlay-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 5%;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eaeaea;
+    gap: 20px;
+}
+
+.search-form-overlay {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    border: 1px solid #777;
+    background: #fff;
+    height: 50px;
+}
+
+.search-form-overlay input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    font-family: inherit;
+    padding: 0 20px;
+    color: #111;
+}
+
+.clear-btn {
+    background: none;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0 15px;
+    border-right: 1px solid #ccc;
+    color: #111;
+    letter-spacing: 0.5px;
+}
+
+.search-form-overlay .search-submit {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 15px;
+    color: #111;
+    display: flex;
+    align-items: center;
+}
+
+.close-search-overlay {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    transition: transform 0.2s ease;
+}
+
+.close-search-overlay:hover {
+    transform: scale(1.1);
+}
+
+/* Suggested Products Area */
+.search-results-area {
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.search-results-area h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    color: #111;
+    letter-spacing: 0.5px;
+}
+
+.suggested-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 Kolom sesuai gambar */
+    gap: 2rem 4rem;
+}
+
+.suggested-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.suggested-item:hover {
+    background-color: #f8f9fa;
+}
+
+.suggested-item img {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+}
+
+.suggested-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.suggested-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111;
+    line-height: 1.4;
+}
+
+.suggested-info p {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111;
+}
+
+/* Responsivitas Layar Kecil */
+@media (max-width: 768px) {
+    .suggested-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .logo {
     position: relative;
 }
@@ -86,12 +257,15 @@ nav.scrolled .icon-black {
 .header-nav {
     display: flex;
     align-items: center;
-    margin-left: 100px;
+    flex: 1; /* Mengisi seluruh sisa ruang antara logo dan tepi kanan */
+    justify-content: space-between; /* Menjaga jarak otomatis antara teks menu dan ikon */
+    margin-left: 15px;
 }
 
 .header-nav ul {
     display: flex;
     list-style: none;
+    margin: 0 auto;
 }
 
 .header-nav ul li a {
@@ -129,8 +303,8 @@ nav.scrolled .icon-black {
 .menu {
     display: flex;
     gap: 2rem;
-    margin-left: 100px;
-    transform: translateX(120px);
+    margin-left: 0; 
+    transform: none;
 }
 
 .menu button {
@@ -172,6 +346,24 @@ nav.scrolled .icon-black {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
+}
+
+.menu .search-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--bg-color);
+    padding: 8px 16px; 
+    border-radius: 0; 
+    font-weight: 550;
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    color: var(--bg-color);
+}
+
+nav.scrolled .menu .search-btn {
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
 }
 
 .search-submit, .close-search {

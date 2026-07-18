@@ -106,3 +106,63 @@ window.addEventListener("scroll", () => {
     }
     lastScrollY = currentScrollY;
 });
+
+// ==========================================
+    // OVERLAY SEARCH MODAL LOGIC
+    // ==========================================
+    const searchBtn = document.querySelector('.search-btn');
+    const searchOverlay = document.getElementById('search-overlay');
+    const closeSearchBtn = document.getElementById('close-search');
+    const searchInput = document.getElementById('search-input');
+    const searchForm = document.getElementById('search-form');
+    const clearBtn = document.getElementById('clear-search');
+    
+    // Buka Overlay
+    if (searchBtn && searchOverlay) {
+        searchBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            searchOverlay.classList.add('active');
+            document.body.classList.add('no-scroll'); // Kunci scroll background
+            
+            // Memberikan fokus ke input setelah animasi CSS selesai
+            setTimeout(() => {
+                searchInput.focus();
+            }, 300); 
+        });
+    }
+    
+    // Tutup Overlay (Tombol X)
+    if (closeSearchBtn) {
+        closeSearchBtn.addEventListener('click', function() {
+            searchOverlay.classList.remove('active');
+            document.body.classList.remove('no-scroll'); // Kembalikan scroll
+        });
+    }
+
+    // Fitur Tombol Clear Text
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            searchInput.focus();
+        });
+    }
+    
+    // Mencegah Refresh Halaman saat Enter Ditekan
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Mencegah reload halaman
+            const query = searchInput.value.trim();
+            if (query) {
+                console.log('Fetching results for:', query); 
+                // Di sini nanti kamu bisa memanggil API menggunakan Fetch/Axios (SPA style)
+            }
+        });
+    }
+
+    // Tutup overlay jika menekan tombol "Escape" di keyboard
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+            searchOverlay.classList.remove('active');
+            document.body.classList.remove('no-scroll');
+        }
+    });
