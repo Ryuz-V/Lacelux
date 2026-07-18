@@ -86,7 +86,7 @@ nav.scrolled .icon-black {
 .header-nav {
     display: flex;
     align-items: center;
-    margin-left: 260px;
+    margin-left: 100px;
 }
 
 .header-nav ul {
@@ -1006,17 +1006,17 @@ nav.scrolled .icon-black {
     transform: scale(1.05); /* Efek zoom halus saat di-hover */
 }
 
-/* --- 2. Section Offer Banner (Full Width) --- */
 .offer-banner-full {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    background-color: #0f0f0f; /* Warna gelap solid sesuai screenshot */
+    background-color: #0f0f0f;
     margin: 0;
-    /* Padding kiri-kanan agar teks/gambar tidak nempel ujung banget, tapi background tetap mentok ujung */
-    padding: 4rem 8%; 
+    padding: 0 8%; 
     box-sizing: border-box;
+    height: 500px; /* Tingginya dinaikkan menjadi 380px */
+    overflow: hidden; 
 }
 
 .offer-banner-full .banner-content {
@@ -1026,19 +1026,19 @@ nav.scrolled .icon-black {
 }
 
 .offer-banner-full h2 {
-    font-size: 3.8rem;
+    font-size: 3.2rem; /* Font sedikit dibesarkan agar proporsional */
     font-weight: 700;
     line-height: 1.1;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem; 
     text-transform: uppercase;
 }
 
 .offer-banner-full .btn-secondary {
     background-color: #ffffff;
     color: #000000;
-    padding: 16px 40px;
+    padding: 12px 30px; /* Ukuran tombol disesuaikan agar proporsional */
     border: none;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     text-transform: uppercase;
@@ -1054,11 +1054,13 @@ nav.scrolled .icon-black {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    height: 100%; 
 }
 
 .offer-banner-full .banner-image img {
-    max-width: 100%;
-    height: auto;
+    height: 100%;
+    max-height: 380px; /* Samakan dengan height di .offer-banner-full */
+    width: auto;
     object-fit: contain;
 }
 
@@ -1093,58 +1095,148 @@ nav.scrolled .icon-black {
     }
 }
 
-/* Story Section */
+/* --- Pembaruan Story Section --- */
 .story-section {
     padding: 8rem 5%;
-    background: #fff;
+    background: #fdfdfd; /* Background putih/bersih seperti digambar */
 }
 
 .story-wrapper {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; /* Membagi menjadi 2 kolom sama besar */
     gap: 80px;
-    align-items: center;
+    align-items: start; /* Ubah ke start agar rata atas */
 }
 
-.story-image img {
-    width: 100%;
-    border-radius: 12px;
+/* Bagian Kiri */
+.story-heading h2 {
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #111;
+    margin: 0;
+}
+
+/* Bagian Kanan */
+.story-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.quote-header {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.squiggle {
+    margin-bottom: -5px;
 }
 
 .rating {
     display: flex;
     gap: 5px;
-    margin-bottom: 20px;
 }
 
-.rating i.filled, .rating svg.filled { color: #f59e0b; fill: #f59e0b; }
+.rating i.filled, .rating svg.filled { 
+    color: #f59e0b; 
+    fill: #f59e0b; 
+}
 
 .quote {
-    font-size: 1.8rem;
-    line-height: 1.4;
-    font-style: italic;
-    color: #111;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    font-style: normal; /* Menghilangkan italic agar mirip referensi */
+    color: #555;
     margin-bottom: 40px;
     font-weight: 400;
+}
+
+.story-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .author {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 .author img {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-.author strong { display: block; font-size: 1.1rem; color: #111; }
-.author span { color: #888; font-size: 0.9rem; }
+.author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.author strong { 
+    display: block; 
+    font-size: 1.1rem; 
+    color: #111; 
+}
+
+.author span { 
+    color: #888; 
+    font-size: 0.9rem; 
+}
+
+/* Tombol Navigasi */
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid #d1d5db;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #111;
+}
+
+.nav-btn:hover {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+}
+
+/* Responsivitas untuk layar tablet/HP */
+@media (max-width: 1024px) {
+    .story-wrapper {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        text-align: left;
+    }
+    
+    .story-heading h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .story-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 25px;
+    }
+}
 
 .brands-section {
     padding: 2rem 0;
@@ -1204,120 +1296,276 @@ nav.scrolled .icon-black {
     animation-play-state: paused;
 }
 
+/* =============================================
+   MAIN FOOTER - PUMA STYLE REDESIGN
+   ============================================= */
 .main-footer {
-    padding: 6rem 5% 2rem;
-    background: #0f172a;
-    color: #fff;
+    background-color: #111111;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
 }
 
-.footer-top {
+.main-footer .footer-container {
     max-width: 1400px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
-    gap: 60px;
-    margin-bottom: 5rem;
+    padding: 0 5%;
 }
 
-.footer-col h3 {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+/* ---- TOP ROW: Logo + Email Sign Up ---- */
+.footer-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 50px 0 40px;
+}
+
+.footer-logo-img {
+    height: 45px;
+    width: auto;
+    display: block;
+}
+
+/* Email Sign Up */
+.footer-email-signup {
+    min-width: 280px;
+}
+
+.email-label {
+    font-size: 0.85rem;
     font-weight: 600;
-    color: #fff;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
 }
 
-.footer-col ul { list-style: none; }
-.footer-col li { margin-bottom: 15px; }
-.footer-col a { color: #94a3b8; text-decoration: none; transition: color 0.3s ease; font-size: 0.95rem; }
-.footer-col a:hover { color: #fff; }
+.footer-email-form {
+    display: flex;
+    align-items: center;
+    border: 1px solid #444;
+    background: transparent;
+    padding: 10px 14px;
+    width: 280px;
+}
 
-.footer-col.brand img { height: 35px; margin-bottom: 25px; }
-.footer-col.brand p { color: #94a3b8; line-height: 1.6; margin-bottom: 25px; font-size: 0.95rem; }
+.footer-email-form input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #888;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    font-family: 'Poppins', sans-serif;
+}
 
-.social-links { display: flex; gap: 15px; }
-.social-links a {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
+.footer-email-form input::placeholder {
+    color: #555;
+    letter-spacing: 1.5px;
+    font-size: 0.75rem;
+}
+
+.footer-email-form button {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    transition: opacity 0.2s ease;
+}
+
+.footer-email-form button:hover {
+    opacity: 0.7;
+}
+
+.footer-email-form button svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ---- DIVIDER ---- */
+.footer-divider {
+    height: 1px;
+    background-color: #333;
+    width: 100%;
+}
+
+/* ---- BOTTOM ROW: Nav Columns + Right Panel ---- */
+.footer-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 40px 0 50px;
+}
+
+/* ---- NAV COLUMNS (left side) ---- */
+.footer-nav-columns {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.footer-nav-group {
+    min-width: 120px;
+}
+
+.footer-nav-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    margin-bottom: 16px;
+}
+
+.footer-nav-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Kolom tanpa judul: sejajarkan dengan kolom berJudul */
+.footer-nav-group ul.no-title-list {
+    margin-top: calc(0.85rem + 16px + 0.85rem * 1.4); /* Sejajar dgn item pertama kolom berJudul */
+}
+
+.footer-nav-group ul li a {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+}
+
+.footer-nav-group ul li a:hover {
+    color: #ffffff;
+}
+
+/* ---- RIGHT PANEL: Social + Banner ---- */
+.footer-right-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    min-width: 220px;
+}
+
+.more-inspiration-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    margin: 0;
+}
+
+.footer-social-icons {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+
+.footer-social-icons a {
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    transition: background 0.3s ease;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    text-decoration: none;
 }
 
-.social-links a:hover {
-    background: rgba(255,255,255,0.15);
+.footer-social-icons a:hover {
+    background: #333;
+    border-color: #666;
 }
 
-.newsletter p { color: #94a3b8; margin-bottom: 25px; font-size: 0.95rem; }
-.subscribe-form { display: flex; position: relative; }
-.subscribe-form input {
-    flex: 1;
-    padding: 15px 20px;
-    border: none;
-    background: rgba(255,255,255,0.05);
-    border-radius: 30px;
-    font-size: 0.9rem;
-    color: #fff;
-    padding-right: 120px;
-}
-.subscribe-form input:focus {
-    outline: 1px solid #3b82f6;
-    background: rgba(255,255,255,0.1);
-}
-.subscribe-form button {
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    bottom: 5px;
-    background: #3b82f6;
-    color: #fff;
-    border: none;
-    padding: 0 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background 0.3s ease;
-}
-.subscribe-form button:hover {
-    background: #2563eb;
+.footer-social-icons a svg {
+    width: 16px;
+    height: 16px;
 }
 
-.footer-bottom {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
+/* App Banner */
+.footer-app-banner {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    color: #64748b;
-    font-size: 0.85rem;
+    gap: 16px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 14px 20px;
+    border-radius: 4px;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-.bottom-links { display: flex; gap: 30px; }
-.bottom-links a { color: inherit; text-decoration: none; }
-.bottom-links a:hover { color: #fff; }
+.footer-app-banner:hover {
+    background: #222;
+}
 
-/* Responsive Adjustments */
+.footer-app-banner img {
+    height: 28px;
+    width: auto;
+    filter: brightness(1);
+}
+
+.footer-app-banner span {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    text-transform: uppercase;
+    border-bottom: 1px solid #555;
+    padding-bottom: 2px;
+}
+
+/* ---- COPYRIGHT BAR ---- */
+.footer-copyright {
+    border-top: 1px solid #222;
+    padding: 20px 0;
+}
+
+.footer-copyright p {
+    font-size: 0.8rem;
+    color: #555;
+    margin: 0;
+}
+
+/* ---- RESPONSIVE ---- */
 @media (max-width: 1024px) {
-    .promo-wrapper, .spotlight-wrapper, .story-wrapper { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-    .promo-content h1, .quote { margin-left: auto; margin-right: auto; }
-    .promo-image, .story-image { padding: 0; }
-    .banner-image { display: none; }
-    .footer-top { grid-template-columns: repeat(2, 1fr); }
-    .category-grid { grid-template-columns: 1fr; }
+    .footer-top-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+    }
+    .footer-bottom-row {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .footer-nav-columns {
+        gap: 30px;
+    }
+    .footer-right-panel {
+        min-width: unset;
+    }
 }
 
-@media (max-width: 768px) {
-    .section-header { flex-direction: column; align-items: flex-start; gap: 20px; }
-    .trending-grid { grid-template-columns: repeat(2, 1fr); }
-    .footer-top { grid-template-columns: 1fr; text-align: center; gap: 40px; }
-    .social-links, .bottom-links { justify-content: center; }
-    .author { justify-content: center; }
-    .footer-bottom { flex-direction: column; gap: 20px; }
-    .category-content { left: 20px; bottom: 20px; }
-    .category-content h2 { font-size: 1.8rem; }
+@media (max-width: 600px) {
+    .footer-nav-columns {
+        gap: 25px;
+    }
+    .footer-email-form {
+        width: 100%;
+    }
+    .footer-app-banner {
+        width: auto;
+    }
 }

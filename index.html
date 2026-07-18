@@ -26,12 +26,13 @@
             <li><a href="#">Man</a></li>
             <li><a href="#">Women</a></li>
             <li><a href="#">Kids</a></li>
+            <li><a href="#">Coming Soon</a></li>
             <li><a href="#">Brands</a></li>
         </ul>
         <div class="menu">
             <button class="search-btn"><i data-feather="search"></i></button>
             <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
-            <button class="menu-btn"><i data-feather="menu"></i></button>
+            <button class="user-btn"><i data-feather="user"></i></button>
         </div>
     </div>
     <div class="search-box">
@@ -444,23 +445,45 @@
 
 <section class="story-section">
     <div class="story-wrapper">
-        <div class="story-image">
-            <img src="/asset/shoe_p1.png" alt="Product Story">
+        <!-- Bagian Kiri: Heading Utama -->
+        <div class="story-heading">
+            <h2>Explore the feedback from our customers about our products!</h2>
         </div>
+        
+        <!-- Bagian Kanan: Konten Testimonial -->
         <div class="story-content">
-            <div class="rating">
-                <i data-feather="star" class="filled"></i>
-                <i data-feather="star" class="filled"></i>
-                <i data-feather="star" class="filled"></i>
-                <i data-feather="star" class="filled"></i>
-                <i data-feather="star" class="filled"></i>
+            <!-- Ornamen Kuning & Rating Bintang (Dipertahankan) -->
+            <div class="quote-header">
+                <!-- SVG untuk ornamen squiggle kuning -->
+                <svg width="40" height="30" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="squiggle">
+                    <path d="M5 25 C 15 -5, 35 35, 45 5" stroke="#FBBF24" stroke-width="6" stroke-linecap="round" fill="none"/>
+                </svg>
+                
+                <div class="rating">
+                    <i data-feather="star" class="filled"></i>
+                    <i data-feather="star" class="filled"></i>
+                    <i data-feather="star" class="filled"></i>
+                    <i data-feather="star" class="filled"></i>
+                    <i data-feather="star" class="filled"></i>
+                </div>
             </div>
+            
+            <!-- Teks Testimonial -->
             <p class="quote">"Absolutely love my new pair of Pro Runners! They are incredibly lightweight yet give amazing support. Finally found my perfect walking and running buddy. Highly recommended!"</p>
-            <div class="author">
-                <img src="/asset/testimonial_person.png" alt="Alex J.">
-                <div>
-                    <strong>Alex Johnson</strong>
-                    <span>Verified Buyer</span>
+            
+            <!-- Profil Author dan Tombol Navigasi -->
+            <div class="story-footer">
+                <div class="author">
+                    <img src="/asset/testimonial_person.png" alt="Alex J.">
+                    <div class="author-info">
+                        <strong>Alex Johnson</strong>
+                        <span>Verified Buyer</span>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn"><i data-feather="chevron-left"></i></button>
+                    <button class="nav-btn"><i data-feather="chevron-right"></i></button>
                 </div>
             </div>
         </div>
@@ -468,50 +491,93 @@
 </section>
 
 <footer class="main-footer">
-    <div class="footer-top">
-        <div class="footer-col brand">
-            <img src="/asset/Tab_Logo_W.png" alt="Lacelux">
-            <p>Walking is not just about moving forward, it's about having a purpose.</p>
-            <div class="social-links">
-                <a href="#"><i data-feather="facebook"></i></a>
-                <a href="#"><i data-feather="instagram"></i></a>
-                <a href="#"><i data-feather="twitter"></i></a>
+    <div class="footer-container">
+
+        <!-- Top Row: Logo & Email Signup -->
+        <div class="footer-top-row">
+            <div class="footer-logo">
+                <img src="/asset/Tab_Logo_W.png" alt="Lacelux" class="footer-logo-img">
+            </div>
+            <div class="footer-email-signup">
+                <p class="email-label">Email Sign Up</p>
+                <form class="footer-email-form">
+                    <input type="email" placeholder="EMAIL" required>
+                    <button type="submit"><i data-feather="arrow-right"></i></button>
+                </form>
             </div>
         </div>
-        <div class="footer-col">
-            <h3>Shop</h3>
-            <ul>
-                <li><a href="#">Men Collection</a></li>
-                <li><a href="#">Women Collection</a></li>
-                <li><a href="#">Kids Collection</a></li>
-                <li><a href="#">Accessories</a></li>
-            </ul>
+
+        <!-- Divider -->
+        <div class="footer-divider"></div>
+
+        <!-- Bottom Row: Links & Socials -->
+        <div class="footer-bottom-row">
+            <!-- Link Columns -->
+            <div class="footer-nav-columns">
+                <!-- Support Column -->
+                <div class="footer-nav-group">
+                    <h4 class="footer-nav-title">Support</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Find a Store</a></li>
+                        <li><a href="#">My Profile</a></li>
+                        <li><a href="#">Delivery</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                    </ul>
+                </div>
+                <!-- Policies Column -->
+                <div class="footer-nav-group">
+                    <ul class="no-title-list">
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">*Promotions and sale</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Terms of Purchase</a></li>
+                        <li><a href="#">Loyalty Program</a></li>
+                    </ul>
+                </div>
+                <!-- About Column -->
+                <div class="footer-nav-group">
+                    <h4 class="footer-nav-title">About Lacelux</h4>
+                    <ul>
+                        <li><a href="#">Company</a></li>
+                        <li><a href="#">Corporate News</a></li>
+                        <li><a href="#">Press Center</a></li>
+                    </ul>
+                </div>
+                <!-- Extra Links Column -->
+                <div class="footer-nav-group">
+                    <ul class="no-title-list">
+                        <li><a href="#">Investors</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right: Social + Banner -->
+            <div class="footer-right-panel">
+                <p class="more-inspiration-label">More Inspiration</p>
+                <div class="footer-social-icons">
+                    <a href="#" aria-label="Facebook"><i data-feather="facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i data-feather="twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i data-feather="instagram"></i></a>
+                    <a href="#" aria-label="Pinterest"><i data-feather="heart"></i></a>
+                    <a href="#" aria-label="YouTube"><i data-feather="youtube"></i></a>
+                </div>
+                <div class="footer-app-banner">
+                    <img src="/asset/Tab_Logo_W.png" alt="Lacelux App">
+                    <span>SHOP THE LATEST</span>
+                </div>
+            </div>
         </div>
-        <div class="footer-col">
-            <h3>Services</h3>
-            <ul>
-                <li><a href="#">Free Shipping</a></li>
-                <li><a href="#">Return Policy</a></li>
-                <li><a href="#">Gift Cards</a></li>
-                <li><a href="#">Store Locator</a></li>
-            </ul>
+
+        <!-- Copyright Bar -->
+        <div class="footer-copyright">
+            <p>&copy; 2026 Lacelux. All rights reserved.</p>
         </div>
-        <div class="footer-col newsletter">
-            <h3>Join and get 20% off</h3>
-            <p>Be the first to know about new arrivals and exclusive deals.</p>
-            <form class="subscribe-form">
-                <input type="email" placeholder="Your email address">
-                <button type="submit">Subscribe</button>
-            </form>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2026 Lacelux Shoes. All rights reserved.</p>
-        <div class="bottom-links">
-            <a href="#">Size Guide</a>
-            <a href="#">Track Order</a>
-            <a href="#">Privacy Policy</a>
-        </div>
+
     </div>
 </footer>
 
