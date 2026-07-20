@@ -790,19 +790,14 @@ nav.scrolled .menu .search-btn {
     cursor: pointer;
     border: 1px solid #eaeaea;
     background-color: #fff;
-    /* Tambahkan border-bottom 4px transparan agar layout tidak melompat (jumping) saat di-hover */
     border-bottom: 4px solid transparent; 
     transition: all 0.3s ease;
 }
 
 .product-card:hover {
-    /* Border keliling menjadi warna abu-abu kebiruan/gelap (sesuai image_1f6d84.png) */
     border-color: #c1c1cd; 
-    /* Garis bawah tebal berwarna gelap */
     border-bottom: 4px solid #333333; 
-    /* Sedikit bayangan untuk memisahkan dari background */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    /* Memberikan efek visual kartu sedikit terangkat */
     transform: translateY(-2px); 
 }
 
@@ -981,7 +976,6 @@ nav.scrolled .menu .search-btn {
 /* Featured Spotlight */
 .featured-spotlight {
     padding: 6rem 5%;
-    background-color: #f3f7f9;
 }
 
 .spotlight-wrapper {
@@ -1027,7 +1021,7 @@ nav.scrolled .menu .search-btn {
 
 .spotlight-image {
     position: relative;
-    border-radius: 12px;
+    border-radius: 4px;
     overflow: hidden;
 }
 

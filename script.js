@@ -166,3 +166,27 @@ window.addEventListener("scroll", () => {
             document.body.classList.remove('no-scroll');
         }
     });
+
+    // Spotlight Navigation
+const spotlightItems = document.querySelectorAll('.spotlight-nav li');
+const spotlightImage = document.getElementById('spotlight-display'); // Mengambil elemen gambar
+
+spotlightItems.forEach((item) => {
+    item.addEventListener('click', function() {
+        // Hapus class 'active' dari semua menu
+        spotlightItems.forEach(i => i.classList.remove('active'));
+        
+        // Tambahkan class 'active' ke menu yang sedang diklik
+        this.classList.add('active');
+        
+        // Ambil URL gambar dari atribut data-image pada menu yang diklik
+        const newImageSource = this.getAttribute('data-image');
+        
+        // Ganti src gambar jika data-image tersedia
+        if (newImageSource) {
+            spotlightImage.src = newImageSource;
+        }
+        
+        console.log('Spotlight category selected:', this.innerText);
+    });
+});

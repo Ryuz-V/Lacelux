@@ -319,15 +319,16 @@
     <div class="spotlight-wrapper">
         <div class="spotlight-nav">
             <ul>
-                <li class="active">Timeless style <span class="badge">NEW</span></li>
-                <li>Style pioneer</li>
-                <li>Motorcycle</li>
-                <li>Heritage</li>
-                <li>Sunglasses</li>
+                <!-- Tambahkan data-image pada masing-masing li -->
+                <li class="active" data-image="/public/asset/spotlight.png">Timeless style <span class="badge">NEW</span></li>
+                <li data-image="/public/asset/style_pioneer.png">Style pioneer</li>
+                <li data-image="/public/asset/motorcycle.png">Motorcycle</li>
+                <li data-image="/public/asset/heritage.png">Heritage</li>
+                <li data-image="/public/asset/sunglasses.png">Sunglasses</li>
             </ul>
         </div>
         <div class="spotlight-image">
-            <img src="/public/asset/spotlight.png" alt="Featured">
+            <img src="/public/asset/spotlight.png" alt="Featured" id="spotlight-display">
             <div class="script-text">Timeless icons</div>
         </div>
     </div>
