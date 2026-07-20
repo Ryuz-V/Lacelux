@@ -521,10 +521,7 @@ nav.scrolled .menu .search-btn {
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
-}
-
-.category-card:hover img {
-    transform: scale(1.05);
+    filter: brightness(87%);
 }
 
 .category-stack {
@@ -535,23 +532,16 @@ nav.scrolled .menu .search-btn {
 
 .category-content {
     position: absolute;
-    bottom: 40px;
+    bottom: 80px;
     left: 40px;
     z-index: 2;
-}
-
-.category-content span {
-    font-size: 0.9rem;
-    color: #ffffff;
-    display: block;
-    margin-bottom: 5px;
 }
 
 .category-content h2 {
     font-size: 2.2rem;
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .shop-now {
@@ -560,14 +550,14 @@ nav.scrolled .menu .search-btn {
     font-weight: 600;
     color: #ffffff;
     text-decoration: none;
-    padding-bottom: 2px;
-    border-bottom: 2px solid #ffffff;
+    padding: 10px 25px; 
+    border: 2px solid #ffffff;
     transition: all 0.3s ease;
 }
 
 .shop-now:hover {
-    color: #666;
-    border-color: #666;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 /* Promo Summer (Image 2 Style) */
@@ -597,28 +587,28 @@ nav.scrolled .menu .search-btn {
 }
 
 .promo-content h1 {
-    font-size: 3.5rem;
+    font-size: 5.4rem;
     font-weight: 400;
     line-height: 1.1;
     color: #111;
     margin-bottom: 30px;
-    max-width: 500px;
+    max-width: 600px;
 }
 
 .btn-primary {
     background-color: #1a202c;
     color: #fff;
     padding: 15px 35px;
-    border: none;
-    border-radius: 30px;
+    border: 1px solid #1a202c; 
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease; 
 }
 
 .btn-primary:hover {
-    opacity: 0.9;
+    background-color: #ffffff;
+    color: #1a202c;
 }
 
 .promo-image {
@@ -629,7 +619,7 @@ nav.scrolled .menu .search-btn {
 
 .promo-image img {
     width: 100%;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
 .script-overlay {
