@@ -167,9 +167,10 @@ window.addEventListener("scroll", () => {
         }
     });
 
-    // Spotlight Navigation
+// Spotlight Navigation
 const spotlightItems = document.querySelectorAll('.spotlight-nav li');
-const spotlightImage = document.getElementById('spotlight-display'); // Mengambil elemen gambar
+const spotlightImage = document.getElementById('spotlight-display'); 
+const spotlightDesc = document.getElementById('spotlight-description'); // Ambil elemen deskripsi baru
 
 spotlightItems.forEach((item) => {
     item.addEventListener('click', function() {
@@ -179,12 +180,18 @@ spotlightItems.forEach((item) => {
         // Tambahkan class 'active' ke menu yang sedang diklik
         this.classList.add('active');
         
-        // Ambil URL gambar dari atribut data-image pada menu yang diklik
+        // Ambil URL gambar dan teks deskripsi dari atribut data
         const newImageSource = this.getAttribute('data-image');
+        const newDescription = this.getAttribute('data-description');
         
         // Ganti src gambar jika data-image tersedia
         if (newImageSource) {
             spotlightImage.src = newImageSource;
+        }
+
+        // Ganti teks deskripsi jika data-description tersedia
+        if (newDescription) {
+            spotlightDesc.innerText = newDescription;
         }
         
         console.log('Spotlight category selected:', this.innerText);

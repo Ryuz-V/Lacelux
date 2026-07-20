@@ -978,6 +978,20 @@ nav.scrolled .menu .search-btn {
     padding: 6rem 5%;
 }
 
+.spotlight-desc {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    max-width: 90%;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .spotlight-wrapper {
     max-width: 1400px;
     margin: 0 auto;
@@ -999,8 +1013,8 @@ nav.scrolled .menu .search-btn {
     border-bottom: 1px solid #ddd;
     transition: all 0.3s ease;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .spotlight-nav li:last-child {
@@ -1019,10 +1033,34 @@ nav.scrolled .menu .search-btn {
     margin-left: 10px;
 }
 
+.nav-desc {
+    font-size: 1rem;
+    color: #666;
+    font-weight: 400;
+    line-height: 1.5;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
+}
+
+.spotlight-nav li.active .nav-desc {
+    max-height: 150px;
+    opacity: 1;
+    margin-top: 15px;
+}
+
 .spotlight-image {
     position: relative;
     border-radius: 4px;
     overflow: hidden;
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .spotlight-image img {
