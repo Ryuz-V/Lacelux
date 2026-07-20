@@ -672,10 +672,10 @@ nav.scrolled .menu .search-btn {
 }
 
 .custom-bold-header .bg-text {
-    font-size: 10.5rem;
+    font-size: 9.5rem;
     font-weight: 800;
     color: transparent;
-    -webkit-text-stroke: 1px #e5e7eb;
+    -webkit-text-stroke: 1px #c6c6c6;
     text-transform: uppercase;
     line-height: 1;
     position: relative;
@@ -709,7 +709,6 @@ nav.scrolled .menu .search-btn {
     padding: 10px 25px;
     border: 1px solid #ccc;
     background: transparent;
-    border-radius: 5px;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
@@ -791,11 +790,20 @@ nav.scrolled .menu .search-btn {
     cursor: pointer;
     border: 1px solid #eaeaea;
     background-color: #fff;
-    transition: box-shadow 0.3s ease;
+    /* Tambahkan border-bottom 4px transparan agar layout tidak melompat (jumping) saat di-hover */
+    border-bottom: 4px solid transparent; 
+    transition: all 0.3s ease;
 }
 
 .product-card:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    /* Border keliling menjadi warna abu-abu kebiruan/gelap (sesuai image_1f6d84.png) */
+    border-color: #c1c1cd; 
+    /* Garis bawah tebal berwarna gelap */
+    border-bottom: 4px solid #333333; 
+    /* Sedikit bayangan untuk memisahkan dari background */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    /* Memberikan efek visual kartu sedikit terangkat */
+    transform: translateY(-2px); 
 }
 
 .product-thumb {

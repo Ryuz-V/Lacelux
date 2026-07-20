@@ -10,6 +10,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "feather-icons": "^4.29.2"
+    "feather-icons": "^4.29.2",
+    "mongoose": "^9.7.4",
+    "node-fetch": "^2.7.0"
   }
 }
