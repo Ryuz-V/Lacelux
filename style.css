@@ -636,6 +636,119 @@ nav.scrolled .menu .search-btn {
 }
 
 /* Product Grid (Image 2 Style) */
+.custom-bold-header {
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 4rem;
+}
+
+.custom-bold-header .header-left {
+    flex: 1;
+    max-width: 480px;
+}
+
+.custom-bold-header .header-left h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+.custom-bold-header .header-left p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.custom-bold-header .header-right {
+    flex: 1.5;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding-top: 10px;
+}
+
+.custom-bold-header .bg-text {
+    font-size: 10.5rem;
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 1px #e5e7eb;
+    text-transform: uppercase;
+    line-height: 1;
+    position: relative;
+    top: 0;
+    letter-spacing: -2px;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 15px;
+}
+
+.custom-bold-header .header-stats-row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.custom-bold-header .stat-item h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.custom-bold-header .stat-item span {
+    font-size: 0.85rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.custom-bold-header .btn-show-more {
+    padding: 10px 25px;
+    border: 1px solid #ccc;
+    background: transparent;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #111;
+}
+
+.custom-bold-header .btn-show-more:hover {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+}
+
+@media (max-width: 1024px) {
+    .custom-bold-header {
+        flex-direction: column;
+        gap: 40px;
+    }
+    .custom-bold-header .header-right {
+        width: 100%;
+    }
+    .custom-bold-header .bg-text {
+        font-size: 5rem;
+    }
+    .custom-bold-header .header-stats-row {
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+    .custom-bold-header .btn-show-more {
+        margin-left: 0;
+    }
+}
+@media (max-width: 600px) {
+    .custom-bold-header .bg-text {
+        font-size: 3.5rem;
+        top: -30px;
+    }
+}
+
 .product-grid-section {
     padding: 6rem 5%;
     background-color: #fff;
