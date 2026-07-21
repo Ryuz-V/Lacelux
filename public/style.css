@@ -689,6 +689,7 @@ nav.scrolled .menu .search-btn {
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    gap: 15px; /* Tambahan gap untuk memberi jarak antara tombol kiri dan kanan */
 }
 
 .custom-bold-header .stat-item h3 {
@@ -767,14 +768,6 @@ nav.scrolled .menu .search-btn {
     font-size: 2.5rem;
     font-weight: 500;
     color: #000000;
-}
-
-.product-rating i, .product-rating svg {
-    width: 20px;
-    height: 20px;
-    color: #d1d5db;
-    stroke: #d1d5db; 
-    fill: none;
 }
 
 .product-grid {
@@ -905,28 +898,6 @@ nav.scrolled .menu .search-btn {
     font-weight: 600;
     color: #111;
     margin: 0;
-}
-
-.product-rating {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    margin-top: 8px;
-}
-
-.product-rating i, .product-rating svg {
-    width: 20px;
-    height: 20px;
-    color: #9ca3af; /* Warna abu-abu untuk garis bintang */
-    stroke: #9ca3af; /* Memaksa garis ikon berwarna abu-abu */
-    stroke-width: 2; /* Ketebalan garis bintang */
-    fill: none; /* Memastikan bagian dalam bintang kosong */
-}
-
-.product-rating span {
-    font-size: 0.9rem;
-    color: #111;
-    margin-left: 5px;
 }
 
 /* Kept for other areas just in case */

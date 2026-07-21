@@ -197,3 +197,107 @@ spotlightItems.forEach((item) => {
         console.log('Spotlight category selected:', this.innerText);
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btnPrev = document.getElementById('btn-prev-product');
+    const btnNext = document.getElementById('btn-next-product');
+    const productGrid = document.querySelector('.trending-section .product-grid');
+
+    // 1. Array Data Produk (Menambahkan 4 produk baru agar bisa berganti)
+    const products = [
+        // Halaman 1 (Produk awal)
+        { brand: 'NIKE', name: 'Pro Runner Elite', cat: "Men's Shoes", color: 'Putih', price: '$185.00', img: 'https://www.footlocker.id/media/catalog/product/0/1/01-ADIDAS-F34KBADI5-ADIJS1778-Green.jpg?width=300&height=300&quality=80&fit=cover&dpr=2' },
+        { brand: 'NIKE', name: 'Hyper Dunk', cat: "Men's Shoes", color: 'Hitam', price: '$155.00', img: 'https://www.footlocker.id/media/catalog/product/0/1/01-PUMA-FFSSEPMAA-PMA313454-01-Blue.jpg?width=300&height=300&quality=80&fit=cover&dpr=2' },
+        { brand: 'ON', name: 'Cloud Walkers', cat: 'Unisex', color: 'Abu-abu', price: '$120.00', img: 'https://www.footlocker.id/media/catalog/product/0/1/01-NIKE-FFSSBNIK5-NIKFV2295002-Black.jpg?width=300&height=300&quality=80&fit=cover&dpr=2' },
+        { brand: 'NEW BALANCE', name: 'Trail Blazer', cat: "Men's Shoes", color: 'Coklat', price: '$145.00', img: 'https://www.footlocker.id/media/catalog/product/0/1/01-NEW-BALANCE-FFSSBNEWA-NEWMR530CK-Grey.jpg?width=300&height=300&quality=80&fit=cover&dpr=2' },
+        // Halaman 2 (Tambahan produk baru)
+        { brand: 'ASICS', name: 'Gel-Kayano 30', cat: "Men's Shoes", color: 'Hitam/Merah', price: '$160.00', img: 'https://www.footlocker.id/media/catalog/product/0/1/01-ASICS-FFSSEASIA-ASI23A542107-Cream.jpg?width=300&height=300&quality=80&fit=cover&dpr=2' },
+        { brand: 'PUMA', name: 'Velocity Nitro', cat: "Women's Shoes", color: 'Pink', price: '$130.00', img: 'https://www.footlocker.id/media/catalog/product/0/1/01-PUMA-FFSSEPMAA-PMA401581-01-White.jpg?width=300&height=300&quality=80&fit=cover&dpr=2' },
+        { brand: 'CONVERSE', name: 'Chuck Taylor 70s', cat: "Unisex", color: 'Putih/Biru', price: '$85.00', img: 'https://www.footlocker.id/media/catalog/product/0/1/01-NIKE-F34KBNIK5-NIKIH1401402-Blue.jpg?width=300&height=300&quality=80&fit=cover&dpr=2' },
+        { brand: 'ADIDAS', name: 'Ultraboost Light', cat: "Men's Shoes", color: 'Coklat Muda', price: '$190.00', img: 'https://www.footlocker.id/media/catalog/product/0/1/01-ADIDAS-FFSSBADI5-ADIIH6813-Brown.jpg?width=300&height=300&quality=80&fit=cover&dpr=2' }
+    ];
+
+    let currentPage = 0;
+    const itemsPerPage = 4; // Jumlah item per sekali tampil
+
+    // 2. Fungsi untuk Merender Produk ke HTML
+    const renderProducts = () => {
+        if (!productGrid) return;
+        
+        // Kosongkan grid terlebih dahulu
+        productGrid.innerHTML = '';
+        
+        // Ambil produk sesuai halaman saat ini (0-3, lalu 4-7)
+        const startIndex = currentPage * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const productsToShow = products.slice(startIndex, endIndex);
+
+        // Map array menjadi elemen HTML
+        productsToShow.forEach(prod => {
+            const cardHTML = `
+                <div class="product-card">
+                    <button class="wishlist"><i data-feather="heart"></i></button>
+                    <div class="product-thumb">
+                        <img src="${prod.img}" alt="${prod.name}">
+                    </div>
+                    <div class="product-info">
+                        <p class="product-brand">${prod.brand}</p>
+                        <h3 class="product-name">${prod.name}</h3>
+                        <div class="product-details">
+                            <p class="product-category">${prod.cat}</p>
+                            <p class="product-color-count">Warna : ${prod.color}</p>
+                        </div>
+                        <div class="product-price">
+                            <p>${prod.price}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            productGrid.innerHTML += cardHTML;
+        });
+
+        // Wajib me-render ulang icon Feather setelah menyisipkan HTML baru
+        feather.replace();
+    };
+
+    // 3. Event Listener untuk Tombol Navigasi
+    if (btnPrev && btnNext) {
+        btnNext.addEventListener('click', () => {
+            // Cek apakah masih ada produk di halaman selanjutnya
+            if ((currentPage + 1) * itemsPerPage < products.length) {
+                currentPage++;
+                renderProducts();
+            }
+        });
+
+        btnPrev.addEventListener('click', () => {
+            // Kembali ke halaman sebelumnya
+            if (currentPage > 0) {
+                currentPage--;
+                renderProducts();
+            }
+        });
+    }
+
+    // 4. Event Delegation untuk fitur Wishlist pada elemen yang dinamis
+    if (productGrid) {
+        productGrid.addEventListener('click', function(e) {
+            // Cari elemen tombol wishlist terdekat yang di-klik
+            const wishlistBtn = e.target.closest('.wishlist');
+            if (wishlistBtn) {
+                if (wishlistBtn.classList.contains('active')) {
+                    wishlistBtn.classList.remove('active');
+                    wishlistBtn.style.color = '#111';
+                    wishlistBtn.style.fill = 'none';
+                } else {
+                    wishlistBtn.classList.add('active');
+                    wishlistBtn.style.color = '#ef4444';
+                    wishlistBtn.style.fill = '#ef4444';
+                }
+            }
+        });
+    }
+
+    // Panggil render pertama kali saat halaman dimuat
+    renderProducts();
+});
