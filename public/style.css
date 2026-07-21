@@ -997,7 +997,7 @@ nav.scrolled .menu .search-btn {
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 60px;
+    gap: 120px;
     align-items: center;
 }
 
@@ -1065,17 +1065,23 @@ nav.scrolled .menu .search-btn {
 
 .spotlight-image img {
     width: 100%;
+    height: 600px; 
+    object-fit: cover;
     display: block;
 }
 
 .script-text {
     position: absolute;
-    bottom: 60px;
-    right: 40px;
-    font-size: 4.5rem;
-    color: rgba(255,255,255,0.8);
+    bottom: -20px; /* Memposisikan teks di dekat bagian bawah gambar */
+    left: 20px; /* Menggeser teks lebih ke kiri lagi (sebelumnya 40px) */
     font-style: italic;
+    font-size: 6rem; 
+    color: rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+    white-space: nowrap;
+    mix-blend-mode: difference;
     font-weight: 300;
+    z-index: 2;
 }
 
 /* Trending Section */
