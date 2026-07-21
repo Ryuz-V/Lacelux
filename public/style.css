@@ -1053,7 +1053,7 @@ nav.scrolled .menu .search-btn {
 .spotlight-image {
     position: relative;
     border-radius: 4px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .nav-header {
@@ -1072,10 +1072,10 @@ nav.scrolled .menu .search-btn {
 
 .script-text {
     position: absolute;
-    bottom: -20px; /* Memposisikan teks di dekat bagian bawah gambar */
-    left: 20px; /* Menggeser teks lebih ke kiri lagi (sebelumnya 40px) */
+    bottom: -20px;
+    left: -47px; 
     font-style: italic;
-    font-size: 6rem; 
+    font-size: 5.5rem; 
     color: rgba(255, 255, 255, 0.8);
     pointer-events: none;
     white-space: nowrap;
