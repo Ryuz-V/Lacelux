@@ -10,8 +10,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "feather-icons": "^4.29.2",
-    "mongoose": "^9.7.4",
-    "node-fetch": "^2.7.0"
+    "mongoose": "^9.8.0",
+    "mongose": "^0.0.2-security",
+    "node-fetch": "^2.7.0",
+    "puppeteer": "^25.3.0"
   }
 }

@@ -1702,3 +1702,341 @@ nav.scrolled .menu .search-btn {
         width: auto;
     }
 }
+
+/* =========================================
+   CATALOG PAGE & SIDEBAR FILTER STYLING
+   ========================================= */
+body.catalog-page {
+    background-color: #fff;
+    padding-top: var(--nav-height);
+}
+
+.catalog-container {
+    display: flex;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 2rem 5%;
+    gap: 40px;
+}
+
+/* Sidebar Styling */
+.filter-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    border-right: 1px solid #eaeaea;
+    padding-right: 25px;
+}
+
+.filter-main-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1.5rem;
+}
+
+.filter-group {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 1.5rem;
+}
+
+.filter-header {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 1rem;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #444;
+    cursor: pointer;
+}
+
+.custom-checkbox input {
+    accent-color: #111;
+    width: 16px;
+    height: 16px;
+}
+
+.filter-search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    margin-bottom: 12px;
+    gap: 8px;
+}
+
+.filter-search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.8rem;
+}
+
+.filter-search-box svg {
+    width: 14px;
+    height: 14px;
+    color: #888;
+}
+
+.size-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.size-btn {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 8px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.size-btn:hover, .size-btn.active {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+}
+
+.color-swatches-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.color-swatch:hover {
+    transform: scale(1.15);
+}
+
+.price-range-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price-range-inputs input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    font-size: 0.8rem;
+}
+
+/* Catalog Main Content */
+.catalog-main {
+    flex: 1;
+}
+
+.catalog-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.catalog-title-area h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 5px;
+}
+
+.catalog-title-area p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+#sort-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Grid Responsiveness */
+@media (max-width: 1024px) {
+    .catalog-container {
+        flex-direction: column;
+    }
+    .filter-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eaeaea;
+        padding-right: 0;
+    }
+}
+
+/* =========================================
+   NEW NAVBAR STYLE 
+   ========================================= */
+.custom-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Baris Atas --- */
+.navbar-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.navbar-top .logo img {
+    height: 40px; /* Sesuaikan ukuran logo */
+    width: auto;
+    object-fit: contain;
+}
+
+/* Style Search Bar Tengah */
+.search-bar {
+    display: flex;
+    flex: 1;
+    max-width: 700px; /* Lebar maksimal search bar */
+    margin: 0 40px;
+    border: 1px solid #d1d5db;
+}
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    color: #111;
+}
+
+.search-bar input::placeholder {
+    color: #999;
+}
+
+.search-bar button {
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    padding: 0 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.search-bar button:hover {
+    background-color: #333333;
+}
+
+.search-bar button i {
+    width: 20px;
+    height: 20px;
+}
+
+/* Ikon Kanan (User, Heart, Cart) */
+.nav-icons {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-icons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.nav-icons button:hover {
+    transform: scale(1.1);
+}
+
+.nav-icons button i {
+    width: 24px;
+    height: 24px;
+    stroke-width: 1.5;
+}
+
+/* --- Baris Bawah (Menu) --- */
+.navbar-bottom {
+    padding: 12px 5%;
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+}
+
+.navbar-bottom ul {
+    display: flex;
+    list-style: none;
+    gap: 35px; /* Jarak antar teks menu */
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-bottom ul li a {
+    text-decoration: none;
+    color: #111111;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.navbar-bottom ul li a:hover {
+    color: #666666;
+}
+
+.navbar-bottom ul li a.sale-link {
+    color: #cc0000;
+}
+
+body.catalog-page {
+    padding-top: 140px; 
+}
+
+@media (max-width: 1024px) {
+    .navbar-top {
+        gap: 20px;
+    }
+    .search-bar {
+        margin: 0 15px;
+    }
+    .navbar-bottom ul {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

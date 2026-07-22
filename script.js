@@ -377,3 +377,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// public/script.js atau script.js di root sesuai gambarmu
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/api/shoes')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('shoe-container'); // Pastikan div ini ada di index.html
+            
+            data.forEach(shoe => {
+                const card = document.createElement('div');
+                card.className = 'shoe-card';
+                card.innerHTML = `
+                    <img src="${shoe.imageUrl}" alt="${shoe.name}" style="width:100%">
+                    <h3>${shoe.name}</h3>
+                    <p>${shoe.price}</p>
+                `;
+                container.appendChild(card);
+            });
+        })
+        .catch(error => console.error('Error fetching shoes:', error));
+});

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Produk - Lacelux</title>
+    
+    <link rel="stylesheet" href="/public/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="catalog-page">
+
+<!-- Navbar -->
+<nav class="custom-navbar">
+    <!-- Baris Atas: Logo, Search, Icon -->
+    <div class="navbar-top">
+        <div class="logo">
+            <img src="/public/asset/Logo_icon_2.png" alt="Lacelux" class="icon-black">
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Cari produk...">
+            <button type="submit"><i data-feather="search"></i></button>
+        </div>
+        
+        <div class="nav-icons">
+            <button class="user-btn"><i data-feather="user"></i></button>
+            <button class="wishlist-btn"><i data-feather="heart"></i></button>
+            <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
+        </div>
+    </div>
+
+    <!-- Baris Bawah: Menu Kategori -->
+    <div class="navbar-bottom">
+        <ul>
+            <li><a href="products.html?category=new-arrivals">New Arrivals</a></li>
+            <li><a href="products.html?category=eksklusif">Eksklusif</a></li>
+            <li><a href="products.html?category=pria">Pria</a></li>
+            <li><a href="products.html?category=wanita">Wanita</a></li>
+            <li><a href="products.html?category=anak">Anak-Anak</a></li>
+            <li><a href="products.html?category=coming-soon">Coming Soon</a></li>
+            <li><a href="products.html?category=brands">Brands</a></li>
+            <li><a href="products.html?category=sale" class="sale-link">SALE</a></li>
+        </ul>
+    </div>
+</nav>
+<!-- Main Catalog Layout -->
+<main class="catalog-container">
+    
+    <!-- Left Sidebar Filter -->
+    <aside class="filter-sidebar">
+        <h3 class="filter-main-title">Saring</h3>
+
+        <!-- Filter Jenis Kelamin -->
+        <div class="filter-group">
+            <div class="filter-header">
+                <span>Jenis Kelamin</span>
+            </div>
+            <div class="filter-options">
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="pria" class="filter-gender">
+                    <span>Pria</span>
+                </label>
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="wanita" class="filter-gender">
+                    <span>Wanita</span>
+                </label>
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="unisex" class="filter-gender">
+                    <span>Unisex</span>
+                </label>
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="kids" class="filter-gender">
+                    <span>Anak - Anak</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Filter Merek -->
+        <div class="filter-group">
+            <div class="filter-header">
+                <span>Merek</span>
+            </div>
+            <div class="filter-search-box">
+                <i data-feather="search"></i>
+                <input type="text" id="brand-search-input" placeholder="Search Merek...">
+            </div>
+            <div class="filter-options brand-list">
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="nike" class="filter-brand">
+                    <span>Nike</span>
+                </label>
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="adidas" class="filter-brand">
+                    <span>Adidas</span>
+                </label>
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="new balance" class="filter-brand">
+                    <span>New Balance</span>
+                </label>
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="on" class="filter-brand">
+                    <span>ON</span>
+                </label>
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="asics" class="filter-brand">
+                    <span>Asics</span>
+                </label>
+                <label class="custom-checkbox">
+                    <input type="checkbox" value="puma" class="filter-brand">
+                    <span>Puma</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Filter Ukuran -->
+        <div class="filter-group">
+            <div class="filter-header">
+                <span>Ukuran</span>
+            </div>
+            <div class="size-grid">
+                <button class="size-btn">US 7</button>
+                <button class="size-btn">US 8</button>
+                <button class="size-btn">US 9</button>
+                <button class="size-btn">US 10</button>
+                <button class="size-btn">EU 40</button>
+                <button class="size-btn">EU 41</button>
+            </div>
+        </div>
+
+        <!-- Filter Warna -->
+        <div class="filter-group">
+            <div class="filter-header">
+                <span>Warna</span>
+            </div>
+            <div class="color-swatches-grid">
+                <span class="color-swatch" style="background-color: #ffffff; border: 1px solid #ccc;" title="Putih"></span>
+                <span class="color-swatch" style="background-color: #000000;" title="Hitam"></span>
+                <span class="color-swatch" style="background-color: #808080;" title="Abu-abu"></span>
+                <span class="color-swatch" style="background-color: #0000ff;" title="Biru"></span>
+                <span class="color-swatch" style="background-color: #008000;" title="Hijau"></span>
+                <span class="color-swatch" style="background-color: #a52a2a;" title="Coklat"></span>
+                <span class="color-swatch" style="background-color: #f5f5dc;" title="Krem"></span>
+            </div>
+        </div>
+
+        <!-- Filter Harga -->
+        <div class="filter-group">
+            <div class="filter-header">
+                <span>Harga</span>
+            </div>
+            <div class="price-range-inputs">
+                <input type="number" id="price-min" placeholder="Rp Min">
+                <span>-</span>
+                <input type="number" id="price-max" placeholder="Rp Max">
+            </div>
+        </div>
+    </aside>
+
+    <!-- Right Main Catalog -->
+    <section class="catalog-main">
+        <!-- Header Katalog -->
+        <div class="catalog-header-bar">
+            <div class="catalog-title-area">
+                <h1 id="category-page-title">Sepatu - Semua Koleksi</h1>
+                <p id="product-count-info">Menunjukkan <span>0</span> hasil pencarian</p>
+            </div>
+            <div class="catalog-sort-area">
+                <select id="sort-select">
+                    <option value="latest">Produk Terbaru</option>
+                    <option value="price-low">Harga: Rendah ke Tinggi</option>
+                    <option value="price-high">Harga: Tinggi ke Rendah</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Grid Produk Hasil Scraper / Filter -->
+        <div class="product-grid" id="catalog-products-grid">
+            <!-- Tempat produk akan dirender secara dinamis oleh JS -->
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="main-footer">
+    <div class="footer-copyright" style="text-align: center; padding: 20px 0;">
+        <p>&copy; 2026 Lacelux. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://unpkg.com/feather-icons"></script>
+<script>feather.replace();</script>
+<script src="/catalog.js"></script>
+</body>
+</html>
