@@ -1137,31 +1137,30 @@ nav.scrolled .menu .search-btn {
     transition: transform 0.4s ease;
 }
 
-.grid-item:hover img {
-    transform: scale(1.05); /* Efek zoom halus saat di-hover */
-}
-
 .offer-banner-full {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 100%;
     background-color: #0f0f0f;
+    background-image: url('/public/asset/banner.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     margin: 0;
     padding: 0 8%; 
     box-sizing: border-box;
-    height: 500px; /* Tingginya dinaikkan menjadi 380px */
+    height: 450px; 
     overflow: hidden; 
 }
 
 .offer-banner-full .banner-content {
-    flex: 1;
     max-width: 600px;
     color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .offer-banner-full h2 {
-    font-size: 3.2rem; /* Font sedikit dibesarkan agar proporsional */
+    font-size: 3.2rem; 
     font-weight: 700;
     line-height: 1.1;
     margin-bottom: 1.5rem; 
@@ -1171,13 +1170,14 @@ nav.scrolled .menu .search-btn {
 .offer-banner-full .btn-secondary {
     background-color: #ffffff;
     color: #000000;
-    padding: 12px 30px; /* Ukuran tombol disesuaikan agar proporsional */
+    padding: 12px 30px; 
     border: none;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     text-transform: uppercase;
     transition: background 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
 .offer-banner-full .btn-secondary:hover {
@@ -1208,7 +1208,7 @@ nav.scrolled .menu .search-btn {
     .offer-banner-full {
         flex-direction: column;
         text-align: center;
-        padding: 4rem 5%;
+        padding: 4re    m 5%;
     }
 
     .offer-banner-full .banner-content {
@@ -1226,26 +1226,25 @@ nav.scrolled .menu .search-btn {
 
 @media (max-width: 600px) {
     .gallery-grid {
-        grid-template-columns: 1fr; /* Jadi 1 kotak sebaris ke bawah di HP */
+        grid-template-columns: 1fr;
     }
 }
 
 /* --- Pembaruan Story Section --- */
 .story-section {
-    padding: 8rem 5%;
-    background: #fdfdfd; /* Background putih/bersih seperti digambar */
+    padding: 10rem 5% 10rem;
+    background: #fdfdfd;
 }
 
 .story-wrapper {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Membagi menjadi 2 kolom sama besar */
+    grid-template-columns: 1fr 1fr; 
     gap: 80px;
-    align-items: start; /* Ubah ke start agar rata atas */
+    align-items: start;
 }
 
-/* Bagian Kiri */
 .story-heading h2 {
     font-size: 3rem;
     font-weight: 500;
@@ -1254,7 +1253,6 @@ nav.scrolled .menu .search-btn {
     margin: 0;
 }
 
-/* Bagian Kanan */
 .story-content {
     display: flex;
     flex-direction: column;
@@ -1566,7 +1564,7 @@ nav.scrolled .menu .search-btn {
 
 /* Kolom tanpa judul: sejajarkan dengan kolom berJudul */
 .footer-nav-group ul.no-title-list {
-    margin-top: calc(0.85rem + 16px + 0.85rem * 1.4); /* Sejajar dgn item pertama kolom berJudul */
+    margin-top: 32px;
 }
 
 .footer-nav-group ul li a {

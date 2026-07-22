@@ -441,18 +441,19 @@
     </div>
 </section>
 
+<!-- Unfinished Section -->
 <section class="gallery-grid">
     <div class="grid-item">
-        <img src="/asset/shoe1.jpg" alt="Koleksi 1">
+        <img src="/public/asset/1.webp" alt="Koleksi 1">
     </div>
     <div class="grid-item">
-        <img src="/asset/shoe2.jpg" alt="Koleksi 2">
+        <img src="/public/asset/2.webp" alt="Koleksi 2">
     </div>
     <div class="grid-item">
-        <img src="/asset/shoe3.jpg" alt="Koleksi 3">
+        <img src="/public/asset/3.webp" alt="Koleksi 3">
     </div>
     <div class="grid-item">
-        <img src="/asset/shoe4.jpg" alt="Koleksi 4">
+        <img src="/public/asset/4.webp" alt="Koleksi 4">
     </div>
 </section>
 
@@ -461,27 +462,18 @@
         <h2>FLAT 60% OFF ON PREMIUM SHOES</h2>
         <button class="btn-secondary">SHOP NOW</button>
     </div>
-    <div class="banner-image">
-        <img src="https://www.footlocker.id/media/weltpixel/owlcarouselslider/images/r/u/running_web-banner_1.jpg" alt="Promo Sepatu">
-    </div>
 </section>
 
 <section class="story-section">
     <div class="story-wrapper">
-        <!-- Bagian Kiri: Heading Utama -->
         <div class="story-heading">
             <h2>Explore the feedback from our customers about our products!</h2>
         </div>
-        
-        <!-- Bagian Kanan: Konten Testimonial -->
         <div class="story-content">
-            <!-- Ornamen Kuning & Rating Bintang (Dipertahankan) -->
             <div class="quote-header">
-                <!-- SVG untuk ornamen squiggle kuning -->
                 <svg width="40" height="30" viewBox="0 0 50 30" fill="none" xmlns="http://www.w3.org/2000/svg" class="squiggle">
                     <path d="M5 25 C 15 -5, 35 35, 45 5" stroke="#FBBF24" stroke-width="6" stroke-linecap="round" fill="none"/>
                 </svg>
-                
                 <div class="rating">
                     <i data-feather="star" class="filled"></i>
                     <i data-feather="star" class="filled"></i>
@@ -490,23 +482,19 @@
                     <i data-feather="star" class="filled"></i>
                 </div>
             </div>
-            
-            <!-- Teks Testimonial -->
-            <p class="quote">"Absolutely love my new pair of Pro Runners! They are incredibly lightweight yet give amazing support. Finally found my perfect walking and running buddy. Highly recommended!"</p>
-            
-            <!-- Profil Author dan Tombol Navigasi -->
+            <p class="quote" id="testimonial-quote">"Absolutely love my new pair of Pro Runners! They are incredibly lightweight yet give amazing support. Finally found my perfect walking and running buddy. Highly recommended!"</p>
             <div class="story-footer">
                 <div class="author">
-                    <img src="/public/asset/testimonial_person.png" alt="Alex J.">
+                    <img src="/public/asset/testimonial_person.png" alt="Alex J." id="testimonial-img">
                     <div class="author-info">
-                        <strong>Alex Johnson</strong>
-                        <span>Verified Buyer</span>
+                        <strong id="testimonial-name">Alex Johnson</strong>
+                        <span id="testimonial-role">Verified Buyer</span>
                     </div>
                 </div>
                 
                 <div class="nav-buttons">
-                    <button class="nav-btn"><i data-feather="chevron-left"></i></button>
-                    <button class="nav-btn"><i data-feather="chevron-right"></i></button>
+                    <button class="nav-btn" id="btn-prev-testimonial"><i data-feather="chevron-left"></i></button>
+                    <button class="nav-btn" id="btn-next-testimonial"><i data-feather="chevron-right"></i></button>
                 </div>
             </div>
         </div>
@@ -515,36 +503,26 @@
 
 <footer class="main-footer">
     <div class="footer-container">
-
-        <!-- Top Row: Logo & Email Signup -->
         <div class="footer-top-row">
             <div class="footer-logo">
                 <img src="/public/asset/Tab_Logo_W.png" alt="Lacelux" class="footer-logo-img">
             </div>
             <div class="footer-email-signup">
-                <p class="email-label">Email Sign Up</p>
+                <p class="email-label">Join Our Newsletter</p>
                 <form class="footer-email-form">
                     <input type="email" placeholder="EMAIL" required>
                     <button type="submit"><i data-feather="arrow-right"></i></button>
                 </form>
             </div>
         </div>
-
-        <!-- Divider -->
         <div class="footer-divider"></div>
-
-        <!-- Bottom Row: Links & Socials -->
         <div class="footer-bottom-row">
-            <!-- Link Columns -->
             <div class="footer-nav-columns">
-                <!-- Support Column -->
                 <div class="footer-nav-group">
                     <h4 class="footer-nav-title">Support</h4>
                     <ul>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Find a Store</a></li>
-                        <li><a href="#">My Profile</a></li>
                         <li><a href="#">Delivery</a></li>
                         <li><a href="#">Size Guide</a></li>
                     </ul>
@@ -552,29 +530,18 @@
                 <!-- Policies Column -->
                 <div class="footer-nav-group">
                     <ul class="no-title-list">
-                        <li><a href="#">Return Policy</a></li>
-                        <li><a href="#">*Promotions and sale</a></li>
+                        <li><a href="#">Return Policy</a></li>  
                         <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Use</a></li>
                         <li><a href="#">Terms of Purchase</a></li>
-                        <li><a href="#">Loyalty Program</a></li>
                     </ul>
                 </div>
                 <!-- About Column -->
                 <div class="footer-nav-group">
                     <h4 class="footer-nav-title">About Lacelux</h4>
                     <ul>
-                        <li><a href="#">Company</a></li>
-                        <li><a href="#">Corporate News</a></li>
-                        <li><a href="#">Press Center</a></li>
-                    </ul>
-                </div>
-                <!-- Extra Links Column -->
-                <div class="footer-nav-group">
-                    <ul class="no-title-list">
-                        <li><a href="#">Investors</a></li>
-                        <li><a href="#">Sustainability</a></li>
-                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">SiteMap</a></li>
+                        <li><a href="">Operational Hours: Monday - Sunday, 24 hours </a></li>
                     </ul>
                 </div>
             </div>
@@ -583,15 +550,20 @@
             <div class="footer-right-panel">
                 <p class="more-inspiration-label">More Inspiration</p>
                 <div class="footer-social-icons">
-                    <a href="#" aria-label="Facebook"><i data-feather="facebook"></i></a>
+                    <a href="#" aria-label="Facebook"><i data-feather="mail"></i></a>
                     <a href="#" aria-label="Twitter"><i data-feather="twitter"></i></a>
                     <a href="#" aria-label="Instagram"><i data-feather="instagram"></i></a>
-                    <a href="#" aria-label="Pinterest"><i data-feather="heart"></i></a>
+                    <a href="#" aria-label="WhatsApp">
+    <!-- Ikon SVG WhatsApp -->
+    <svg viewBox="0 0 448 512" width="24" height="24" fill="currentColor" class="whatsapp-icon">
+        <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.4-8.6-44.6-27.6-16.5-14.7-27.6-32.8-30.8-38.4-3.2-5.6-.3-8.6 2.4-11.4 2.5-2.5 5.5-6.5 8.3-9.8 2.8-3.3 3.7-5.6 5.5-9.3 1.8-3.7.9-6.9-.5-9.8-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.7 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+    </svg>
+</a>
                     <a href="#" aria-label="YouTube"><i data-feather="youtube"></i></a>
                 </div>
                 <div class="footer-app-banner">
                     <img src="/public/asset/Tab_Logo_W.png" alt="Lacelux App">
-                    <span>SHOP THE LATEST</span>
+                    <span>Download Our App</span>
                 </div>
             </div>
         </div>

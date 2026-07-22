@@ -301,3 +301,79 @@ document.addEventListener('DOMContentLoaded', () => {
     // Panggil render pertama kali saat halaman dimuat
     renderProducts();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- Testimonial Carousel Logic ---
+    const testimonials = [
+        {
+            quote: "\"Absolutely love my new pair of Pro Runners! They are incredibly lightweight yet give amazing support. Finally found my perfect walking and running buddy. Highly recommended!\"",
+            name: "Alex Johnson",
+            role: "Verified Buyer",
+            img: "/public/asset/testimonial_person.png"
+        },
+        {
+            quote: "\"The Cloud Walkers changed my daily commute. I no longer feel foot fatigue after standing for hours. Best investment for my feet!\"",
+            name: "Sarah Miller",
+            role: "Verified Buyer",
+            img: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150" // Placeholder image
+        },
+        {
+            quote: "\"Bold design and unmatched comfort. I get compliments every time I wear my Hyper Dunks. Will definitely buy another pair soon. Great quality!\"",
+            name: "Michael Chen",
+            role: "Verified Buyer",
+            img: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150" // Placeholder image
+        }
+    ];
+
+    let currentTestimonialIndex = 0;
+
+    // Grab the DOM elements
+    const quoteEl = document.getElementById('testimonial-quote');
+    const imgEl = document.getElementById('testimonial-img');
+    const nameEl = document.getElementById('testimonial-name');
+    const roleEl = document.getElementById('testimonial-role');
+    
+    const btnPrevTestimonial = document.getElementById('btn-prev-testimonial');
+    const btnNextTestimonial = document.getElementById('btn-next-testimonial');
+
+    // Add smooth CSS transition for the UI/UX polish
+    if(quoteEl && imgEl) {
+        quoteEl.style.transition = 'opacity 0.3s ease';
+        imgEl.style.transition = 'opacity 0.3s ease';
+    }
+
+    const updateTestimonial = () => {
+        const data = testimonials[currentTestimonialIndex];
+        
+        // Fade out
+        quoteEl.style.opacity = '0';
+        imgEl.style.opacity = '0';
+        
+        // Wait for fade out, then update content and fade back in
+        setTimeout(() => {
+            quoteEl.textContent = data.quote;
+            imgEl.src = data.img;
+            imgEl.alt = data.name;
+            nameEl.textContent = data.name;
+            roleEl.textContent = data.role;
+            
+            // Fade in
+            quoteEl.style.opacity = '1';
+            imgEl.style.opacity = '1';
+        }, 300); // matches the 0.3s CSS transition
+    };
+
+    if (btnNextTestimonial && btnPrevTestimonial) {
+        // Next Button Event
+        btnNextTestimonial.addEventListener('click', () => {
+            // Loop back to 0 if at the end of the array
+            currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonials.length;
+            updateTestimonial();
+        });
+        btnPrevTestimonial.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex - 1 + testimonials.length) % testimonials.length;
+            updateTestimonial();
+        });
+    }
+});
