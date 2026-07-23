@@ -1876,7 +1876,6 @@ body.catalog-page {
     cursor: pointer;
 }
 
-/* Grid Responsiveness */
 @media (max-width: 1024px) {
     .catalog-container {
         flex-direction: column;
@@ -1889,53 +1888,70 @@ body.catalog-page {
     }
 }
 
-/* =========================================
-   NEW NAVBAR STYLE 
-   ========================================= */
 .custom-navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    height: auto;
     z-index: 9999;
     background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border-bottom: none; 
     display: flex;
     flex-direction: column;
+    padding: 0; /* <-- Tambahkan baris ini untuk menimpa padding 5% dari tag nav global */
 }
 
-/* --- Baris Atas --- */
 .navbar-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 5%;
     border-bottom: 1px solid #eaeaea;
+    width: 100%;
+}
+
+.custom-navbar .logo {
+    display: flex;
+    align-items: center;
+    min-width: fit-content; 
+    position: static; 
 }
 
 .navbar-top .logo img {
-    height: 40px; /* Sesuaikan ukuran logo */
+    height: 40px; 
     width: auto;
     object-fit: contain;
 }
 
-/* Style Search Bar Tengah */
+.custom-navbar .logo .icon-black {
+    position: relative;
+    opacity: 1;
+    transform: none;
+    height: 40px;
+    width: auto;
+    margin: 0;
+}
+
 .search-bar {
     display: flex;
     flex: 1;
-    max-width: 700px; /* Lebar maksimal search bar */
+    max-width: 700px;
     margin: 0 40px;
     border: 1px solid #d1d5db;
+    height: 45px;
+    overflow: hidden;
 }
 
 .search-bar input {
     flex: 1;
     border: none;
-    padding: 12px 20px;
+    padding: 0 20px;
     font-size: 0.95rem;
     outline: none;
     font-family: 'Poppins', sans-serif;
     color: #111;
+    height: 100%;
 }
 
 .search-bar input::placeholder {
@@ -1947,6 +1963,7 @@ body.catalog-page {
     color: #ffffff;
     border: none;
     padding: 0 25px;
+    height: 100%;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -1963,7 +1980,6 @@ body.catalog-page {
     height: 20px;
 }
 
-/* Ikon Kanan (User, Heart, Cart) */
 .nav-icons {
     display: flex;
     gap: 25px;
@@ -1991,18 +2007,18 @@ body.catalog-page {
     stroke-width: 1.5;
 }
 
-/* --- Baris Bawah (Menu) --- */
 .navbar-bottom {
-    padding: 12px 5%;
+    padding: 12px 5%; /* <-- Biarkan tetap 5% untuk jarak aman teks menu dari tepi layar */
     display: flex;
     justify-content: center;
     background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea; /* <-- Garis ini otomatis akan mengikuti lebar 100% dari custom-navbar */
 }
 
 .navbar-bottom ul {
     display: flex;
     list-style: none;
-    gap: 35px; /* Jarak antar teks menu */
+    gap: 35px; 
     margin: 0;
     padding: 0;
 }
