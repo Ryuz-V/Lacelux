@@ -1692,7 +1692,7 @@ body.catalog-page {
     display: flex;
     max-width: 1500px;
     margin: 0 auto;
-    padding: 2rem 5%;
+    padding: 2rem 5% 0;
     gap: 40px;
 }
 
@@ -1825,10 +1825,10 @@ body.catalog-page {
 .catalog-header-bar {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .catalog-title-area h1 {
@@ -2032,4 +2032,39 @@ body.catalog-page {
         flex-wrap: wrap;
         justify-content: center;
     }
+}
+
+.page-title-wrapper {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 2rem 5% 0; 
+}
+
+.breadcrumb {
+    font-size: 0.7rem;
+    color: #111;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb span {
+    color: #666;
+}
+
+.page-title-wrapper h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 0;
+    letter-spacing: -1px;
+}
+
+#product-count-info {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #111;
+}
+
+#product-count-info span {
+    font-weight: 700; /* Menebalkan angka sesuai gambar */
 }
