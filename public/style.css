@@ -1690,10 +1690,12 @@ body.catalog-page {
 
 .catalog-container {
     display: flex;
+    width: 100%; 
     max-width: 1500px;
     margin: 0 auto;
     padding: 2rem 5% 0;
     gap: 40px;
+    box-sizing: border-box; 
 }
 
 .filter-sidebar {
@@ -1820,6 +1822,7 @@ body.catalog-page {
 
 .catalog-main {
     flex: 1;
+    min-width: 0;
 }
 
 .catalog-header-bar {
@@ -2035,9 +2038,11 @@ body.catalog-page {
 }
 
 .page-title-wrapper {
+    width: 100%; 
     max-width: 1500px;
     margin: 0 auto;
-    padding: 2rem 5% 0; 
+    padding: 2rem 5% 0;
+    box-sizing: border-box; 
 }
 
 .breadcrumb {

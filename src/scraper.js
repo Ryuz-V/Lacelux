@@ -26,12 +26,6 @@ async function scrapeFootLocker() {
     });
 
     console.log(products);
-    
-    // Simpan ke MongoDB (Pastikan Mongoose sudah connect dulu)
-    // await Shoe.insertMany(products);
-
+        
     await browser.close();
 }
-
-// Panggil fungsi
-// scrapeFootLocker();
