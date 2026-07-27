@@ -3,3 +3,4 @@ node_modules
 .vscode
 note.txt
 database
+*cookies.json*
