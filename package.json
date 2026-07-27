@@ -14,9 +14,13 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "feather-icons": "^4.29.2",
+    "fs": "^0.0.1-security",
     "mongoose": "^9.8.0",
     "mongose": "^0.0.2-security",
     "node-fetch": "^2.7.0",
-    "puppeteer": "^25.3.0"
+    "puppeteer": "^25.3.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "user-agents": "^2.1.133"
   }
 }

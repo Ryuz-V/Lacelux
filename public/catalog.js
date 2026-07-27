@@ -1,46 +1,4 @@
-// Sample Data Produk (Bisa diganti dengan data scraper/API kamu)
-const scrapedProducts = [
-    {
-        id: 1,
-        brand: "ASICS",
-        name: "GEL-NYC Men's Sneakers - Cocoa Powder/Pure Silver",
-        category: "men",
-        gender: "pria",
-        price: 2399000,
-        color: "Coklat",
-        image: "https://www.footlocker.id/media/catalog/product/0/8/0886-NEWU740BM2005007-1.jpg?width=300&height=300&quality=80&fit=cover&dpr=2"
-    },
-    {
-        id: 2,
-        brand: "ASICS",
-        name: "GEL-STRATUS MC Unisex Lifestyle Shoes - Cream",
-        category: "new-arrivals",
-        gender: "unisex",
-        price: 1699000,
-        color: "Krem",
-        image: "https://www.footlocker.id/media/catalog/product/0/1/01-ASICS-FFSSEASIA-ASI23A542107-Cream.jpg?width=300&height=300&quality=80&fit=cover&dpr=2"
-    },
-    {
-        id: 3,
-        brand: "ON",
-        name: "Cloudmonster 1 Women's Sneakers - Black",
-        category: "women",
-        gender: "wanita",
-        price: 3000000,
-        color: "Hitam",
-        image: "https://www.footlocker.id/media/catalog/product/0/1/01-NIKE-FFSSBNIK5-NIKCD6404107-White.jpg?width=300&height=300&quality=80&fit=cover&dpr=2"
-    },
-    {
-        id: 4,
-        brand: "NEW BALANCE",
-        name: "327 Lace GradeBoys Sneakers - Grey",
-        category: "kids",
-        gender: "kids",
-        price: 1199000,
-        color: "Abu-abu",
-        image: "https://www.footlocker.id/media/catalog/product/0/1/01-NEW-BALANCE-FFSCSNEWA-NEWU7407MK-Grey.jpg?width=300&height=300&quality=80&fit=cover&dpr=2"
-    }
-];
+// Data akan diambil dari API /api/shoes
 
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -50,11 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const countInfo = document.querySelector("#product-count-info span");
     const gridContainer = document.getElementById("catalog-products-grid");
 
-    // Format Nama Judul Berdasarkan Parameter URL
+    // Format Nama Judul Berdasarkan Parameter URL (Dinonaktifkan agar tetap "All Shoe")
+    /*
     if (categoryParam) {
         const formattedTitle = categoryParam.replace("-", " ").toUpperCase();
         pageTitle.textContent = `Sepatu - Koleksi ${formattedTitle}`;
     }
+    */
 
     // Fungsi Render Produk
     function renderProducts(products) {
@@ -67,38 +27,72 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         products.forEach(item => {
+            // Kita sesuaikan nama field yang berasal dari backend (scraper/mongodb)
+            // Di scraper: imageUrl, brand, name, price, dll.
+            
+            // Format price: jika dari database bentuknya string dengan 'Rp' sudah ada, tampilkan saja. 
+            // Jika number, diformat toLocaleString.
+            let displayPrice = item.price;
+            if (typeof displayPrice === 'number') {
+                displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
+            }
+
             const cardHtml = `
                 <div class="product-card">
                     <button class="wishlist"><i data-feather="heart"></i></button>
                     <div class="product-thumb">
-                        <img src="${item.image}" alt="${item.name}">
+                        <img src="${item.imageUrl || item.image || 'https://via.placeholder.com/300'}" alt="${item.name}">
                     </div>
                     <div class="product-info">
-                        <p class="product-brand">${item.brand}</p>
+                        <p class="product-brand">${item.brand || 'No Brand'}</p>
                         <h3 class="product-name">${item.name}</h3>
                         <div class="product-details">
-                            <p class="product-category">${item.gender.toUpperCase()}</p>
-                            <p class="product-color-count">Warna : ${item.color}</p>
+                            <p class="product-category">${(item.gender || item.category || 'Unisex').toUpperCase()}</p>
+                            <p class="product-color-count">Warna : ${item.color || '-'}</p>
                         </div>
                         <div class="product-price">
-                            <p>Rp. ${item.price.toLocaleString('id-ID')}</p>
+                            <p>${displayPrice}</p>
                         </div>
                     </div>
                 </div>
             `;
+
             gridContainer.insertAdjacentHTML("beforeend", cardHtml);
         });
 
         if (window.feather) feather.replace();
     }
 
-    // Filter Awal Berdasarkan Query URL
-    let filteredList = scrapedProducts;
-    if (categoryParam) {
-        filteredList = scrapedProducts.filter(p => p.category === categoryParam || p.gender === categoryParam);
+    // Fungsi untuk mengambil data dari backend
+    async function fetchProducts() {
+        try {
+            const response = await fetch('http://localhost:3000/api/shoes');
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            return [];
+        }
     }
 
-    renderProducts(filteredList);
+    let allProducts = [];
+
+    // Filter Awal Berdasarkan Query URL
+    async function initCatalog() {
+        allProducts = await fetchProducts();
+        let filteredList = allProducts;
+        
+        if (categoryParam) {
+            filteredList = allProducts.filter(p => 
+                (p.category && p.category.toLowerCase() === categoryParam.toLowerCase()) || 
+                (p.gender && p.gender.toLowerCase() === categoryParam.toLowerCase())
+            );
+        }
+
+        renderProducts(filteredList);
+    }
+
+    initCatalog();
 
     // Dynamic Filter Event Listeners (Checkbox Gender & Brand)
     const genderCheckboxes = document.querySelectorAll(".filter-gender");
@@ -109,16 +103,19 @@ document.addEventListener("DOMContentLoaded", () => {
     function applyFilters() {
         const selectedGenders = Array.from(genderCheckboxes)
             .filter(i => i.checked)
-            .map(i => i.value);
+            .map(i => i.value.toLowerCase());
 
-        let result = scrapedProducts;
+        let result = allProducts;
 
         if (categoryParam) {
-            result = result.filter(p => p.category === categoryParam || p.gender === categoryParam);
+            result = result.filter(p => 
+                (p.category && p.category.toLowerCase() === categoryParam.toLowerCase()) || 
+                (p.gender && p.gender.toLowerCase() === categoryParam.toLowerCase())
+            );
         }
 
         if (selectedGenders.length > 0) {
-            result = result.filter(p => selectedGenders.includes(p.gender));
+            result = result.filter(p => p.gender && selectedGenders.includes(p.gender.toLowerCase()));
         }
 
         renderProducts(result);
