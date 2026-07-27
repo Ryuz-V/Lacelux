@@ -1703,6 +1703,7 @@ body.catalog-page {
     flex-shrink: 0;
     border-right: 1px solid #eaeaea;
     padding-right: 25px;
+    height: fit-content; 
 }
 
 .filter-main-title {
@@ -1832,6 +1833,7 @@ body.catalog-page {
     margin-bottom: 2rem;
     padding-bottom: 0;
     border-bottom: none;
+    margin-top: -12px; 
 }
 
 .catalog-title-area h1 {
@@ -1846,12 +1848,34 @@ body.catalog-page {
     color: #666;
 }
 
+.filter-sidebar .filter-group:last-child {
+    margin-bottom: 0;
+}
+
 #sort-select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    font-size: 0.85rem;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 14px 45px 14px 20px; 
+    min-width: 250px; 
+    font-size: 1rem;
+    color: #333333;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb; 
+    border-radius: 2px;
     outline: none;
     cursor: pointer;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%23333" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 18px center; 
+    background-size: 18px;
+    
+    transition: border-color 0.3s ease;
+}
+
+#sort-select:focus {
+    border-color: #999999;
 }
 
 @media (max-width: 1024px) {
