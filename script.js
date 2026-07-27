@@ -378,66 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// public/script.js atau script.js di root sesuai gambarmu
-document.addEventListener('DOMContentLoaded', () => {
-    fetch('/api/shoes')
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById('shoe-container'); // Pastikan div ini ada di index.html
-            
-            data.forEach(shoe => {
-                const card = document.createElement('div');
-                card.className = 'shoe-card';
-                card.innerHTML = `
-                    <img src="${shoe.imageUrl}" alt="${shoe.name}" style="width:100%">
-                    <h3>${shoe.name}</h3>
-                    <p>${shoe.price}</p>
-                `;
-                container.appendChild(card);
-            });
-        })
-        .catch(error => console.error('Error fetching shoes:', error));
-});
-
-async function tampilkanProduk() {
-    try {
-        const response = await fetch('http://localhost:3000/api/shoes');
-        const dataSepatu = await response.json();
-
-        const container = document.getElementById('catalog-products-grid');
-        if (!container) return; 
-        container.innerHTML = ''; 
-
-        const countElement = document.querySelector('#product-count-info span');
-        if (countElement) {
-            countElement.innerText = dataSepatu.length;
-        }
-
-        dataSepatu.forEach(sepatu => {
-            const kartuProduk = `
-                <div class="product-card">
-                    <button class="wishlist"><i data-feather="heart"></i></button>
-                    <div class="product-thumb">
-                        <img src="${sepatu.imageUrl}" alt="${sepatu.name}">
-                    </div>
-                    <div class="product-info">
-                        <p class="product-brand">${sepatu.brand || 'LaceLux'}</p>
-                        <h3 class="product-name">${sepatu.name}</h3>
-                        <div class="product-price">
-                            <p>${sepatu.price}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.innerHTML += kartuProduk;
-        });
-
-        if (typeof feather !== 'undefined') {
-            feather.replace();
-        }
-    } catch (error) {
-        console.error("Gagal memuat produk:", error);
-    }
-}
-
-tampilkanProduk();
+// Catatan: fetch & render produk dari /api/shoes SUDAH ditangani sepenuhnya
+// oleh catalog.js (lengkap dengan filter kategori, fallback gambar, dll).
+// Kode duplikat yang sebelumnya ada di sini (tampilkanProduk & fetch shoe-container)
+// sengaja dihapus karena menimpa hasil render catalog.js di halaman products.html.
