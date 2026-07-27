@@ -94,7 +94,8 @@ async function scrapeFootLocker() {
             productNodes.forEach(node => {
                 const name = node.querySelector('.product-item-link')?.innerText.trim() || '';
                 const price = node.querySelector('.price')?.innerText.trim() || '';
-                const imageUrl = node.querySelector('.product-image-photo')?.src || '';
+                // PENTING: class aslinya "product-image-main", bukan "product-image-photo"
+                const imageUrl = node.querySelector('.product-image-main')?.src || '';
                 const productLink = node.querySelector('a.product-item-link')?.href || '';
                 const brand = node.querySelector('.brand-name')?.innerText.trim() || 'Footlocker';
                 
@@ -130,24 +131,3 @@ async function scrapeFootLocker() {
 }
 
 scrapeFootLocker();
-
-// Contoh file: scraper.js (Backend)
-
-const products = Array.from(document.querySelectorAll('.product-item')).map(element => {
-    // 1. Ambil nama
-    const name = element.querySelector('.product-item-link')?.innerText.trim();
-    
-    // 2. AMBIL IMAGE URL (Tambahkan di sini)
-    const imageUrl = element.querySelector('.product-image-photo')?.src; 
-    
-    // 3. Ambil harga & detail lainnya
-    const price = element.querySelector('.price')?.innerText.trim();
-    const brand = element.querySelector('.product-item-brand')?.innerText.trim();
-
-    return {
-        name,
-        imageUrl, // <--- Hasil ekstraksi gambar disimpan ke properti 'imageUrl'
-        price,
-        brand
-    };
-});
