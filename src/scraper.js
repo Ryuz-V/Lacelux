@@ -32,18 +32,13 @@ async function autoScroll(page) {
         });
     });
 }
-
-// Jeda acak (Random Delay) untuk meniru perilaku manusia
 const delay = (time) => new Promise(resolve => setTimeout(resolve, time));
 
 async function scrapeFootLocker() {
     try {
         await mongoose.connect(mongoURI);
         console.log('Terhubung ke MongoDB (Scraper)');
-
-        // 2. Kelola Alamat IP (Proxy)
-        // Jika Anda berlangganan layanan proxy rotasi (seperti BrightData, Smartproxy), masukkan URL-nya di sini
-        const PROXY_SERVER = ''; // contoh: '--proxy-server=http://ip_address:port'
+        const PROXY_SERVER = '';
         const browserArgs = [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -53,13 +48,11 @@ async function scrapeFootLocker() {
         if (PROXY_SERVER) browserArgs.push(PROXY_SERVER);
 
         const browser = await puppeteer.launch({ 
-            headless: false, // Gunakan false dulu untuk melihat prosesnya lolos Captcha/Cloudflare atau tidak
+            headless: false, 
             args: browserArgs
         });
         
         const page = await browser.newPage();
-
-        // 1. Manipulasi Request Headers (User Agent, Bahasa, dll)
         const userAgent = new UserAgent({ deviceCategory: 'desktop' });
         await page.setUserAgent(userAgent.toString());
         await page.setExtraHTTPHeaders({
@@ -70,9 +63,6 @@ async function scrapeFootLocker() {
             'Sec-Fetch-Site': 'none',
             'Sec-Fetch-User': '?1',
         });
-
-        // 5. Simpan Cookies dan Session
-        // Jika cookie sudah ada, muat cookie tersebut agar server mengira kita adalah user lama
         if (fs.existsSync(COOKIE_FILE)) {
             const cookiesString = fs.readFileSync(COOKIE_FILE);
             const parsedCookies = JSON.parse(cookiesString);
@@ -82,35 +72,23 @@ async function scrapeFootLocker() {
             }
         }
 
-        const url = 'https://www.footlocker.id/en/men/shoes/sneakers.html';
+        const url = 'https://www.footlocker.id/all-shoes.html?p=1&product_list_order=newest_sorting';
         console.log(`Mulai mengunjungi: ${url}`);
-        
-        // Timeout lebih lama karena Cloudflare / Datadome mungkin menampilkan halaman verifikasi (Captcha)
+
         await page.goto(url, { waitUntil: 'networkidle2', timeout: 90000 });
-
-        // 6. Gunakan Layanan Solver Captcha
-        // Jika muncul halaman captcha Cloudflare, Anda harus menggunakan plugin solver captcha 
-        // (Contoh: 2captcha atau anti-captcha API) atau menyelesaikannya secara manual jika headless: false
-        console.log('Menunggu 5 detik secara acak (Simulasi Human Delay)...');
-        await delay(Math.floor(Math.random() * 3000) + 5000);
-
-        // Simulasi pergerakan kursor mouse dan scroll ke bawah agar dikira manusia
+        console.log('Menunggu 45 detik... Silakan selesaikan CAPTCHA di browser jika muncul!');
+        await delay(45000);
         await page.mouse.move(100, 100);
         await page.mouse.move(200, 200);
         console.log('Mulai melakukan scrolling...');
         await autoScroll(page);
-
-        // Tunggu produk muncul
         try {
-            await page.waitForSelector('.product-item, .product-card', { timeout: 15000 });
+            await page.waitForSelector('.item.product.product-item', { timeout: 60000 }); 
         } catch (e) {
             console.log('Selector produk tidak ditemukan, kemungkinan terblokir Anti-Bot atau struktur web berubah.');
         }
-
-        // Ambil data produk
         const products = await page.evaluate(() => {
             let items = [];
-            // Class ini HARUS dicocokkan dengan inspect element Footlocker ID
             let productNodes = document.querySelectorAll('.item.product.product-item'); 
             
             productNodes.forEach(node => {
@@ -138,7 +116,6 @@ async function scrapeFootLocker() {
             console.log('Coba jalankan dengan headless: false dan selesaikan CAPTCHA secara manual jika muncul.');
         }
 
-        // Simpan Cookies session terbaru untuk digunakan nanti
         const currentCookies = await page.cookies();
         fs.writeFileSync(COOKIE_FILE, JSON.stringify(currentCookies, null, 2));
         console.log('Session Cookies berhasil disimpan untuk request selanjutnya.');

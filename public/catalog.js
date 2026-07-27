@@ -77,18 +77,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let allProducts = [];
 
+    // Cek apakah data dari scraper sudah punya field category/gender.
+    // Kalau BELUM ADA SAMA SEKALI produk yang punya field ini, jangan difilter,
+    // supaya tidak selalu menampilkan 0 hasil hanya karena data scraper
+    // memang belum menyertakan category/gender.
+    function filterByCategory(products, categoryParam) {
+        if (!categoryParam) return products;
+
+        const hasCategoryData = products.some(p => p.category || p.gender);
+        if (!hasCategoryData) {
+            console.warn('[catalog] Produk belum punya field category/gender dari scraper, filter kategori dilewati.');
+            return products;
+        }
+
+        return products.filter(p =>
+            (p.category && p.category.toLowerCase() === categoryParam.toLowerCase()) ||
+            (p.gender && p.gender.toLowerCase() === categoryParam.toLowerCase())
+        );
+    }
+
     // Filter Awal Berdasarkan Query URL
     async function initCatalog() {
         allProducts = await fetchProducts();
-        let filteredList = allProducts;
-        
-        if (categoryParam) {
-            filteredList = allProducts.filter(p => 
-                (p.category && p.category.toLowerCase() === categoryParam.toLowerCase()) || 
-                (p.gender && p.gender.toLowerCase() === categoryParam.toLowerCase())
-            );
-        }
-
+        const filteredList = filterByCategory(allProducts, categoryParam);
         renderProducts(filteredList);
     }
 
@@ -105,14 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .filter(i => i.checked)
             .map(i => i.value.toLowerCase());
 
-        let result = allProducts;
-
-        if (categoryParam) {
-            result = result.filter(p => 
-                (p.category && p.category.toLowerCase() === categoryParam.toLowerCase()) || 
-                (p.gender && p.gender.toLowerCase() === categoryParam.toLowerCase())
-            );
-        }
+        let result = filterByCategory(allProducts, categoryParam);
 
         if (selectedGenders.length > 0) {
             result = result.filter(p => p.gender && selectedGenders.includes(p.gender.toLowerCase()));
