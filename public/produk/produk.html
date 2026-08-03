@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Produk</title>
+    <!-- Jika kamu menggunakan Tailwind CSS, class di bawah akan langsung berfungsi -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-8">
+
+    <!-- Wadah untuk detail produk -->
+    <div id="product-container" class="max-w-2xl mx-auto border p-6 rounded shadow-lg hidden">
+        <h1 id="product-title" class="text-3xl font-bold mb-2">Nama Produk</h1>
+        <p id="product-price" class="text-xl text-green-600 font-semibold mb-4">Harga</p>
+        <p id="product-desc" class="text-gray-700">Deskripsi akan muncul di sini.</p>
+    </div>
+
+    <!-- Pesan error jika produk tidak ditemukan -->
+    <div id="error-message" class="text-red-500 text-xl hidden">
+        Produk tidak ditemukan!
+    </div>
+
+    <!-- Panggil file JavaScript -->
+    <script src="/public/produk/produk.js"></script>
+</body>
+</html>

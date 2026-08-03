@@ -8,10 +8,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const countInfo = document.querySelector("#product-count-info span");
     const gridContainer = document.getElementById("catalog-products-grid");
 
-    // Update judul halaman sesuai kategori di URL
-    if (pageTitle && categoryParam) {
+if (pageTitle && categoryParam) {
         const formattedTitle = categoryParam.replace("-", " ").toUpperCase();
-        pageTitle.textContent = `Sepatu - Koleksi ${formattedTitle}`;
+        
+        // Cek apakah kategorinya sudah "NEW ARRIVALS" agar tidak menjadi double
+        if (formattedTitle === "NEW ARRIVALS") {
+            pageTitle.textContent = formattedTitle;
+        } else {
+            pageTitle.textContent = `NEW ARRIVALS ${formattedTitle}`;
+        }
     }
 
     // 1. Fungsi Render Kartu Produk
@@ -32,34 +37,36 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         products.forEach(item => {
-            // Format Harga (apabila angka murni atau string)
             let displayPrice = item.price || item.harga || "Rp 0";
             if (typeof displayPrice === 'number') {
                 displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             }
 
-            // Fallback Gambar (imageUrl, image, img, image_url)
             const imageSrc = item.imageUrl || item.image || item.img || item.image_url || 'https://placehold.co/300x300?text=No+Image';
 
-            const cardHtml = `
-                <div class="product-card">
-                    <button class="wishlist"><i data-feather="heart"></i></button>
-                    <div class="product-thumb">
-                        <img src="${imageSrc}" alt="${item.name || 'Sepatu'}" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <p class="product-brand">${item.brand || 'No Brand'}</p>
-                        <h3 class="product-name">${item.name || 'Tanpa Nama'}</h3>
-                        <div class="product-details">
-                            <p class="product-category">${(item.gender || item.category || 'Unisex').toUpperCase()}</p>
-                            <p class="product-color-count">Warna : ${item.color || '-'}</p>
-                        </div>
-                        <div class="product-price">
-                            <p>${displayPrice}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
+const cardHtml = `
+    <!-- Tambahkan event onclick yang mengarah ke halaman detail produk beserta ID produk -->
+    <div class="product-card" onclick="window.location.href='/produk/produk.html?id=${item.id}'">
+        
+        <!-- Tambahkan event.stopPropagation() agar klik wishlist tidak ikut membuka halaman produk -->
+        <button class="wishlist" onclick="event.stopPropagation();"><i data-feather="heart"></i></button>
+        
+        <div class="product-thumb">
+            <img src="${imageSrc}" alt="${item.name || 'Sepatu'}" loading="lazy">
+        </div>
+        <div class="product-info">
+            <p class="product-brand">${item.brand || 'No Brand'}</p>
+            <h3 class="product-name">${item.name || 'Tanpa Nama'}</h3>
+            <div class="product-details">
+                <p class="product-category">${(item.gender || item.category || 'Unisex').toUpperCase()}</p>
+                <p class="product-color-count">Warna : ${item.color || '-'}</p>
+            </div>
+            <div class="product-price">
+                <p>${displayPrice}</p>
+            </div>
+        </div>
+    </div>
+`;
 
             gridContainer.insertAdjacentHTML("beforeend", cardHtml);
         });
