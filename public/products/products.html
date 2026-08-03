@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Produk</title>
+    <link rel="stylesheet" href="/public/style.css">
     <link rel="stylesheet" href="/public/products/product.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="catalog-page">
     <!-- Navbar -->
 <nav class="custom-navbar">
     <div class="navbar-top">
@@ -45,7 +49,6 @@
 
 <div class="page-title-wrapper">
     <p class="breadcrumb">Home / <span>All Shoe</span></p>
-    <h1 id="category-page-title">All Shoe</h1>
 </div>
     <div id="loading" class="loading-text">
         Mengambil data produk...
@@ -106,6 +109,9 @@
             </div>
         </div>
     </div>
+
+    <script src="https://unpkg.com/feather-icons"></script>
+<script>feather.replace();</script>
     <script src="/public/products/products.js"></script>
 </body>
 </html>

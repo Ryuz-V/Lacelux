@@ -1,15 +1,15 @@
 /* Styling Dasar */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: #111827;
     background-color: #ffffff;
     margin: 0;
-    padding: 20px;
 }
 
 .container {
     max-width: 1150px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 .hidden {
@@ -445,3 +445,4 @@ body {
     align-items: center;
     gap: 4px;
 }
+
