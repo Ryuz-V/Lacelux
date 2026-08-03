@@ -180,22 +180,58 @@ function populateData(data) {
 }
 
 function renderReviews(data) {
+    // Rating Snapshot (Column 1)
     const snapshotHTML = `
-        <h3>Reviews</h3>
-        <div class="rating-overview">
-            <span class="rating-score">${data.rating}</span>
-            <span class="rating-count-text">★★★★☆<br>${data.reviewCount} reviews</span>
-        </div>
+        <h3>Rating Snapshot</h3>
+        <p style="font-size:0.78rem;color:#2563eb;margin:0 0 12px 0;cursor:pointer;">Select a row below to filter reviews.</p>
         <div class="rating-bars">
-            <div class="bar-row"><span>5 Star</span> <div class="bar-bg"><div class="bar-fill" style="width: 75%;"></div></div></div>
-            <div class="bar-row"><span>4 Star</span> <div class="bar-bg"><div class="bar-fill" style="width: 25%;"></div></div></div>
-            <div class="bar-row"><span>3 Star</span> <div class="bar-bg"></div></div>
-            <div class="bar-row"><span>2 Star</span> <div class="bar-bg"></div></div>
-            <div class="bar-row"><span>1 Star</span> <div class="bar-bg"></div></div>
+            <div class="bar-row"><span style="min-width:48px">5 stars</span> <div class="bar-bg" style="flex:1"><div class="bar-fill" style="width: 69%;"></div></div><span style="min-width:28px;text-align:right;color:#2563eb">259</span></div>
+            <div class="bar-row"><span style="min-width:48px">4 stars</span> <div class="bar-bg" style="flex:1"><div class="bar-fill" style="width: 9%;"></div></div><span style="min-width:28px;text-align:right;color:#2563eb">32</span></div>
+            <div class="bar-row"><span style="min-width:48px">3 stars</span> <div class="bar-bg" style="flex:1"><div class="bar-fill" style="width: 10%;"></div></div><span style="min-width:28px;text-align:right;color:#2563eb">36</span></div>
+            <div class="bar-row"><span style="min-width:48px">2 stars</span> <div class="bar-bg" style="flex:1"><div class="bar-fill" style="width: 6%;"></div></div><span style="min-width:28px;text-align:right;color:#2563eb">24</span></div>
+            <div class="bar-row"><span style="min-width:48px">1 star</span>  <div class="bar-bg" style="flex:1"><div class="bar-fill" style="width: 6%;"></div></div><span style="min-width:28px;text-align:right;color:#dc2626">24</span></div>
         </div>
     `;
     document.getElementById("rating-snapshot").innerHTML = snapshotHTML;
 
+    // Overall Rating (Column 2)
+    const stars = Math.round(data.rating);
+    const starStr = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+    const overallScore = document.getElementById('overall-score');
+    const overallStars = document.getElementById('overall-stars');
+    const overallLink  = document.getElementById('overall-link');
+    if (overallScore) overallScore.textContent = data.rating;
+    if (overallStars) overallStars.textContent = starStr;
+    if (overallLink)  overallLink.textContent  = `${data.reviewCount} Reviews`;
+
+    // Review total label
+    const totalLabel = document.getElementById('review-total-label');
+    if (totalLabel) totalLabel.textContent = `1 – 10 of ${data.reviewCount} Reviews`;
+
+    // Star input interactivity
+    const starBoxes = document.querySelectorAll('#star-input .star-box');
+    starBoxes.forEach((btn, idx) => {
+        btn.addEventListener('mouseenter', () => {
+            starBoxes.forEach((b, i) => {
+                b.textContent = i <= idx ? '★' : '☆';
+                b.style.color = i <= idx ? '#f59e0b' : '';
+            });
+        });
+        btn.addEventListener('mouseleave', () => {
+            const active = document.querySelector('#star-input .star-box.active');
+            const activeVal = active ? parseInt(active.dataset.value) - 1 : -1;
+            starBoxes.forEach((b, i) => {
+                b.textContent = i <= activeVal ? '★' : '☆';
+                b.style.color = i <= activeVal ? '#f59e0b' : '';
+            });
+        });
+        btn.addEventListener('click', () => {
+            starBoxes.forEach(b => b.classList.remove('active'));
+            for (let i = 0; i <= idx; i++) starBoxes[i].classList.add('active');
+        });
+    });
+
+    // Review List
     const reviewList = document.getElementById("review-list");
     data.reviews.forEach(review => {
         const revEl = document.createElement("div");

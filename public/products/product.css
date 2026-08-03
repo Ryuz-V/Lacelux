@@ -7,9 +7,9 @@ body {
 }
 
 .container {
-    max-width: 1150px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 60px;
 }
 
 .hidden {
@@ -261,34 +261,39 @@ body {
 
 /* Bagian Tabs Bawah */
 .tabs-section {
-    border-top: 1px solid #e5e7eb;
-    padding-top: 24px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 80px;
+    border-radius: 2px;
 }
 
 .tab-headers {
     display: flex;
-    gap: 32px;
+    gap: 0;
     border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 24px;
+    background: #fff;
+    padding: 0 24px;
 }
 
 .tab-btn {
     background: none;
     border: none;
-    padding-bottom: 8px;
+    border-bottom: 3px solid transparent;
+    padding: 16px 20px 13px 20px;
     color: #6b7280;
     font-weight: 500;
     font-size: 1rem;
     cursor: pointer;
+    transition: color 0.15s;
+    margin-bottom: -1px;
 }
 
 .tab-btn:hover {
-    color: #000000;
+    color: #111827;
 }
 
 .tab-btn.active {
-    border-bottom: 2px solid #e11d48;
-    font-weight: bold;
+    border-bottom: 3px solid #e11d48;
+    font-weight: 700;
     color: #111827;
 }
 
@@ -303,11 +308,17 @@ body {
     display: block;
 }
 
+/* Tab content box padding */
+.tab-box {
+    padding: 24px 28px;
+}
+
 .tab-content h3 {
     font-weight: bold;
-    color: #111827;
+    color: #dc2626;
     margin-bottom: 8px;
     text-transform: uppercase;
+    font-size: 0.8rem;
 }
 
 .tab-content ul {
@@ -315,30 +326,212 @@ body {
     margin-bottom: 16px;
 }
 
-.reviews-container {
+/* === Reviews Section New Layout === */
+.reviews-heading {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0 0 28px 0;
+    color: #111827;
+}
+
+/* Reviews Top Panel: 3 columns */
+.reviews-top-panel {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 0;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 20px;
 }
 
 @media(min-width: 768px) {
-    .reviews-container {
+    .reviews-top-panel {
         flex-direction: row;
+        align-items: flex-start;
     }
 }
 
+/* Column 1: Rating Snapshot */
 .rating-snapshot {
-    width: 100%;
-    border-right: none;
-    padding-right: 0;
+    flex: 1.2;
+    padding-right: 32px;
+    border-right: 1px solid #e5e7eb;
+    min-width: 0;
 }
 
-@media(min-width: 768px) {
-    .rating-snapshot {
-        width: 33.333%;
-        border-right: 1px solid #e5e7eb;
-        padding-right: 24px;
-    }
+/* Column 2: Overall Rating */
+.overall-rating-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 40px;
+    border-right: 1px solid #e5e7eb;
+}
+
+.overall-rating-label {
+    font-size: 0.9rem;
+    color: #111;
+    font-weight: 500;
+    margin: 0 0 8px 0;
+}
+
+.overall-rating-score {
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 1;
+    color: #111;
+    margin-bottom: 6px;
+}
+
+.overall-rating-stars {
+    font-size: 1.1rem;
+    color: #111;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+.overall-rating-link {
+    font-size: 0.82rem;
+    color: #dc2626;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Column 3: Review This Product */
+.review-this-product {
+    flex: 1;
+    padding-left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.review-this-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #111;
+    margin: 0 0 12px 0;
+}
+
+.star-rating-input {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.star-box {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    transition: border-color 0.15s, color 0.15s;
+    border-radius: 2px;
+    padding: 0;
+    font-family: inherit;
+}
+
+.star-box:hover,
+.star-box.active {
+    border-color: #111;
+    color: #f59e0b;
+}
+
+.review-this-note {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 240px;
+}
+
+/* Filter Reviews Section */
+.reviews-filter-section {
+    margin-bottom: 16px;
+}
+
+.filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #111;
+    margin: 0 0 8px 0;
+}
+
+.filter-dropdowns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-select {
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 8px 32px 8px 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: #111827;
+    outline: none;
+    cursor: pointer;
+    background-color: #fff;
+    min-width: 130px;
+    appearance: auto;
+}
+
+.filter-select:hover {
+    border-color: #9ca3af;
+}
+
+/* Review Count + Sort Row */
+.reviews-filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.review-total-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #111;
+}
+
+.sort-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.sort-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.review-sort-select {
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    color: #111827;
+    outline: none;
+    cursor: pointer;
+    background-color: #fff;
+    min-width: 150px;
+}
+
+.review-sort-select:hover {
+    border-color: #9ca3af;
 }
 
 .rating-snapshot h3 {
@@ -395,21 +588,19 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 24px;
-}
-
-@media(min-width: 768px) {
-    .review-list {
-        width: 66.666%;
-    }
+    gap: 0;
 }
 
 .review-item {
     border-bottom: 1px solid #e5e7eb;
-    padding-bottom: 16px;
+    padding: 24px 0;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+}
+
+.review-item:first-child {
+    padding-top: 0;
 }
 
 .review-user {
@@ -449,7 +640,11 @@ body {
 
 /* Custom UI Additions */
 .page-title-wrapper {
-    padding: 0 5%;
+    padding: 0 60px;
+    max-width: 1300px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .breadcrumb {
