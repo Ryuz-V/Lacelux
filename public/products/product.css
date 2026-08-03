@@ -193,6 +193,7 @@ body {
     font-size: 0.875rem;
     text-decoration: none;
 }
+
 .size-chart-link:hover {
     text-decoration: underline;
 }
@@ -237,6 +238,7 @@ body {
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
 .btn-buy:hover {
     background-color: #f9fafb;
 }
@@ -285,7 +287,7 @@ body {
 }
 
 .tab-btn.active {
-    border-bottom: 2px solid #e11d48; /* Merah ala Footlocker */
+    border-bottom: 2px solid #e11d48;
     font-weight: bold;
     color: #111827;
 }
@@ -301,19 +303,18 @@ body {
     display: block;
 }
 
-/* Isi Tabs Detail */
 .tab-content h3 {
     font-weight: bold;
     color: #111827;
     margin-bottom: 8px;
     text-transform: uppercase;
 }
+
 .tab-content ul {
     padding-left: 20px;
     margin-bottom: 16px;
 }
 
-/* Isi Tabs Reviews */
 .reviews-container {
     display: flex;
     flex-direction: column;
@@ -446,3 +447,276 @@ body {
     gap: 4px;
 }
 
+/* Custom UI Additions */
+.page-title-wrapper {
+    padding: 0 5%;
+}
+
+.breadcrumb {
+    font-size: 0.85rem;
+    color: #111;
+}
+
+.breadcrumb span {
+    font-weight: 600;
+}
+
+.product-top {
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.gallery-section {
+    position: relative;
+}
+
+.thumbnail-container img {
+    border-radius: 4px;
+    border: 1px solid #eaeaea;
+    background-color: #fff;
+    padding: 8px;
+}
+
+.thumbnail-container img.active-thumb {
+    border-color: #111;
+}
+
+.main-image-wrapper {
+    position: relative;
+    background-color: #fff;
+}
+
+.wishlist-btn-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #111;
+}
+
+.info-section {
+    padding-top: 10px;
+}
+
+.product-brand {
+    color: #e11d48;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.product-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 8px 0;
+    line-height: 1.2;
+}
+
+.product-sku {
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+.price-wrapper {
+    margin-bottom: 12px;
+}
+
+.product-price {
+    font-size: 1.4rem;
+}
+
+.product-old-price {
+    font-size: 0.95rem;
+}
+
+.product-discount {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+}
+
+.product-rating {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.write-review-link {
+    color: #2563eb;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.write-review-link:hover {
+    text-decoration: underline;
+}
+
+.size-section {
+    margin-bottom: 25px;
+}
+
+.size-label-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.size-guide-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.size-guide-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.icon-circle {
+    background-color: #111;
+    color: #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-circle svg {
+    width: 14px;
+    height: 14px;
+}
+
+.info-box {
+    background-color: #f9fafb;
+    border-radius: 4px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+    align-items: flex-start;
+    font-size: 0.85rem;
+    color: #333;
+}
+
+.info-box svg {
+    width: 20px;
+    height: 20px;
+    color: #555;
+    flex-shrink: 0;
+}
+
+.info-box p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.info-box a {
+    color: #2563eb;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.scan-box {
+    margin-bottom: 15px;
+}
+
+.shipping-box {
+    border: 1px solid #eaeaea;
+    background-color: #fff;
+}
+
+.shipping-box svg {
+    width: 24px;
+    height: 24px;
+}
+
+.quantity-section {
+    margin-bottom: 20px;
+}
+
+.quantity-section label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.quantity-select {
+    width: 100px;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+    font-family: inherit;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.btn-buy {
+    border: 1px solid #111;
+    color: #111;
+    background-color: #fff;
+    padding: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex: 1;
+}
+
+.btn-buy:hover {
+    background-color: #f3f4f6;
+}
+
+.btn-cart {
+    background-color: #d1d5db;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 15px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.btn-cart:not(.disabled) {
+    background-color: #111;
+}
+
+.extra-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.extra-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.extra-links a svg {
+    width: 16px;
+    height: 16px;
+}
+
+.extra-links a:hover {
+    text-decoration: underline;
+}

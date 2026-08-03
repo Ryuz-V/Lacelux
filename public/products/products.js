@@ -127,7 +127,7 @@ function populateData(data) {
     document.getElementById("product-old-price").textContent = data.oldPrice;
     document.getElementById("product-discount").textContent = data.discount;
     
-    document.getElementById("product-rating").innerHTML = `★★★★☆ <span>${data.rating} (${data.reviewCount})</span>`;
+    document.getElementById("product-rating").innerHTML = `★★★★☆ <span style="color:#2563eb;text-decoration:underline;cursor:pointer;margin-right:10px">${data.rating} (${data.reviewCount})</span> <a href="#" class="write-review-link">Write a review</a>`;
     
     // Render Gambar & Thumbnail
     document.getElementById("main-image").src = data.images[0];
@@ -166,6 +166,17 @@ function populateData(data) {
     document.getElementById("review-count").textContent = `(${data.reviewCount})`;
 
     renderReviews(data);
+    
+    // Update breadcrumb
+    const breadcrumb = document.querySelector('.breadcrumb');
+    if (breadcrumb) {
+        breadcrumb.innerHTML = `Home / <span>${data.title}</span>`;
+    }
+
+    // Refresh feather icons for new DOM elements
+    if (window.feather) {
+        feather.replace();
+    }
 }
 
 function renderReviews(data) {

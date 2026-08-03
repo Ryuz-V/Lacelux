@@ -776,6 +776,73 @@ nav.scrolled .menu .search-btn {
     margin: 0 auto;
 }
 
+/* Pagination Components */
+.catalog-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 60px;
+    margin-bottom: 80px;
+}
+
+.catalog-pagination a,
+.catalog-pagination span {
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-family: inherit;
+}
+
+.catalog-pagination .page-arrow {
+    display: flex;
+    align-items: center;
+    color: #111;
+}
+.catalog-pagination .page-arrow.disabled {
+    color: #d1d5db;
+    pointer-events: none;
+}
+.catalog-pagination .page-arrow svg {
+    width: 24px;
+    height: 24px;
+}
+
+.catalog-pagination .page-text {
+    color: #111;
+    margin: 0 5px;
+}
+.catalog-pagination .page-text.disabled {
+    color: #d1d5db;
+    text-decoration: underline;
+    pointer-events: none;
+}
+.catalog-pagination .page-text.underline {
+    text-decoration: underline;
+}
+
+.catalog-pagination .page-num {
+    color: #4b5563;
+    padding: 8px 14px;
+    transition: all 0.2s ease;
+}
+
+.catalog-pagination .page-num:hover {
+    color: #111;
+}
+
+.catalog-pagination .page-num.active {
+    color: #111;
+    font-weight: 700;
+    border: 1px solid #111;
+    padding: 6px 14px;
+}
+
+.catalog-pagination .page-dots {
+    color: #111;
+    letter-spacing: 2px;
+}
+
 .product-card {
     position: relative;
     cursor: pointer;
