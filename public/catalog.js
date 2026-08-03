@@ -46,7 +46,7 @@ if (pageTitle && categoryParam) {
 
 const cardHtml = `
     <!-- Tambahkan event onclick yang mengarah ke halaman detail produk beserta ID produk -->
-    <div class="product-card" onclick="window.location.href='/produk/produk.html?id=${item.id}'">
+    <div class="product-card" onclick="window.location.href='/products/products.html?id=${item._id}'">
         
         <!-- Tambahkan event.stopPropagation() agar klik wishlist tidak ikut membuka halaman produk -->
         <button class="wishlist" onclick="event.stopPropagation();"><i data-feather="heart"></i></button>

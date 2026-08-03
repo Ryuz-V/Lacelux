@@ -1,0 +1,447 @@
+/* Styling Dasar */
+body {
+    font-family: Arial, sans-serif;
+    color: #111827;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Loading & Error State */
+.loading-text {
+    text-align: center;
+    font-size: 1.25rem;
+    padding: 80px 0;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.error-text {
+    color: #dc2626;
+    font-size: 1.25rem;
+    text-align: center;
+    padding: 40px 0;
+}
+
+/* Bagian Atas */
+.product-top {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 48px;
+}
+
+@media(min-width: 768px) {
+    .product-top {
+        flex-direction: row;
+    }
+}
+
+/* Galeri Gambar */
+.gallery-section {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+}
+
+@media(min-width: 768px) {
+    .gallery-section {
+        width: 60%;
+    }
+}
+
+.thumbnail-container {
+    width: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.thumbnail-container img {
+    width: 100%;
+    border: 1px solid transparent;
+    cursor: pointer;
+    background-color: #f9fafb;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.thumbnail-container img.active-thumb {
+    border-color: #000000;
+}
+
+.main-image-wrapper {
+    flex: 1;
+    background-color: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.main-image-wrapper img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
+
+/* Info Produk */
+.info-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media(min-width: 768px) {
+    .info-section {
+        width: 40%;
+    }
+}
+
+.product-brand {
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.product-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 4px 0;
+}
+
+.product-sku {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
+.price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.product-price {
+    font-size: 1.25rem;
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.product-old-price {
+    color: #9ca3af;
+    text-decoration: line-through;
+    font-size: 0.875rem;
+}
+
+.product-discount {
+    background-color: #fee2e2;
+    color: #dc2626;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.product-rating {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.product-rating span {
+    color: #2563eb;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Bagian Size */
+.size-section {
+    margin-bottom: 16px;
+}
+
+.size-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.size-label {
+    font-weight: bold;
+}
+
+.size-chart-link {
+    color: #2563eb;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+.size-chart-link:hover {
+    text-decoration: underline;
+}
+
+.size-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.size-btn {
+    border: 1px solid #d1d5db;
+    background: white;
+    padding: 10px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.size-btn:hover {
+    border-color: #000000;
+}
+
+.size-btn.selected {
+    border-color: #000000;
+    font-weight: bold;
+}
+
+/* Tombol Aksi */
+.action-buttons {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.btn-buy {
+    flex: 1;
+    background-color: white;
+    border: 1px solid #000000;
+    padding: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-buy:hover {
+    background-color: #f9fafb;
+}
+
+.btn-cart {
+    flex: 1;
+    background-color: #000000;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.btn-cart.disabled {
+    background-color: #d1d5db;
+    color: #ffffff;
+    cursor: not-allowed;
+}
+
+/* Bagian Tabs Bawah */
+.tabs-section {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 24px;
+}
+
+.tab-headers {
+    display: flex;
+    gap: 32px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 24px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding-bottom: 8px;
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.tab-btn:hover {
+    color: #000000;
+}
+
+.tab-btn.active {
+    border-bottom: 2px solid #e11d48; /* Merah ala Footlocker */
+    font-weight: bold;
+    color: #111827;
+}
+
+.tab-content {
+    display: none;
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Isi Tabs Detail */
+.tab-content h3 {
+    font-weight: bold;
+    color: #111827;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+.tab-content ul {
+    padding-left: 20px;
+    margin-bottom: 16px;
+}
+
+/* Isi Tabs Reviews */
+.reviews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+@media(min-width: 768px) {
+    .reviews-container {
+        flex-direction: row;
+    }
+}
+
+.rating-snapshot {
+    width: 100%;
+    border-right: none;
+    padding-right: 0;
+}
+
+@media(min-width: 768px) {
+    .rating-snapshot {
+        width: 33.333%;
+        border-right: 1px solid #e5e7eb;
+        padding-right: 24px;
+    }
+}
+
+.rating-snapshot h3 {
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin: 0 0 16px 0;
+    text-transform: none;
+}
+
+.rating-overview {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.rating-score {
+    font-size: 2.25rem;
+    font-weight: 300;
+}
+
+.rating-count-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.rating-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: #4b5563;
+    margin-bottom: 24px;
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bar-bg {
+    width: 100%;
+    background-color: #e5e7eb;
+    height: 8px;
+}
+
+.bar-fill {
+    background-color: #000000;
+    height: 8px;
+}
+
+.review-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@media(min-width: 768px) {
+    .review-list {
+        width: 66.666%;
+    }
+}
+
+.review-item {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.review-user {
+    width: 25%;
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+
+.review-body {
+    width: 75%;
+}
+
+.review-meta {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-bottom: 4px;
+}
+
+.review-title-text {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.review-desc {
+    font-size: 0.875rem;
+    color: #374151;
+    margin-bottom: 12px;
+}
+
+.review-source {
+    font-size: 0.75rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Produk</title>
+    <link rel="stylesheet" href="/public/products/product.css">
+</head>
+<body>
+    <!-- Navbar -->
+<nav class="custom-navbar">
+    <div class="navbar-top">
+        <div class="logo">
+            <a href="/public/index.html">
+                <img src="/public/asset/Logo_icon_2.png" alt="Lacelux" class="icon-black">
+            </a>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search products...">
+            <button type="submit"><i data-feather="search"></i></button>
+        </div>
+        
+        <div class="nav-icons">
+            <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
+            <button class="wishlist-btn"><i data-feather="heart"></i></button>
+            <button class="user-btn"><i data-feather="user"></i></button>
+        </div>
+    </div>
+
+    <!-- Baris Bawah: Menu Kategori -->
+    <div class="navbar-bottom">
+        <ul>
+            <li><a href="products.html?category=new-arrivals">New Arrivals</a></li>
+            <li><a href="products.html?category=eksklusif">Eksklusif</a></li>
+            <li><a href="products.html?category=pria">Pria</a></li>
+            <li><a href="products.html?category=wanita">Wanita</a></li>
+            <li><a href="products.html?category=anak">Anak-Anak</a></li>
+            <li><a href="products.html?category=coming-soon">Coming Soon</a></li>
+            <li><a href="products.html?category=brands">Brands</a></li>
+            <li><a href="products.html?category=sale" class="sale-link">SALE</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="page-title-wrapper">
+    <p class="breadcrumb">Home / <span>All Shoe</span></p>
+    <h1 id="category-page-title">All Shoe</h1>
+</div>
+    <div id="loading" class="loading-text">
+        Mengambil data produk...
+    </div>
+    <div id="error-message" class="error-text hidden">
+        Produk tidak ditemukan!
+    </div>
+    <div id="product-container" class="container hidden">
+        <div class="product-top">
+            <div class="gallery-section">
+                <div id="thumbnails" class="thumbnail-container">
+                </div>
+                <div class="main-image-wrapper">
+                    <img id="main-image" src="" alt="Gambar Produk Utama">
+                </div>
+            </div>
+            <div class="info-section">
+                <span id="product-brand" class="product-brand"></span>
+                <h1 id="product-title" class="product-title"></h1>
+                <p id="product-category-sku" class="product-sku"></p>
+                <div class="price-wrapper">
+                    <span id="product-price" class="product-price"></span>
+                    <span id="product-old-price" class="product-old-price"></span>
+                    <span id="product-discount" class="product-discount"></span>
+                </div>
+                <div id="product-rating" class="product-rating"></div>
+                <div class="size-section">
+                    <div class="size-header">
+                        <span class="size-label">Size</span>
+                        <a href="#" class="size-chart-link">Size Chart</a>
+                    </div>
+                    <div id="size-grid" class="size-grid"> </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-buy">Buy Now</button>
+                    <button id="add-to-cart-btn" class="btn-cart disabled" disabled>Add To Cart</button>
+                </div>
+            </div>
+        </div>
+        <div class="tabs-section">
+            <div class="tab-headers">
+                <button class="tab-btn active" onclick="switchTab('details')">Details</button>
+                <button class="tab-btn" onclick="switchTab('reviews')">Reviews <span id="review-count"></span></button>
+            </div>
+            <div id="details" class="tab-content active"> </div>
+            <div id="reviews" class="tab-content">
+                <div class="reviews-container">
+                    <!-- Kiri: Snapshot Rating -->
+                    <div id="rating-snapshot" class="rating-snapshot">
+                        <!-- Snapshot digenerate dari JS -->
+                    </div>
+                    
+                    <!-- Kanan: Daftar Ulasan -->
+                    <div id="review-list" class="review-list">
+                        <!-- Ulasan digenerate dari JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/public/products/products.js"></script>
+</body>
+</html>
