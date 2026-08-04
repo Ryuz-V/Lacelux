@@ -848,13 +848,12 @@ nav.scrolled .menu .search-btn {
     cursor: pointer;
     border: 1px solid #eaeaea;
     background-color: #fff;
-    border-bottom: 4px solid transparent; 
     transition: all 0.3s ease;
 }
 
 .product-card:hover {
     border-color: #c1c1cd; 
-    border-bottom: 4px solid #333333; 
+    border-bottom: 5px solid #333333; 
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px); 
 }
