@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // --- 1. SETUP VARIABEL PAGINATION ---
     let currentPage = 1;
-    const itemsPerPage = 20;
+    const itemsPerPage = 21;
     let currentList = []; // Akan menyimpan array data produk setelah difilter
 
     // --- 2. MODIFIKASI FUNGSI RENDER PRODUK ---
