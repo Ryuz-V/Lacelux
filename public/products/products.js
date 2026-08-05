@@ -1,3 +1,83 @@
+// Fungsi terpusat untuk mendeteksi brand asli produk dari data API.
+// Sama persis dengan yang dipakai di catalog.js supaya hasilnya konsisten
+// untuk SEMUA produk (bukan cuma satu produk tertentu) — kalau daftar brand
+// perlu ditambah/diperbaiki, ubah juga versi yang di catalog.js.
+function detectBrand(product) {
+    const nameStr = ((product.name || product.title || "")).toLowerCase();
+    const rawBrand = (product.brand || "").trim();
+
+    // Daftar brand asli yang kita percaya. Field `brand` dari scraper sering
+    // salah ambil elemen di halaman (misalnya kepilih teks "Unisex", "Fuel Cell",
+    // kode style seperti "FX", atau kata deskripsi seperti "Lace" — bukan brand
+    // asli). Jadi field ini HANYA dipakai langsung kalau isinya benar-benar
+    // cocok dengan salah satu nama brand di bawah. Selain itu, brand akan
+    // dideteksi ulang dari nama produk.
+    const knownBrands = [
+        "Nike", "Jordan", "Adidas", "Puma", "New Balance", "Asics", "Vans", "Converse",
+        "On Running", "On", "Reebok", "Under Armour", "Skechers", "Fila", "Diadora",
+        "Salomon", "Hoka", "Brooks", "Saucony", "Umbro", "Kappa", "Crocs", "Birkenstock",
+        "Onitsuka Tiger", "Timberland", "Dr. Martens", "Champion", "K-Swiss", "Mizuno",
+        "Le Coq Sportif", "Superga", "Clarks", "ECCO", "Merrell", "Xero Shoes", "Veja",
+        "Allbirds", "Common Projects", "Golden Goose", "Yeezy"
+    ];
+    const matchedKnown = knownBrands.find(b => b.toLowerCase() === rawBrand.toLowerCase());
+    if (matchedKnown) return matchedKnown;
+
+    const brandKeywords = [
+        { brand: "Nike", keywords: ["nike", "jordan", "dunk", "air force", "af1", "air max", "blazer", "pegasus", "react", "zoom", "vapormax", "cortez", "waffle"] },
+        { brand: "Adidas", keywords: ["adidas", "yeezy", "samba", "gazelle", "stan smith", "ultraboost", "boost", "primeknit", "nmd", "forum", "campus", "ozweego"] },
+        { brand: "Puma", keywords: ["puma", "suede", "rs-x", "rs-x3", "cali", "future rider", "velocity nitro"] },
+        { brand: "New Balance", keywords: ["new balance", "nb ", "fuelcell", "fuel cell", "574", "990", "9060", "2002r", "530"] },
+        { brand: "Asics", keywords: ["asics", "gel-", "gel ", "kayano", "nimbus", "gt-2000"] },
+        { brand: "Vans", keywords: ["vans", "old skool", "sk8-hi", "authentic", "era"] },
+        { brand: "Converse", keywords: ["converse", "shai", "chuck taylor", "chuck 70", "run star", "weapon", "one star"] },
+        { brand: "On Running", keywords: ["cloud", "on running"] },
+        { brand: "Reebok", keywords: ["reebok", "classic leather", "club c", "nano", "instapump", "zig"] },
+        { brand: "Under Armour", keywords: ["under armour", "curry"] },
+        { brand: "Skechers", keywords: ["skechers"] },
+        { brand: "Fila", keywords: ["fila"] },
+        { brand: "Diadora", keywords: ["diadora"] },
+        { brand: "Salomon", keywords: ["salomon"] },
+        { brand: "Hoka", keywords: ["hoka"] },
+        { brand: "Brooks", keywords: ["brooks"] },
+        { brand: "Saucony", keywords: ["saucony", "shadow", "jazz"] },
+        { brand: "Umbro", keywords: ["umbro"] },
+        { brand: "Kappa", keywords: ["kappa"] },
+        { brand: "Crocs", keywords: ["crocs"] },
+        { brand: "Birkenstock", keywords: ["birkenstock"] },
+        { brand: "Onitsuka Tiger", keywords: ["onitsuka"] },
+        { brand: "Timberland", keywords: ["timberland"] },
+        { brand: "Dr. Martens", keywords: ["dr. martens", "dr martens", "doc martens"] },
+        { brand: "Champion", keywords: ["champion"] },
+        { brand: "K-Swiss", keywords: ["k-swiss"] },
+        { brand: "Mizuno", keywords: ["mizuno", "wave"] },
+        { brand: "Le Coq Sportif", keywords: ["le coq sportif"] },
+        { brand: "Superga", keywords: ["superga"] },
+        { brand: "Clarks", keywords: ["clarks"] },
+        { brand: "ECCO", keywords: ["ecco"] },
+        { brand: "Merrell", keywords: ["merrell"] },
+        { brand: "Xero Shoes", keywords: ["xero"] },
+        { brand: "Veja", keywords: ["veja"] },
+        { brand: "Allbirds", keywords: ["allbirds"] },
+        { brand: "Common Projects", keywords: ["common projects"] },
+        { brand: "Golden Goose", keywords: ["golden goose"] },
+    ];
+
+    for (const entry of brandKeywords) {
+        if (entry.keywords.some(k => nameStr.includes(k))) {
+            return entry.brand;
+        }
+    }
+
+    // TIDAK ADA LAGI tebak-tebakan kata dari nama produk di sini — itu sumber masalahnya:
+    // warna (Grey), kategori (Lifestyle, Grade Boys/Gradeboys), deskripsi (Whisper, Lace),
+    // atau kode acak (KNU, FX) semuanya BISA ke-guess seolah brand kalau kita nebak kata
+    // "yang kelihatan masuk akal". Nggak akan pernah habis kalau ditambal satu-satu.
+    // Jadi: brand HANYA dianggap valid kalau memang cocok dengan knownBrands di atas,
+    // atau ketemu lewat kata kunci model di brandKeywords. Selain itu, jujur saja "Tanpa Merek".
+    return "Tanpa Merek";
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     // 1. Ambil parameter ID dari URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -21,37 +101,70 @@ document.addEventListener("DOMContentLoaded", async () => {
                 displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             }
 
-            const mappedData = {
-                brand: selectedProduct.brand || "Footlocker",
-                title: selectedProduct.name || selectedProduct.title || "Tanpa Nama",
-                category: selectedProduct.category || selectedProduct.gender || "Unisex",
-                sku: selectedProduct._id || "-",
-                price: displayPrice,
-                oldPrice: "", 
-                discount: "",
-                rating: 5.0,
-                reviewCount: 1,
-                images: [
-                    selectedProduct.imageUrl || selectedProduct.image || "https://placehold.co/600x400?text=No+Image"
-                ],
-                sizes: ["US 7", "US 8", "US 9", "US 10", "US 11"],
-                description: `<p>Ini adalah halaman detail untuk produk ${selectedProduct.name || selectedProduct.title}.</p>`,
-                reviews: [
-                    {
-                        user: "Anonymous",
-                        date: "Just now",
-                        title: "Great shoe",
-                        text: "Looks amazing and fits perfectly.",
-                        source: "Verified Buyer"
-                    }
-                ]
-            };
+        // 1. Logika penentuan gender/kategori (Men, Women, Kids)
+let determinedCategory = "Unisex";
+const productInfo = ((selectedProduct.category || "") + " " + (selectedProduct.gender || "") + " " + (selectedProduct.name || "")).toLowerCase();
+
+if (productInfo.includes("wanita") || productInfo.includes("women") || productInfo.includes("girl")) {
+    determinedCategory = "Women";
+} else if (productInfo.includes("pria") || productInfo.includes("men") || productInfo.includes("boy")) {
+    determinedCategory = "Men";
+} else if (productInfo.includes("anak") || productInfo.includes("kids") || productInfo.includes("toddler")) {
+    determinedCategory = "Kids";
+}
+
+// 2. Logika deteksi Brand otomatis (mengabaikan nama toko Footlocker)
+// Menggunakan fungsi detectBrand() yang sama dengan halaman katalog (lihat catalog.js)
+// supaya hasil deteksi brand konsisten di semua halaman, untuk semua produk.
+let determinedBrand = detectBrand(selectedProduct);
+
+// 3. Mapping data akhir
+const mappedData = {
+    brand: determinedBrand, // Sekarang menggunakan hasil deteksi pintar
+    title: selectedProduct.name || selectedProduct.title || "Tanpa Nama",
+    category: determinedCategory,
+    sku: selectedProduct._id || "-",
+    price: displayPrice,
+    oldPrice: selectedProduct.oldPrice || "Rp. 1.549.000",
+    discount: selectedProduct.discount || "30% OFF",
+    rating: selectedProduct.rating || 4.3,
+    reviewCount: selectedProduct.reviewCount || 375,
+    images: [
+        selectedProduct.imageUrl || selectedProduct.image || "https://placehold.co/600x400?text=No+Image"
+    ],
+    sizes: selectedProduct.sizes || ["US 6.5", "US 7", "US 8", "US 8.5", "US 9", "US 10"],
+    description: selectedProduct.description || `
+        <h3>${determinedBrand} ${selectedProduct.name || "Produk"}</h3>
+        <ul>
+            <li>There may be a 1-2cm difference in measurements depending on the development and manufacturing process.</li>
+        </ul>
+        <h3>Color Disclaimer:</h3>
+        <ul>
+            <li>Actual colors may vary. This is due to the fact that every computer monitor has a different capability to display colors, we cannot guarantee that the color you see accurately portrays the true color of the product.</li>
+        </ul>
+    `,
+    reviews: selectedProduct.reviews || [
+        {
+            user: "CampTheHit",
+            date: "8 days ago",
+            title: "Super comfy",
+            text: "Very comfy and true to size. Already got 2 and will definitely get more!",
+            source: "Originally posted on Brand Site"
+        },
+        {
+            user: "SalmaH",
+            date: "14 days ago",
+            title: "I love it",
+            text: "Runs a little big but nothing too serious. Look just as pictured.",
+            source: "Originally posted on Brand Site"
+        }
+    ]
+};
 
             populateData(mappedData);
             switchTab('details');
             document.title = mappedData.title;
         } else {
-            // Tampilkan pesan error jika ID tidak ditemukan di database API
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('error-message').classList.remove('hidden');
             document.getElementById('error-message').textContent = "Produk tidak ditemukan!";

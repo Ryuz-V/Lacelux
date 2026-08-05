@@ -259,11 +259,11 @@ body {
     cursor: not-allowed;
 }
 
-/* Bagian Tabs Bawah */
 .tabs-section {
     border: 1px solid #e5e7eb;
     margin-bottom: 80px;
     border-radius: 2px;
+    margin-top: 65px;
 }
 
 .tab-headers {
@@ -326,7 +326,6 @@ body {
     margin-bottom: 16px;
 }
 
-/* === Reviews Section New Layout === */
 .reviews-heading {
     font-size: 1.6rem;
     font-weight: 800;
@@ -334,7 +333,6 @@ body {
     color: #111827;
 }
 
-/* Reviews Top Panel: 3 columns */
 .reviews-top-panel {
     display: flex;
     flex-direction: column;
@@ -351,7 +349,6 @@ body {
     }
 }
 
-/* Column 1: Rating Snapshot */
 .rating-snapshot {
     flex: 1.2;
     padding-right: 32px;
@@ -359,7 +356,6 @@ body {
     min-width: 0;
 }
 
-/* Column 2: Overall Rating */
 .overall-rating-panel {
     flex: 1;
     display: flex;
