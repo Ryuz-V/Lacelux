@@ -1,17 +1,6 @@
-// Fungsi terpusat untuk mendeteksi brand asli produk dari data API.
-// Dipakai di katalog maupun halaman detail produk supaya hasilnya konsisten
-// untuk SEMUA produk (bukan cuma satu produk tertentu) — kalau daftar brand
-// perlu ditambah/diperbaiki, cukup diubah di satu tempat ini.
 function detectBrand(product) {
     const nameStr = ((product.name || product.title || "")).toLowerCase();
     const rawBrand = (product.brand || "").trim();
-
-    // Daftar brand asli yang kita percaya. Field `brand` dari scraper sering
-    // salah ambil elemen di halaman (misalnya kepilih teks "Unisex", "Fuel Cell",
-    // kode style seperti "FX", atau kata deskripsi seperti "Lace" — bukan brand
-    // asli). Jadi field ini HANYA dipakai langsung kalau isinya benar-benar
-    // cocok dengan salah satu nama brand di bawah. Selain itu, brand akan
-    // dideteksi ulang dari nama produk.
     const knownBrands = [
         "Nike", "Jordan", "Adidas", "Puma", "New Balance", "Asics", "Vans", "Converse",
         "On Running", "On", "Reebok", "Under Armour", "Skechers", "Fila", "Diadora",
@@ -26,7 +15,7 @@ function detectBrand(product) {
     const brandKeywords = [
         { brand: "Nike", keywords: ["nike", "jordan", "dunk", "air force", "af1", "air max", "blazer", "pegasus", "react", "zoom", "vapormax", "cortez", "waffle"] },
         { brand: "Adidas", keywords: ["adidas", "yeezy", "samba", "gazelle", "stan smith", "ultraboost", "boost", "primeknit", "nmd", "forum", "campus", "ozweego"] },
-        { brand: "Puma", keywords: ["puma", "suede", "rs-x", "rs-x3", "cali", "future rider", "velocity nitro"] },
+        { brand: "Puma", keywords: ["puma", "suede", "rs-x", "rs-x3", "cali", "future rider", "velocity nitro", "speedcat"] },
         { brand: "New Balance", keywords: ["new balance", "nb ", "fuelcell", "fuel cell", "574", "990", "9060", "2002r", "530"] },
         { brand: "Asics", keywords: ["asics", "gel-", "gel ", "kayano", "nimbus", "gt-2000"] },
         { brand: "Vans", keywords: ["vans", "old skool", "sk8-hi", "authentic", "era"] },
@@ -68,31 +57,41 @@ function detectBrand(product) {
             return entry.brand;
         }
     }
-
-    // TIDAK ADA LAGI tebak-tebakan kata dari nama produk di sini — itu sumber masalahnya:
-    // warna (Grey), kategori (Lifestyle, Grade Boys/Gradeboys), deskripsi (Whisper, Lace),
-    // atau kode acak (KNU, FX) semuanya BISA ke-guess seolah brand kalau kita nebak kata
-    // "yang kelihatan masuk akal". Nggak akan pernah habis kalau ditambal satu-satu.
-    // Jadi: brand HANYA dianggap valid kalau memang cocok dengan knownBrands di atas,
-    // atau ketemu lewat kata kunci model di brandKeywords. Selain itu, jujur saja "Tanpa Merek".
     return "Tanpa Merek";
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get("category");
+    const searchParam = urlParams.get("search");
 
     const pageTitle = document.getElementById("category-page-title");
     const countInfo = document.querySelector("#product-count-info span");
     const gridContainer = document.getElementById("catalog-products-grid");
 
-    if (pageTitle && categoryParam) {
+    if (pageTitle && searchParam) {
+        pageTitle.textContent = `HASIL PENCARIAN: "${searchParam}"`;
+    } else if (pageTitle && categoryParam) {
         const formattedTitle = categoryParam.replace("-", " ").toUpperCase();
         if (formattedTitle === "NEW ARRIVALS") {
             pageTitle.textContent = formattedTitle;
         } else {
             pageTitle.textContent = `NEW ARRIVALS ${formattedTitle}`;
         }
+    }
+
+    // Fungsi pencarian teks bebas: cocokkan ke nama produk ATAU brand yang terdeteksi
+    function matchSearch(product, query) {
+        if (!query) return true;
+        const q = query.toLowerCase();
+        const name = (product.name || product.title || "").toLowerCase();
+        const brand = detectBrand(product).toLowerCase();
+        return name.includes(q) || brand.includes(q);
+    }
+
+    function filterBySearch(products, query) {
+        if (!query) return products;
+        return products.filter(p => matchSearch(p, query));
     }
 
     // --- 1. SETUP VARIABEL PAGINATION ---
@@ -271,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // --- 4. LOAD DATA AWAL ---
     const allProducts = await fetchProducts();
-    currentList = filterByCategory(allProducts, categoryParam);
+    currentList = filterBySearch(filterByCategory(allProducts, categoryParam), searchParam);
     
     // Alih-alih memanggil renderProducts() langsung, kita panggil showCurrentPage()
     showCurrentPage();
@@ -286,7 +285,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const selectedGenders = Array.from(genderCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
         const selectedBrands = Array.from(brandCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
 
-        let result = filterByCategory(allProducts, categoryParam);
+        let result = filterBySearch(filterByCategory(allProducts, categoryParam), searchParam);
 
         if (selectedGenders.length > 0) {
             result = result.filter(p => {

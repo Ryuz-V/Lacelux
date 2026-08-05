@@ -1,48 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Pastikan Feather Icons di-load
     feather.replace();
-    
-    // Search Box Logic
-    const searchBtn = document.querySelector('.search-btn');
-    const searchBox = document.querySelector('.search-box');
-    const closeSearch = document.querySelector('.close-search');
-    const searchForm = document.getElementById('search-form');
-    const searchInput = document.getElementById('search-input');
-    
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            searchBox.classList.toggle('active');
-            if (searchBox && searchBox.classList.contains('active')) {
-                searchInput.focus();
-            }
-        });
-    }
-    
-    if (closeSearch) {
-        closeSearch.addEventListener('click', function() {
-            searchBox.classList.remove('active');
-        });
-    }
-    
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const query = searchInput.value.trim();
-            if (query) {
-                alert('Anda mencari: ' + query); // Demo logic
-                searchBox.classList.remove('active');
-                searchInput.value = '';
-            }
-        });
-    }
-    
-    document.addEventListener('click', function(e) {
-        if (searchBox && !searchBox.contains(e.target) && e.target !== searchBtn) {
-            searchBox.classList.remove('active');
-        }
-    });
 
     // Trending Filters Interaction
     const filterButtons = document.querySelectorAll('.filters button');
@@ -108,64 +66,210 @@ window.addEventListener("scroll", () => {
 });
 
 // ==========================================
-    // OVERLAY SEARCH MODAL LOGIC
-    // ==========================================
-    const searchBtn = document.querySelector('.search-btn');
-    const searchOverlay = document.getElementById('search-overlay');
-    const closeSearchBtn = document.getElementById('close-search');
-    const searchInput = document.getElementById('search-input');
-    const searchForm = document.getElementById('search-form');
-    const clearBtn = document.getElementById('clear-search');
-    
-    // Buka Overlay
-    if (searchBtn && searchOverlay) {
-        searchBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            searchOverlay.classList.add('active');
-            document.body.classList.add('no-scroll'); // Kunci scroll background
-            
-            // Memberikan fokus ke input setelah animasi CSS selesai
-            setTimeout(() => {
-                searchInput.focus();
-            }, 300); 
-        });
+// Deteksi brand produk (disamakan dengan catalog.js/products.js supaya
+// hasilnya konsisten di semua halaman)
+// ==========================================
+function detectBrand(product) {
+    const nameStr = ((product.name || product.title || "")).toLowerCase();
+    const rawBrand = (product.brand || "").trim();
+    const knownBrands = [
+        "Nike", "Jordan", "Adidas", "Puma", "New Balance", "Asics", "Vans", "Converse",
+        "On Running", "On", "Reebok", "Under Armour", "Skechers", "Fila", "Diadora",
+        "Salomon", "Hoka", "Brooks", "Saucony", "Umbro", "Kappa", "Crocs", "Birkenstock",
+        "Onitsuka Tiger", "Timberland", "Dr. Martens", "Champion", "K-Swiss", "Mizuno",
+        "Le Coq Sportif", "Superga", "Clarks", "ECCO", "Merrell", "Xero Shoes", "Veja",
+        "Allbirds", "Common Projects", "Golden Goose", "Yeezy"
+    ];
+    const matchedKnown = knownBrands.find(b => b.toLowerCase() === rawBrand.toLowerCase());
+    if (matchedKnown) return matchedKnown;
+
+    const brandKeywords = [
+        { brand: "Nike", keywords: ["nike", "jordan", "dunk", "air force", "af1", "air max", "blazer", "pegasus", "react", "zoom", "vapormax", "cortez", "waffle"] },
+        { brand: "Adidas", keywords: ["adidas", "yeezy", "samba", "gazelle", "stan smith", "ultraboost", "boost", "primeknit", "nmd", "forum", "campus", "ozweego"] },
+        { brand: "Puma", keywords: ["puma", "suede", "rs-x", "rs-x3", "cali", "future rider", "velocity nitro", "speedcat"] },
+        { brand: "New Balance", keywords: ["new balance", "nb ", "fuelcell", "fuel cell", "574", "990", "9060", "2002r", "530"] },
+        { brand: "Asics", keywords: ["asics", "gel-", "gel ", "kayano", "nimbus", "gt-2000"] },
+        { brand: "Vans", keywords: ["vans", "old skool", "sk8-hi", "authentic", "era"] },
+        { brand: "Converse", keywords: ["converse", "shai", "chuck taylor", "chuck 70", "run star", "weapon", "one star"] },
+        { brand: "On Running", keywords: ["cloud", "on running"] },
+        { brand: "Reebok", keywords: ["reebok", "classic leather", "club c", "nano", "instapump", "zig"] },
+        { brand: "Under Armour", keywords: ["under armour", "curry"] },
+        { brand: "Skechers", keywords: ["skechers"] },
+        { brand: "Fila", keywords: ["fila"] },
+        { brand: "Diadora", keywords: ["diadora"] },
+        { brand: "Salomon", keywords: ["salomon"] },
+        { brand: "Hoka", keywords: ["hoka"] },
+        { brand: "Brooks", keywords: ["brooks"] },
+        { brand: "Saucony", keywords: ["saucony", "shadow", "jazz"] },
+        { brand: "Umbro", keywords: ["umbro"] },
+        { brand: "Kappa", keywords: ["kappa"] },
+        { brand: "Crocs", keywords: ["crocs"] },
+        { brand: "Birkenstock", keywords: ["birkenstock"] },
+        { brand: "Onitsuka Tiger", keywords: ["onitsuka"] },
+        { brand: "Timberland", keywords: ["timberland"] },
+        { brand: "Dr. Martens", keywords: ["dr. martens", "dr martens", "doc martens"] },
+        { brand: "Champion", keywords: ["champion"] },
+        { brand: "K-Swiss", keywords: ["k-swiss"] },
+        { brand: "Mizuno", keywords: ["mizuno", "wave"] },
+        { brand: "Le Coq Sportif", keywords: ["le coq sportif"] },
+        { brand: "Superga", keywords: ["superga"] },
+        { brand: "Clarks", keywords: ["clarks"] },
+        { brand: "ECCO", keywords: ["ecco"] },
+        { brand: "Merrell", keywords: ["merrell"] },
+        { brand: "Xero Shoes", keywords: ["xero"] },
+        { brand: "Veja", keywords: ["veja"] },
+        { brand: "Allbirds", keywords: ["allbirds"] },
+        { brand: "Common Projects", keywords: ["common projects"] },
+        { brand: "Golden Goose", keywords: ["golden goose"] },
+    ];
+
+    for (const entry of brandKeywords) {
+        if (entry.keywords.some(k => nameStr.includes(k))) {
+            return entry.brand;
+        }
     }
-    
-    // Tutup Overlay (Tombol X)
-    if (closeSearchBtn) {
-        closeSearchBtn.addEventListener('click', function() {
-            searchOverlay.classList.remove('active');
-            document.body.classList.remove('no-scroll'); // Kembalikan scroll
-        });
+    return "Tanpa Merek";
+}
+
+// ==========================================
+// OVERLAY SEARCH MODAL LOGIC
+// ==========================================
+const searchBtn = document.querySelector('.search-btn');
+const searchOverlay = document.getElementById('search-overlay');
+const closeSearchBtn = document.getElementById('close-search');
+const searchInput = document.getElementById('search-input');
+const searchForm = document.getElementById('search-form');
+const clearBtn = document.getElementById('clear-search');
+const searchResultsArea = document.getElementById('search-results-area');
+const searchResultsTitle = document.getElementById('search-results-title');
+const searchResultsGrid = document.getElementById('search-results-grid');
+const exploreAllBtn = document.getElementById('explore-all-btn');
+
+// Cache data produk supaya tidak fetch berkali-kali tiap ketik
+let allProductsCache = null;
+async function getAllProductsCached() {
+    if (allProductsCache) return allProductsCache;
+    try {
+        const res = await fetch('http://localhost:3000/api/shoes');
+        if (!res.ok) throw new Error('Gagal mengambil data produk');
+        allProductsCache = await res.json();
+    } catch (err) {
+        console.error('Gagal mengambil data produk untuk pencarian:', err);
+        allProductsCache = [];
+    }
+    return allProductsCache;
+}
+
+// Render hasil pencarian produk (gambar + nama + harga), mirip contoh Puma
+function renderSearchResults(query, products) {
+    if (!searchResultsArea || !searchResultsGrid) return;
+
+    if (!query) {
+        searchResultsArea.classList.remove('active');
+        searchResultsGrid.innerHTML = '';
+        if (searchResultsTitle) searchResultsTitle.textContent = '';
+        return;
     }
 
-    // Fitur Tombol Clear Text
-    if (clearBtn) {
-        clearBtn.addEventListener('click', function() {
-            searchInput.value = '';
-            searchInput.focus();
-        });
-    }
-    
-    // Mencegah Refresh Halaman saat Enter Ditekan
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Mencegah reload halaman
-            const query = searchInput.value.trim();
-            if (query) {
-                console.log('Fetching results for:', query); 
-                // Di sini nanti kamu bisa memanggil API menggunakan Fetch/Axios (SPA style)
+    const q = query.toLowerCase();
+    const matches = products.filter(p => {
+        const name = (p.name || p.title || '').toLowerCase();
+        const brand = detectBrand(p).toLowerCase();
+        return name.includes(q) || brand.includes(q);
+    }).slice(0, 6);
+
+    searchResultsArea.classList.add('active');
+
+    if (matches.length === 0) {
+        if (searchResultsTitle) searchResultsTitle.textContent = `Tidak ada hasil untuk "${query}"`;
+        searchResultsGrid.innerHTML = `<p class="search-results-empty">Coba kata kunci lain, misalnya nama brand atau tipe sepatu.</p>`;
+    } else {
+        if (searchResultsTitle) searchResultsTitle.textContent = `Hasil untuk "${query}"`;
+        searchResultsGrid.innerHTML = matches.map(item => {
+            const imageSrc = item.imageUrl || item.image || item.img || item.image_url || 'https://placehold.co/300x300?text=No+Image';
+            let displayPrice = item.price || item.harga || 'Rp 0';
+            if (typeof displayPrice === 'number') {
+                displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             }
-        });
+            return `
+                <div class="suggested-item" onclick="window.location.href='products/products.html?id=${item._id}'">
+                    <img src="${imageSrc}" alt="${item.name || 'Sepatu'}">
+                    <div class="suggested-info">
+                        <h4>${item.name || 'Tanpa Nama'}</h4>
+                        <p>${displayPrice}</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 
-    // Tutup overlay jika menekan tombol "Escape" di keyboard
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
-            searchOverlay.classList.remove('active');
-            document.body.classList.remove('no-scroll');
+    if (exploreAllBtn) {
+        exploreAllBtn.href = `products.html?search=${encodeURIComponent(query)}`;
+    }
+}
+
+// Debounce supaya tidak filter di setiap ketukan huruf, tapi nunggu jeda singkat
+let searchDebounceTimer = null;
+if (searchInput) {
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(async () => {
+            const products = await getAllProductsCached();
+            renderSearchResults(query, products);
+        }, 250);
+    });
+}
+
+// Buka Overlay
+if (searchBtn && searchOverlay) {
+    searchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        searchOverlay.classList.add('active');
+        document.body.classList.add('no-scroll'); // Kunci scroll background
+
+        // Memberikan fokus ke input setelah animasi CSS selesai
+        setTimeout(() => {
+            searchInput.focus();
+        }, 300);
+    });
+}
+
+// Tutup Overlay (Tombol X)
+if (closeSearchBtn) {
+    closeSearchBtn.addEventListener('click', function() {
+        searchOverlay.classList.remove('active');
+        document.body.classList.remove('no-scroll'); // Kembalikan scroll
+    });
+}
+
+// Fitur Tombol Clear Text
+if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        searchInput.focus();
+        renderSearchResults('', allProductsCache || []);
+    });
+}
+
+// Mencegah Refresh Halaman saat Enter Ditekan — arahkan ke katalog dengan filter pencarian
+if (searchForm) {
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Mencegah reload halaman
+        const query = searchInput.value.trim();
+        if (query) {
+            window.location.href = `products.html?search=${encodeURIComponent(query)}`;
         }
     });
+}
+
+// Tutup overlay jika menekan tombol "Escape" di keyboard
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+        searchOverlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    }
+});
 
 // Spotlight Navigation
 const spotlightItems = document.querySelectorAll('.spotlight-nav li');

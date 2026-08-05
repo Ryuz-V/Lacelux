@@ -40,11 +40,20 @@
 <div class="search-overlay" id="search-overlay">
     <div class="search-overlay-header">
         <form id="search-form" class="search-form-overlay">
-            <input type="text" placeholder="Search..." id="search-input" autocomplete="off">
+            <input type="text" placeholder="Search Products..." id="search-input" autocomplete="off">
             <button type="button" id="clear-search" class="clear-btn">CLEAR</button>
             <button type="submit" class="search-submit"><i data-feather="search"></i></button>
         </form>
         <button type="button" class="close-search-overlay" id="close-search"><i data-feather="x"></i></button>
+    </div>
+
+    <!-- Hasil pencarian produk (muncul otomatis saat mengetik) -->
+    <div class="search-results-area" id="search-results-area">
+        <h3 id="search-results-title"></h3>
+        <div class="suggested-grid" id="search-results-grid"></div>
+        <div class="search-explore-all">
+            <a href="products.html" id="explore-all-btn">Jelajahi Semua Produk <i data-feather="arrow-right"></i></a>
+        </div>
     </div>
 </div>
 </nav>
@@ -147,7 +156,7 @@
         <div class="header-right">
             <div class="bg-text">TRENDING</div>
             <div class="header-stats-row">
-                <button class="btn-show-more">Show More</button>
+                <button class="btn-show-more" onclick="location.href='/public/products.html'">Show More</button>
             </div>
         </div>
     </div>
