@@ -79,8 +79,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             pageTitle.textContent = `NEW ARRIVALS ${formattedTitle}`;
         }
     }
-
-    // Fungsi pencarian teks bebas: cocokkan ke nama produk ATAU brand yang terdeteksi
     function matchSearch(product, query) {
         if (!query) return true;
         const q = query.toLowerCase();
@@ -93,14 +91,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!query) return products;
         return products.filter(p => matchSearch(p, query));
     }
-
-    // --- 1. SETUP VARIABEL PAGINATION ---
     let currentPage = 1;
     const itemsPerPage = 21;
-    let currentList = []; // Akan menyimpan array data produk setelah difilter
-
-    // --- 2. MODIFIKASI FUNGSI RENDER PRODUK ---
-    // Tambahkan parameter 'totalItems' agar hitungan hasil pencarian tetap akurat
+    let currentList = [];
     function renderProducts(productsToDisplay, totalItems) {
         if (!gridContainer) return;
         gridContainer.innerHTML = "";
@@ -309,11 +302,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 result.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
             }
         }
-
-        // *** PERUBAHAN PADA APPLY FILTER ***
-        currentList = result; // Simpan hasil pencarian filter ke currentList
-        currentPage = 1;      // Reset ke Halaman 1 setiap kali filter digunakan
-        showCurrentPage();    // Render ulang dengan limit 20 dan pagination
+        currentList = result; 
+        currentPage = 1;     
+        showCurrentPage();    
     }
 
     function parsePrice(val) {
@@ -325,4 +316,181 @@ document.addEventListener("DOMContentLoaded", async () => {
     genderCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     brandCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     if (sortSelect) sortSelect.addEventListener("change", applyFilters);
+
+    // ==========================================
+    // 6. NAVBAR SEARCH DROPDOWN (live suggestions)
+    // ==========================================
+    const navSearchInput = document.getElementById("navbar-search-input");
+    const navSearchSubmit = document.getElementById("navbar-search-submit");
+    const navSearchClear = document.getElementById("navbar-search-clear");
+    const navSearchResults = document.getElementById("navbar-search-results");
+    const navSearchKeywords = document.getElementById("navbar-search-keywords");
+    const navSearchGrid = document.getElementById("navbar-search-grid");
+    const navExploreAllBtn = document.getElementById("btn-explore-all");
+
+    if (navSearchInput && navSearchResults) {
+
+        // Kalau lagi di halaman hasil pencarian, isi ulang input-nya
+        if (searchParam) navSearchInput.value = searchParam;
+
+        // Kasih tanda tebal pada bagian teks yang cocok dengan kata kunci
+        function highlightMatch(text, query) {
+            const idx = text.toLowerCase().indexOf(query.toLowerCase());
+            if (idx === -1) return text;
+            return text.slice(0, idx) + "<b>" + text.slice(idx, idx + query.length) + "</b>" + text.slice(idx + query.length);
+        }
+
+        // Bikin daftar saran keyword (kolom kiri) dari nama produk yang cocok
+        function buildKeywordSuggestions(query, matches) {
+            const q = query.toLowerCase();
+            const stopWords = new Set(["unisex", "shoes", "sneakers", "men's", "women's", "lifestyle", "og", "sepatu", "-"]);
+            const suggestions = [];
+            const seen = new Set();
+
+            function addSuggestion(text) {
+                const clean = text.trim().replace(/\s+/g, " ");
+                if (!clean || seen.has(clean)) return;
+                seen.add(clean);
+                suggestions.push(clean);
+            }
+
+            matches.forEach(item => {
+                const brand = detectBrand(item).toLowerCase();
+                const name = (item.name || item.title || "").toLowerCase();
+                const words = name.split(/[\s-]+/).filter(w => w && !stopWords.has(w));
+                const anchorIdx = words.findIndex(w => w.includes(q));
+                if (anchorIdx === -1) return;
+
+                const anchor = words[anchorIdx];
+                const nextWord = words[anchorIdx + 1];
+
+                if (brand && brand !== "tanpa merek") {
+                    if (nextWord) addSuggestion(`${brand} ${anchor} ${nextWord}`);
+                    addSuggestion(`${brand} ${anchor}`);
+                }
+                addSuggestion(anchor);
+                if (nextWord) addSuggestion(`${anchor} ${nextWord}`);
+            });
+
+            return suggestions.slice(0, 5);
+        }
+
+        function renderNavSearch(query) {
+            if (!query) {
+                navSearchResults.classList.remove("active");
+                if (navSearchClear) navSearchClear.style.display = "none";
+                return;
+            }
+
+            if (navSearchClear) navSearchClear.style.display = "flex";
+
+            const matches = filterBySearch(allProducts, query);
+
+            // Kolom kiri: saran keyword
+            if (navSearchKeywords) {
+                const keywordSuggestions = buildKeywordSuggestions(query, matches);
+                if (keywordSuggestions.length === 0) {
+                    navSearchKeywords.innerHTML = `<p class="search-no-suggestion">Tidak ada saran</p>`;
+                } else {
+                    navSearchKeywords.innerHTML = keywordSuggestions.map(sugg => `
+                        <button type="button" class="search-suggestion-item" data-suggestion="${sugg.replace(/"/g, "&quot;")}">
+                            <i data-feather="search"></i>
+                            <span>${highlightMatch(sugg, query)}</span>
+                        </button>
+                    `).join("");
+
+                    navSearchKeywords.querySelectorAll(".search-suggestion-item").forEach(btn => {
+                        btn.addEventListener("click", () => {
+                            const sugg = btn.getAttribute("data-suggestion");
+                            navSearchInput.value = sugg;
+                            renderNavSearch(sugg);
+                            navSearchInput.focus();
+                        });
+                    });
+                }
+            }
+
+            // Kolom kanan: grid produk yang cocok
+            if (navSearchGrid) {
+                if (matches.length === 0) {
+                    navSearchGrid.innerHTML = `<p class="search-no-result">Tidak ada produk yang cocok dengan "${query}"</p>`;
+                } else {
+                    navSearchGrid.innerHTML = matches.slice(0, 6).map(item => {
+                        const imageSrc = item.imageUrl || item.image || item.img || item.image_url || 'https://placehold.co/300x300?text=No+Image';
+                        let displayPrice = item.price || item.harga || "Rp 0";
+                        if (typeof displayPrice === 'number') {
+                            displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
+                        }
+                        return `
+                            <div class="search-product-item" onclick="window.location.href='/products/products.html?id=${item._id}'">
+                                <div class="search-product-thumb">
+                                    <img src="${imageSrc}" alt="${item.name || 'Sepatu'}" loading="lazy">
+                                </div>
+                                <h4 class="search-product-name">${item.name || 'Tanpa Nama'}</h4>
+                                <p class="search-product-price">${displayPrice}</p>
+                            </div>
+                        `;
+                    }).join("");
+                }
+            }
+
+            if (navExploreAllBtn) {
+                navExploreAllBtn.onclick = () => {
+                    window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+                };
+            }
+
+            navSearchResults.classList.add("active");
+            if (window.feather) feather.replace();
+        }
+
+        let navSearchDebounce = null;
+        navSearchInput.addEventListener("input", function() {
+            clearTimeout(navSearchDebounce);
+            const query = this.value.trim();
+            navSearchDebounce = setTimeout(() => renderNavSearch(query), 200);
+        });
+
+        navSearchInput.addEventListener("focus", function() {
+            if (this.value.trim()) renderNavSearch(this.value.trim());
+        });
+
+        function goToSearchPage() {
+            const query = navSearchInput.value.trim();
+            if (query) window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+        }
+
+        navSearchInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                goToSearchPage();
+            } else if (e.key === "Escape") {
+                navSearchResults.classList.remove("active");
+                navSearchInput.blur();
+            }
+        });
+
+        if (navSearchSubmit) {
+            navSearchSubmit.addEventListener("click", function(e) {
+                e.preventDefault();
+                goToSearchPage();
+            });
+        }
+
+        if (navSearchClear) {
+            navSearchClear.addEventListener("click", function() {
+                navSearchInput.value = "";
+                navSearchResults.classList.remove("active");
+                navSearchClear.style.display = "none";
+                navSearchInput.focus();
+            });
+        }
+
+        // Tutup dropdown kalau klik di luar area search bar
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest(".search-bar")) {
+                navSearchResults.classList.remove("active");
+            }
+        });
+    }
 });

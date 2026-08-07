@@ -481,8 +481,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-// Catatan: fetch & render produk dari /api/shoes SUDAH ditangani sepenuhnya
-// oleh catalog.js (lengkap dengan filter kategori, fallback gambar, dll).
-// Kode duplikat yang sebelumnya ada di sini (tampilkanProduk & fetch shoe-container)
-// sengaja dihapus karena menimpa hasil render catalog.js di halaman products.html.

@@ -21,10 +21,28 @@
             </a>
         </div>
         
-        <div class="search-bar">
-            <input type="text" placeholder="Search products...">
-            <button type="submit"><i data-feather="search"></i></button>
+<div class="search-bar" style="position: relative;">
+    <!-- Input Search Navbar -->
+    <input type="text" id="navbar-search-input" placeholder="Search products..." autocomplete="off">
+    <button type="button" id="navbar-search-clear" class="search-clear-btn" style="display:none;"><i data-feather="x"></i></button>
+    <button type="submit" id="navbar-search-submit"><i data-feather="search"></i></button>
+    
+    <!-- Kotak Hasil Pencarian Dropdown (Dual-Column) -->
+    <div id="navbar-search-results" class="navSearchResults">
+        <!-- Kolom Kiri: Saran Keyword -->
+        <div class="search-suggestions-col" id="navbar-search-keywords"></div>
+        
+        <!-- Kolom Kanan: Grid Produk & Tombol Jelajahi -->
+        <div class="search-products-col">
+            <div id="navbar-search-grid" class="search-products-grid"></div>
+            <div class="search-footer-action">
+                <button id="btn-explore-all" class="explore-all-btn">
+                    Jelajahi Semua Produk <i data-feather="arrow-right"></i>
+                </button>
+            </div>
         </div>
+    </div>
+</div>
         
         <div class="nav-icons">
             <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
