@@ -814,7 +814,6 @@ nav.scrolled .menu .search-btn {
     margin: 0 auto;
 }
 
-/* Pagination Components */
 .catalog-pagination {
     display: flex;
     justify-content: center;
@@ -2088,44 +2087,18 @@ body.catalog-page {
     height: 20px;
 }
 
-/* ============================== */
-/* Navbar Live Search Dropdown    */
-/* ============================== */
-.search-clear-btn {
-    background: none;
-    border: none;
-    border-right: 1px solid #e5e7eb;
-    padding: 0 14px;
-    height: 100%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #666;
-    flex-shrink: 0;
-}
-
-.search-clear-btn:hover {
-    color: #111;
-}
-
-.search-clear-btn i {
-    width: 16px;
-    height: 16px;
-}
-
 .navSearchResults {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
-    width: 100%;
+    width: 1050px;
     background-color: #ffffff;
     border: 1px solid #e5e7eb;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
     display: none;
     max-height: 75vh;
     overflow-y: auto;
     z-index: 500;
+    transform: translatex(-0.8px);
 }
 
 .navSearchResults.active {
@@ -2399,5 +2372,69 @@ body.catalog-page {
 }
 
 #product-count-info span {
-    font-weight: 700; /* Menebalkan angka sesuai gambar */
+    font-weight: 700;
+}
+
+#navbar-search-results,
+.navSearchResults {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    z-index: 1000;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db; 
+}
+
+.search-clear-btn {
+    background: none;
+    border: none;
+    border-right: 1px solid #e5e7eb;
+    padding: 0 14px;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.search-clear-btn:hover {
+    color: #111;
+}
+
+.search-clear-btn i {
+    width: 16px;
+    height: 16px;
+}
+
+.search-bar button.search-clear-btn {
+    background-color: transparent;
+    color: #666;
+    padding: 0 14px;
+}
+
+.search-bar button.search-clear-btn:hover {
+    background-color: transparent;
+    color: #111; 
+}
+
+.search-bar .search-suggestions-col button.search-suggestion-item {
+    background-color: transparent !important;
+    color: #666;
+}
+
+.search-bar .search-suggestions-col button.search-suggestion-item:hover {
+    background-color: #f5f5f5 !important;
+}
+
+.search-bar .search-suggestions-col button.search-suggestion-item b {
+    color: #111;
+    font-weight: 600;
+}
+
+.search-bar .search-suggestions-col button.search-suggestion-item i {
+    color: #999;
 }

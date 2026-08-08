@@ -64,7 +64,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get("category");
     const searchParam = urlParams.get("search");
-
     const pageTitle = document.getElementById("category-page-title");
     const countInfo = document.querySelector("#product-count-info span");
     const gridContainer = document.getElementById("catalog-products-grid");
@@ -86,7 +85,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const brand = detectBrand(product).toLowerCase();
         return name.includes(q) || brand.includes(q);
     }
-
     function filterBySearch(products, query) {
         if (!query) return products;
         return products.filter(p => matchSearch(p, query));
@@ -97,11 +95,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     function renderProducts(productsToDisplay, totalItems) {
         if (!gridContainer) return;
         gridContainer.innerHTML = "";
-
         if (countInfo) {
             countInfo.textContent = totalItems !== undefined ? totalItems : productsToDisplay.length;
         }
-
         if (!productsToDisplay || productsToDisplay.length === 0) {
             gridContainer.innerHTML = `
                 <p style="grid-column: 1/-1; text-align: center; color: #888; padding: 3rem 0;">
@@ -109,15 +105,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </p>`;
             return;
         }
-
         productsToDisplay.forEach(item => {
             let displayPrice = item.price || item.harga || "Rp 0";
             if (typeof displayPrice === 'number') {
                 displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             }
-
             const imageSrc = item.imageUrl || item.image || item.img || item.image_url || 'https://placehold.co/300x300?text=No+Image';
-
             const cardHtml = `
                 <div class="product-card" onclick="window.location.href='/products/products.html?id=${item._id}'">
                     <button class="wishlist" onclick="event.stopPropagation();"><i data-feather="heart"></i></button>
@@ -139,11 +132,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             `;
             gridContainer.insertAdjacentHTML("beforeend", cardHtml);
         });
-
         if (window.feather) feather.replace();
     }
 
-    // Fungsi Fetch dan Match Category tetap sama...
     async function fetchProducts() {
         try {
             const response = await fetch('http://localhost:3000/api/shoes');
@@ -158,7 +149,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function matchCategory(product, queryCat) {
-        // ... (KODE LAMA matchCategory TETAP SAMA) ...
         if (!queryCat) return true;
         const q = queryCat.toLowerCase();
         const pCat = (product.category || "").toLowerCase();
@@ -175,15 +165,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!queryCat) return products;
         return products.filter(p => matchCategory(p, queryCat));
     }
-
-    // --- 3. TAMBAHAN FUNGSI PAGINATION DINAMIS ---
     function renderPaginationUI(totalItems) {
         const paginationContainer = document.querySelector(".catalog-pagination");
         if (!paginationContainer) return;
-
         const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-        // Jika hanya ada 1 halaman, hilangkan area pagination
         if (totalPages <= 1) {
             paginationContainer.style.display = "none";
             return;
@@ -193,12 +178,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         let html = "";
         const prevDisabled = currentPage === 1 ? "disabled" : "";
-        
-        // Tombol Previous
         html += `<a href="#" class="page-arrow ${prevDisabled}" data-action="prev"><i data-feather="chevrons-left"></i></a>`;
         html += `<a href="#" class="page-text ${prevDisabled}" data-action="prev">Prev</a>`;
-
-        // Render Angka Halaman dan Dots
         let l;
         for (let i = 1; i <= totalPages; i++) {
             if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
@@ -214,23 +195,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         }
 
-        // Tombol Next
         const nextDisabled = currentPage === totalPages ? "disabled" : "";
         html += `<a href="#" class="page-text ${nextDisabled ? "disabled" : "underline"}" data-action="next">Next</a>`;
         html += `<a href="#" class="page-arrow ${nextDisabled}" data-action="next"><i data-feather="chevrons-right"></i></a>`;
-
         paginationContainer.innerHTML = html;
         if (window.feather) feather.replace();
-
-        // Tambahkan Event Listener ke semua tombol pagination
         paginationContainer.querySelectorAll("a").forEach(btn => {
             btn.addEventListener("click", function(e) {
                 e.preventDefault();
                 if (this.classList.contains("disabled")) return;
-
                 const action = this.getAttribute("data-action");
                 const page = this.getAttribute("data-page");
-
                 if (action === "prev" && currentPage > 1) {
                     currentPage--;
                 } else if (action === "next" && currentPage < totalPages) {
@@ -238,62 +213,42 @@ document.addEventListener("DOMContentLoaded", async () => {
                 } else if (page) {
                     currentPage = parseInt(page);
                 }
-
-                // Render produk di halaman baru
                 showCurrentPage();
-                
-                // Auto-scroll ke atas bagian header katalog agar user tidak perlu scroll manual
                 document.querySelector(".catalog-header-bar").scrollIntoView({ behavior: 'smooth' });
             });
         });
     }
 
-    // Fungsi helper untuk memotong array dan menampilkan produk per halaman
     function showCurrentPage() {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        
-        // Memotong data array agar hanya mengambil maksimal 20 item per halaman
         const productsToShow = currentList.slice(startIndex, endIndex);
-        
-        // Panggil renderProducts dan passing total jumlah keseluruhan array
         renderProducts(productsToShow, currentList.length);
         renderPaginationUI(currentList.length);
     }
-
-    // --- 4. LOAD DATA AWAL ---
     const allProducts = await fetchProducts();
     currentList = filterBySearch(filterByCategory(allProducts, categoryParam), searchParam);
-    
-    // Alih-alih memanggil renderProducts() langsung, kita panggil showCurrentPage()
     showCurrentPage();
 
-    // --- 5. UPDATE INTERAKTIVITAS FILTER ---
     const genderCheckboxes = document.querySelectorAll(".filter-gender");
     const brandCheckboxes = document.querySelectorAll(".filter-brand");
     const sortSelect = document.getElementById("sort-select");
-
     function applyFilters() {
-        // ... (Pengambilan filter checkbox sama persis dengan kodinganmu) ...
         const selectedGenders = Array.from(genderCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
         const selectedBrands = Array.from(brandCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
-
         let result = filterBySearch(filterByCategory(allProducts, categoryParam), searchParam);
-
         if (selectedGenders.length > 0) {
             result = result.filter(p => {
                 const gen = (p.gender || p.category || "").toLowerCase();
                 return selectedGenders.some(g => gen.includes(g));
             });
         }
-
         if (selectedBrands.length > 0) {
             result = result.filter(p => {
                 const brand = detectBrand(p).toLowerCase();
                 return selectedBrands.some(b => brand.includes(b));
             });
         }
-
         if (sortSelect) {
             const sortVal = sortSelect.value;
             if (sortVal === "price-low") {
@@ -306,7 +261,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentPage = 1;     
         showCurrentPage();    
     }
-
     function parsePrice(val) {
         if (typeof val === 'number') return val;
         if (!val) return 0;
@@ -316,10 +270,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     genderCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     brandCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     if (sortSelect) sortSelect.addEventListener("change", applyFilters);
-
-    // ==========================================
-    // 6. NAVBAR SEARCH DROPDOWN (live suggestions)
-    // ==========================================
     const navSearchInput = document.getElementById("navbar-search-input");
     const navSearchSubmit = document.getElementById("navbar-search-submit");
     const navSearchClear = document.getElementById("navbar-search-clear");
@@ -329,41 +279,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     const navExploreAllBtn = document.getElementById("btn-explore-all");
 
     if (navSearchInput && navSearchResults) {
-
-        // Kalau lagi di halaman hasil pencarian, isi ulang input-nya
         if (searchParam) navSearchInput.value = searchParam;
-
-        // Kasih tanda tebal pada bagian teks yang cocok dengan kata kunci
         function highlightMatch(text, query) {
             const idx = text.toLowerCase().indexOf(query.toLowerCase());
             if (idx === -1) return text;
             return text.slice(0, idx) + "<b>" + text.slice(idx, idx + query.length) + "</b>" + text.slice(idx + query.length);
         }
-
-        // Bikin daftar saran keyword (kolom kiri) dari nama produk yang cocok
         function buildKeywordSuggestions(query, matches) {
             const q = query.toLowerCase();
             const stopWords = new Set(["unisex", "shoes", "sneakers", "men's", "women's", "lifestyle", "og", "sepatu", "-"]);
             const suggestions = [];
             const seen = new Set();
-
             function addSuggestion(text) {
                 const clean = text.trim().replace(/\s+/g, " ");
                 if (!clean || seen.has(clean)) return;
                 seen.add(clean);
                 suggestions.push(clean);
             }
-
             matches.forEach(item => {
                 const brand = detectBrand(item).toLowerCase();
                 const name = (item.name || item.title || "").toLowerCase();
                 const words = name.split(/[\s-]+/).filter(w => w && !stopWords.has(w));
                 const anchorIdx = words.findIndex(w => w.includes(q));
                 if (anchorIdx === -1) return;
-
                 const anchor = words[anchorIdx];
                 const nextWord = words[anchorIdx + 1];
-
                 if (brand && brand !== "tanpa merek") {
                     if (nextWord) addSuggestion(`${brand} ${anchor} ${nextWord}`);
                     addSuggestion(`${brand} ${anchor}`);
@@ -371,22 +311,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 addSuggestion(anchor);
                 if (nextWord) addSuggestion(`${anchor} ${nextWord}`);
             });
-
             return suggestions.slice(0, 5);
         }
-
         function renderNavSearch(query) {
             if (!query) {
                 navSearchResults.classList.remove("active");
                 if (navSearchClear) navSearchClear.style.display = "none";
                 return;
             }
-
             if (navSearchClear) navSearchClear.style.display = "flex";
-
             const matches = filterBySearch(allProducts, query);
-
-            // Kolom kiri: saran keyword
             if (navSearchKeywords) {
                 const keywordSuggestions = buildKeywordSuggestions(query, matches);
                 if (keywordSuggestions.length === 0) {
@@ -398,7 +332,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <span>${highlightMatch(sugg, query)}</span>
                         </button>
                     `).join("");
-
                     navSearchKeywords.querySelectorAll(".search-suggestion-item").forEach(btn => {
                         btn.addEventListener("click", () => {
                             const sugg = btn.getAttribute("data-suggestion");
@@ -409,8 +342,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                 }
             }
-
-            // Kolom kanan: grid produk yang cocok
             if (navSearchGrid) {
                 if (matches.length === 0) {
                     navSearchGrid.innerHTML = `<p class="search-no-result">Tidak ada produk yang cocok dengan "${query}"</p>`;
@@ -433,33 +364,27 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }).join("");
                 }
             }
-
             if (navExploreAllBtn) {
                 navExploreAllBtn.onclick = () => {
                     window.location.href = `products.html?search=${encodeURIComponent(query)}`;
                 };
             }
-
             navSearchResults.classList.add("active");
             if (window.feather) feather.replace();
         }
-
         let navSearchDebounce = null;
         navSearchInput.addEventListener("input", function() {
             clearTimeout(navSearchDebounce);
             const query = this.value.trim();
             navSearchDebounce = setTimeout(() => renderNavSearch(query), 200);
         });
-
         navSearchInput.addEventListener("focus", function() {
             if (this.value.trim()) renderNavSearch(this.value.trim());
         });
-
         function goToSearchPage() {
             const query = navSearchInput.value.trim();
             if (query) window.location.href = `products.html?search=${encodeURIComponent(query)}`;
         }
-
         navSearchInput.addEventListener("keydown", function(e) {
             if (e.key === "Enter") {
                 e.preventDefault();
@@ -469,14 +394,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 navSearchInput.blur();
             }
         });
-
         if (navSearchSubmit) {
             navSearchSubmit.addEventListener("click", function(e) {
                 e.preventDefault();
                 goToSearchPage();
             });
         }
-
         if (navSearchClear) {
             navSearchClear.addEventListener("click", function() {
                 navSearchInput.value = "";
@@ -485,8 +408,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 navSearchInput.focus();
             });
         }
-
-        // Tutup dropdown kalau klik di luar area search bar
         document.addEventListener("click", function(e) {
             if (!e.target.closest(".search-bar")) {
                 navSearchResults.classList.remove("active");
