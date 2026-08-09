@@ -2159,12 +2159,15 @@ body.catalog-page {
     flex: 1 1 auto;
     min-width: 0;
     padding: 20px;
+    padding-left: 25px;
 }
 
 .search-products-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 20px 16px;
+    padding-left: 30px;
+    box-sizing: border-box;
 }
 
 .search-no-result {
@@ -2180,7 +2183,7 @@ body.catalog-page {
 
 .search-product-thumb {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1.08;
     background-color: #f7f7f7;
     overflow: hidden;
     margin-bottom: 10px;
@@ -2437,4 +2440,94 @@ body.catalog-page {
 
 .search-bar .search-suggestions-col button.search-suggestion-item i {
     color: #999;
+}
+
+.search-product-item,
+.suggested-item {
+    display: flex;
+    flex-direction: column;
+    width: 230px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    cursor: pointer;
+    box-sizing: border-box;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.search-product-item:hover,
+.suggested-item:hover {
+    border-color: #c1c1cd;
+    border-bottom: 5px solid #333333;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.search-product-thumb,
+.suggested-item-image-wrapper { 
+    position: relative;
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #e5e7eb; 
+    background-color: #ffffff; 
+}
+
+.search-product-thumb img, 
+.suggested-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain; 
+}
+
+.search-product-info,
+.suggested-info {
+    padding: 12px 12px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-brand {
+    font-size: 0.75rem;
+    color: #6b7280; 
+    margin: 0;
+}
+
+.search-product-name, 
+.suggested-info h4 {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #111;
+    margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.search-product-price, 
+.suggested-info p {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #000;
+    margin: 4px 0 0 0;
+}
+
+.search-product-item {
+    min-height: 285px;
+}
+
+.search-product-info {
+    padding: 12px 12px 25px !important;
+    gap: 6px;
+}
+
+.search-product-price {
+    margin-top: 6px !important;
 }
