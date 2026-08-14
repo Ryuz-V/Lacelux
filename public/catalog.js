@@ -52,12 +52,12 @@ function detectBrand(product) {
         { brand: "Golden Goose", keywords: ["golden goose"] },
     ];
 
-    for (const entry of brandKeywords) {
+for (const entry of brandKeywords) {
         if (entry.keywords.some(k => nameStr.includes(k))) {
             return entry.brand;
         }
     }
-    return "Tanpa Merek";
+    return "Indie";
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <p class="product-brand">${detectBrand(item)}</p>
                         <h3 class="product-name">${item.name || 'Tanpa Nama'}</h3>
                         <div class="product-details">
-                            <p class="product-category">${(item.gender || item.category || 'Unisex').toUpperCase()}</p>
+                            <p class="product-category">${detectGender(item).toUpperCase()}</p>
                             <p class="product-color-count">Warna : ${item.color || '-'}</p>
                         </div>
                         <div class="product-price">
@@ -134,7 +134,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         if (window.feather) feather.replace();
     }
-
     async function fetchProducts() {
         try {
             const response = await fetch('http://localhost:3000/api/shoes');
@@ -147,20 +146,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             return [];
         }
     }
-
-    function matchCategory(product, queryCat) {
-        if (!queryCat) return true;
-        const q = queryCat.toLowerCase();
-        const pCat = (product.category || "").toLowerCase();
-        const pGen = (product.gender || "").toLowerCase();
-
-        if (q === "pria" || q === "men" || q === "man") return pCat.includes("pria") || pCat.includes("men") || pGen.includes("pria") || pGen.includes("men");
-        if (q === "wanita" || q === "women") return pCat.includes("wanita") || pCat.includes("women") || pGen.includes("wanita") || pGen.includes("women");
-        if (q === "anak" || q === "kids") return pCat.includes("anak") || pCat.includes("kids") || pGen.includes("anak") || pGen.includes("kids");
-        if (["new-arrivals", "eksklusif", "brands", "sale", "coming-soon"].includes(q)) return true;
-        return pCat.includes(q) || pGen.includes(q);
-    }
-
+function matchCategory(product, queryCat) {
+    if (!queryCat) return true;
+    const q = queryCat.toLowerCase();
+    const pGen = detectGender(product).toLowerCase();
+    if (q === "pria" || q === "men" || q === "man") return pGen.includes("pria");
+    if (q === "wanita" || q === "women") return pGen.includes("wanita");
+    if (q === "anak" || q === "kids") return pGen.includes("anak");
+    if (q === "unisex") return pGen.includes("unisex");
+    if (["new-arrivals", "eksklusif", "brands", "sale", "coming-soon"].includes(q)) return true;
+    return pGen.includes(q);
+}
     function filterByCategory(products, queryCat) {
         if (!queryCat) return products;
         return products.filter(p => matchCategory(p, queryCat));
@@ -175,7 +171,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             paginationContainer.style.display = "flex";
         }
-
         let html = "";
         const prevDisabled = currentPage === 1 ? "disabled" : "";
         html += `<a href="#" class="page-arrow ${prevDisabled}" data-action="prev"><i data-feather="chevrons-left"></i></a>`;
@@ -233,22 +228,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     const genderCheckboxes = document.querySelectorAll(".filter-gender");
     const brandCheckboxes = document.querySelectorAll(".filter-brand");
     const sortSelect = document.getElementById("sort-select");
+    const sizeButtons = document.querySelectorAll(".size-btn"); // Penambahan filter size
+
     function applyFilters() {
         const selectedGenders = Array.from(genderCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
         const selectedBrands = Array.from(brandCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
+        
+        // Penangkapan size yang sedang aktif (diklik)
+        const selectedSizes = Array.from(sizeButtons)
+            .filter(btn => btn.classList.contains("active"))
+            .map(btn => btn.textContent.trim().toLowerCase());
+
         let result = filterBySearch(filterByCategory(allProducts, categoryParam), searchParam);
+        
         if (selectedGenders.length > 0) {
             result = result.filter(p => {
-                const gen = (p.gender || p.category || "").toLowerCase();
-                return selectedGenders.some(g => gen.includes(g));
+                const gen = detectGender(p).toLowerCase();
+                return selectedGenders.some(g => {
+                    if (g === "kids") return gen.includes("anak");
+                    return gen.includes(g);
+                });
             });
         }
+        
         if (selectedBrands.length > 0) {
             result = result.filter(p => {
                 const brand = detectBrand(p).toLowerCase();
-                return selectedBrands.some(b => brand.includes(b));
+                return selectedBrands.some(b => brand === b);
             });
         }
+
+        // Proses Filter Size
+        if (selectedSizes.length > 0) {
+            result = result.filter(p => {
+                let prodSizes = [];
+                if (Array.isArray(p.sizes)) {
+                    prodSizes = p.sizes.map(s => String(s).toLowerCase());
+                } else if (typeof p.size === 'string') {
+                    prodSizes = p.size.split(',').map(s => s.trim().toLowerCase());
+                } else if (p.size) {
+                    prodSizes = [String(p.size).toLowerCase()];
+                } else {
+                    return false; 
+                }
+                return selectedSizes.some(selectedSize => prodSizes.includes(selectedSize));
+            });
+        }
+
         if (sortSelect) {
             const sortVal = sortSelect.value;
             if (sortVal === "price-low") {
@@ -257,10 +283,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 result.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
             }
         }
+        
         currentList = result; 
         currentPage = 1;     
         showCurrentPage();    
     }
+    
     function parsePrice(val) {
         if (typeof val === 'number') return val;
         if (!val) return 0;
@@ -270,6 +298,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     genderCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     brandCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     if (sortSelect) sortSelect.addEventListener("change", applyFilters);
+    
+    // Penambahan event listener pada setiap tombol size
+    sizeButtons.forEach(btn => {
+        btn.addEventListener("click", function() {
+            this.classList.toggle("active");
+            applyFilters();
+        });
+    });
+
     const navSearchInput = document.getElementById("navbar-search-input");
     const navSearchSubmit = document.getElementById("navbar-search-submit");
     const navSearchClear = document.getElementById("navbar-search-clear");
@@ -304,7 +341,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (anchorIdx === -1) return;
                 const anchor = words[anchorIdx];
                 const nextWord = words[anchorIdx + 1];
-                if (brand && brand !== "tanpa merek") {
+                if (brand && brand !== "indie") {
                     if (nextWord) addSuggestion(`${brand} ${anchor} ${nextWord}`);
                     addSuggestion(`${brand} ${anchor}`);
                 }
@@ -415,3 +452,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 });
+function detectGender(product) {
+    const nameStr = ((product.name || product.title || "")).toLowerCase();
+    if (nameStr.includes("kids") || nameStr.includes(" gs ") || nameStr.includes(" ps ") || nameStr.includes(" td ") || nameStr.includes("boys") || nameStr.includes("girls") || nameStr.includes("anak")) {
+        return "Anak - Anak";
+    }
+    if (nameStr.includes("women") || nameStr.includes("wmns") || nameStr.includes("wanita") || nameStr.includes("ladies")) {
+        return "Wanita";
+    }
+    if (nameStr.includes("men") || nameStr.includes("mens") || nameStr.includes("pria") || nameStr.includes("laki")) {
+        return "Pria";
+    }
+    return "Unisex";
+}
+const brandSearchInput = document.getElementById("brand-search-input");
+    if (brandSearchInput) {
+        brandSearchInput.addEventListener("input", function() {
+            const val = this.value.toLowerCase();
+            document.querySelectorAll(".brand-list .custom-checkbox").forEach(label => {
+                const text = label.querySelector("span").textContent.toLowerCase();
+                // Tampilkan jika cocok, sembunyikan jika tidak
+                label.style.display = text.includes(val) ? "flex" : "none";
+            });
+        });
+    }

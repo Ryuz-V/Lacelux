@@ -51,13 +51,12 @@ function detectBrand(product) {
         { brand: "Common Projects", keywords: ["common projects"] },
         { brand: "Golden Goose", keywords: ["golden goose"] },
     ];
-
-    for (const entry of brandKeywords) {
+for (const entry of brandKeywords) {
         if (entry.keywords.some(k => nameStr.includes(k))) {
             return entry.brand;
         }
     }
-    return "Tanpa Merek";
+    return "Indie";
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
