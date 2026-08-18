@@ -68,14 +68,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const countInfo = document.querySelector("#product-count-info span");
     const gridContainer = document.getElementById("catalog-products-grid");
 
-    if (pageTitle && searchParam) {
+if (pageTitle && searchParam) {
         pageTitle.textContent = `HASIL PENCARIAN: "${searchParam}"`;
     } else if (pageTitle && categoryParam) {
-        const formattedTitle = categoryParam.replace("-", " ").toUpperCase();
-        if (formattedTitle === "NEW ARRIVALS") {
-            pageTitle.textContent = formattedTitle;
+        let formattedTitle = categoryParam.replace("-", " ").toUpperCase();
+        if (formattedTitle === "PRIA") formattedTitle = "MAN";
+        if (formattedTitle === "WANITA") formattedTitle = "WOMAN";
+        if (formattedTitle === "ANAK") formattedTitle = "KIDS";
+        if (formattedTitle === "EKSKLUSIF") formattedTitle = "EXCLUSIVE";
+        if (formattedTitle === "ALL SHOES" || formattedTitle === "NEW ARRIVALS") {
+            pageTitle.textContent = "ALL SHOES";
         } else {
-            pageTitle.textContent = `NEW ARRIVALS ${formattedTitle}`;
+            pageTitle.textContent = `ALL SHOES ${formattedTitle}`;
         }
     }
     function matchSearch(product, query) {
@@ -154,7 +158,8 @@ function matchCategory(product, queryCat) {
     if (q === "wanita" || q === "women") return pGen.includes("wanita");
     if (q === "anak" || q === "kids") return pGen.includes("anak");
     if (q === "unisex") return pGen.includes("unisex");
-    if (["new-arrivals", "eksklusif", "brands", "sale", "coming-soon"].includes(q)) return true;
+    // Ganti "new-arrivals" di dalam array ini menjadi "all-shoes"
+    if (["all-shoes", "eksklusif", "brands", "sale", "coming-soon"].includes(q)) return true;
     return pGen.includes(q);
 }
     function filterByCategory(products, queryCat) {
@@ -228,19 +233,20 @@ function matchCategory(product, queryCat) {
     const genderCheckboxes = document.querySelectorAll(".filter-gender");
     const brandCheckboxes = document.querySelectorAll(".filter-brand");
     const sortSelect = document.getElementById("sort-select");
-    const sizeButtons = document.querySelectorAll(".size-btn"); // Penambahan filter size
+    const sizeButtons = document.querySelectorAll(".size-btn");
+    const colorSwatches = document.querySelectorAll(".color-swatch");
+    const priceRangeInput = document.getElementById("price-range-input");
 
     function applyFilters() {
         const selectedGenders = Array.from(genderCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
         const selectedBrands = Array.from(brandCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
-        
-        // Penangkapan size yang sedang aktif (diklik)
         const selectedSizes = Array.from(sizeButtons)
             .filter(btn => btn.classList.contains("active"))
             .map(btn => btn.textContent.trim().toLowerCase());
-
+        const selectedColors = Array.from(colorSwatches)
+            .filter(swatch => swatch.classList.contains("active"))
+            .map(swatch => swatch.getAttribute("title").toLowerCase());
         let result = filterBySearch(filterByCategory(allProducts, categoryParam), searchParam);
-        
         if (selectedGenders.length > 0) {
             result = result.filter(p => {
                 const gen = detectGender(p).toLowerCase();
@@ -250,7 +256,6 @@ function matchCategory(product, queryCat) {
                 });
             });
         }
-        
         if (selectedBrands.length > 0) {
             result = result.filter(p => {
                 const brand = detectBrand(p).toLowerCase();
@@ -258,7 +263,14 @@ function matchCategory(product, queryCat) {
             });
         }
 
-        // Proses Filter Size
+        if (selectedColors.length > 0) {
+            result = result.filter(p => {
+                if (!p.color) return false;
+                const prodColors = String(p.color).toLowerCase();
+                return selectedColors.some(selectedColor => prodColors.includes(selectedColor));
+            });
+        }
+
         if (selectedSizes.length > 0) {
             result = result.filter(p => {
                 let prodSizes = [];
@@ -299,9 +311,15 @@ function matchCategory(product, queryCat) {
     brandCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     if (sortSelect) sortSelect.addEventListener("change", applyFilters);
     
-    // Penambahan event listener pada setiap tombol size
     sizeButtons.forEach(btn => {
         btn.addEventListener("click", function() {
+            this.classList.toggle("active");
+            applyFilters();
+        });
+    });
+
+    colorSwatches.forEach(swatch => {
+        swatch.addEventListener("click", function() {
             this.classList.toggle("active");
             applyFilters();
         });

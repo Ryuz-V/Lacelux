@@ -65,22 +65,20 @@ nav {
     padding: 20px 0;
 }
 
-/* --- STYLING MEGA MENU DROPDOWN --- */
 .mega-menu {
-    display: none; /* Sembunyikan menu secara default */
+    display: none;
     position: absolute;
     left: 0;
     top: 100%;
     width: 100%;
     background-color: #fff;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1); /* Efek bayangan */
-    padding: 40px 15%; /* Jarak konten ke tepi layar */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    padding: 40px 15%;
     z-index: 100;
     border-top: 1px solid #eee;
-    justify-content: space-between; /* Menjaga jarak antar kolom seperti di gambar */
+    justify-content: space-between;
 }
 
-/* --- FUNGSI HOVER (Menampilkan Menu) --- */
 .dropdown:hover .mega-menu {
     display: flex; /* Ubah ke flex saat di-hover */
 }
@@ -102,7 +100,25 @@ nav {
 
 .column a:hover {
     color: #000;
-    text-decoration: underline; /* Garis bawah ketika item di-hover */
+    text-decoration: underline;
+}
+
+.header-nav ul li .mega-menu .column a {
+    color: #666 !important;
+    display: block;
+    text-decoration: none;
+    margin: 0 0 12px 0 !important;
+    padding: 0;
+    font-size: 14px;
+}
+
+.header-nav ul li .mega-menu .column a:hover {
+    color: #000 !important;
+    text-decoration: underline;
+}
+
+.header-nav ul li .mega-menu .column a::after {
+    display: none;
 }
 
 nav.scrolled {
@@ -1980,6 +1996,11 @@ body.catalog-page {
 
 .color-swatch:hover {
     transform: scale(1.15);
+}
+
+.color-swatch.active {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #111;
 }
 
 .price-range-inputs {

@@ -60,29 +60,19 @@ for (const entry of brandKeywords) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // 1. Ambil parameter ID dari URL
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
 
     try {
-        // 2. Fetch data dari API (Sama seperti di katalog)
         const response = await fetch('http://localhost:3000/api/shoes');
         if (!response.ok) throw new Error("Gagal mengambil data");
         const products = await response.json();
-
-        // 3. Cari produk berdasarkan ID
-        // Menggunakan String() untuk memastikan tipe data cocok (aman dari perbedaan int/string)
         const selectedProduct = products.find(product => String(product._id) === String(productId));
-
-        // 4. Masukkan data ke dalam elemen HTML
         if (selectedProduct) {
-            // Format harga (menyesuaikan format dari API)
             let displayPrice = selectedProduct.price || selectedProduct.harga || "Rp 0";
             if (typeof displayPrice === 'number') {
                 displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             }
-
-        // 1. Logika penentuan gender/kategori (Men, Women, Kids)
 let determinedCategory = "Unisex";
 const productInfo = ((selectedProduct.category || "") + " " + (selectedProduct.gender || "") + " " + (selectedProduct.name || "")).toLowerCase();
 
@@ -93,10 +83,6 @@ if (productInfo.includes("wanita") || productInfo.includes("women") || productIn
 } else if (productInfo.includes("anak") || productInfo.includes("kids") || productInfo.includes("toddler")) {
     determinedCategory = "Kids";
 }
-
-// 2. Logika deteksi Brand otomatis (mengabaikan nama toko Footlocker)
-// Menggunakan fungsi detectBrand() yang sama dengan halaman katalog (lihat catalog.js)
-// supaya hasil deteksi brand konsisten di semua halaman, untuk semua produk.
 let determinedBrand = detectBrand(selectedProduct);
 
 // 3. Mapping data akhir
