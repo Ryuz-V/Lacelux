@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     const wishlistBtns = document.querySelectorAll('.wishlist');
     wishlistBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(event) {
+            event.stopPropagation();
             const icon = this.querySelector('i');
             if (this.classList.contains('active')) {
                 this.classList.remove('active');
@@ -22,6 +23,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.fill = '#ef4444';
             }
         });
+    });
+
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const nameEl = card.querySelector('.product-name');
+            const imgEl = card.querySelector('img');
+            const priceEl = card.querySelector('.product-price p') || card.querySelector('.product-price');
+            const brandEl = card.querySelector('.product-brand');
+            const catEl = card.querySelector('.product-category');
+            
+            const params = new URLSearchParams();
+            if (nameEl) params.set('dummy_name', nameEl.innerText);
+            if (imgEl) params.set('dummy_img', imgEl.src);
+            if (priceEl) params.set('dummy_price', priceEl.innerText);
+            if (brandEl) params.set('dummy_brand', brandEl.innerText);
+            if (catEl) params.set('dummy_cat', catEl.innerText);
+            
+            window.location.href = '/public/products/products.html?' + params.toString();
+        });
+        card.style.cursor = 'pointer';
     });
     const spotlightItems = document.querySelectorAll('.spotlight-nav li');
     spotlightItems.forEach((item, index) => {

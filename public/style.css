@@ -1883,7 +1883,7 @@ body.catalog-page {
     width: 100%; 
     max-width: 1500px;
     margin: 0 auto;
-    padding: 2rem 5% 0;
+    padding: 2rem 5% 5rem;
     gap: 40px;
     box-sizing: border-box; 
 }

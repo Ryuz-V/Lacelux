@@ -76,11 +76,8 @@ if (pageTitle && searchParam) {
         if (formattedTitle === "WANITA") formattedTitle = "WOMAN";
         if (formattedTitle === "ANAK") formattedTitle = "KIDS";
         if (formattedTitle === "EKSKLUSIF") formattedTitle = "EXCLUSIVE";
-        if (formattedTitle === "ALL SHOES" || formattedTitle === "NEW ARRIVALS") {
-            pageTitle.textContent = "ALL SHOES";
-        } else {
-            pageTitle.textContent = `ALL SHOES ${formattedTitle}`;
-        }
+        if (formattedTitle === "NEW ARRIVALS") formattedTitle = "ALL SHOES";
+        pageTitle.textContent = formattedTitle;
     }
     function matchSearch(product, query) {
         if (!query) return true;

@@ -131,16 +131,49 @@ const mappedData = {
             populateData(mappedData);
             switchTab('details');
             document.title = mappedData.title;
+        } else if (urlParams.has('dummy_name')) {
+            // Dynamic Dummy Data Logic
+            const dummyData = {
+                brand: urlParams.get('dummy_brand') || 'Lacelux',
+                title: urlParams.get('dummy_name'),
+                category: urlParams.get('dummy_cat') || 'Unisex',
+                sku: "DUMMY-" + Math.floor(Math.random() * 100000),
+                price: urlParams.get('dummy_price') || "Rp. 1.500.000",
+                oldPrice: "",
+                discount: "",
+                rating: 4.8,
+                reviewCount: 120,
+                images: [
+                    urlParams.get('dummy_img') || "https://placehold.co/600x400?text=No+Image",
+                    urlParams.get('dummy_img') || "https://placehold.co/600x400?text=No+Image",
+                    urlParams.get('dummy_img') || "https://placehold.co/600x400?text=No+Image"
+                ],
+                sizes: ["US 7", "US 8", "US 9", "US 10", "US 11"],
+                description: `
+                    <h3>${urlParams.get('dummy_brand') || 'Lacelux'} ${urlParams.get('dummy_name')}</h3>
+                    <p>Designed for everyday comfort and effortless style. Perfect for casual outfits, streetwear looks, and daily adventures.</p>
+                    <ul>
+                        <li>High quality materials.</li>
+                        <li>True to size fit.</li>
+                    </ul>
+                `,
+                reviews: scrapedData.reviews
+            };
+            populateData(dummyData);
+            switchTab('details');
+            document.title = dummyData.title;
         } else {
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('error-message').classList.remove('hidden');
-            document.getElementById('error-message').textContent = "Produk tidak ditemukan!";
+            // Fallback to static scrapedData
+            populateData(scrapedData);
+            switchTab('details');
+            document.title = scrapedData.title;
         }
     } catch (error) {
         console.error("Terjadi kesalahan:", error);
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('error-message').classList.remove('hidden');
-        document.getElementById('error-message').textContent = "Terjadi kesalahan saat memuat data produk.";
+        // Fallback to static scrapedData on API error
+        populateData(scrapedData);
+        switchTab('details');
+        document.title = scrapedData.title;
     }
 });
 
