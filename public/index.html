@@ -16,38 +16,105 @@
         <img src="/public/asset/Logo_icon_2.png" alt="NexaV-Black" class="icon-black">
     </div>
     <div class="header-nav">
-        <ul>
-            <li><a href="products.html?category=new-arrivals">New Arrivals</a></li>
-            <li><a href="products.html?category=men">Man</a></li>
-            <li><a href="products.html?category=women">Women</a></li>
-            <li><a href="products.html?category=kids">Kids</a></li>
-            <li><a href="products.html?category=coming-soon">Coming Soon</a></li>
-            <li><a href="products.html?category=brands">Brands</a></li>
-        </ul>
-        <div class="menu">
-            <button class="search-btn"><i data-feather="search"></i> <span>SEARCH</span></button>
-            <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
-            <button class="wishlist-btn"><i data-feather="heart"></i></button>
-            <a href="/public/Login/login.html"><button class="user-btn"><i data-feather="user"></i></button></a>
-        </div>
-    </div>
-<div class="search-overlay" id="search-overlay">
-    <div class="search-overlay-header">
-        <form id="search-form" class="search-form-overlay">
-            <input type="text" placeholder="Search Products..." id="search-input" autocomplete="off">
-            <button type="button" id="clear-search" class="clear-btn">CLEAR</button>
-            <button type="submit" class="search-submit"><i data-feather="search"></i></button>
-        </form>
-        <button type="button" class="close-search-overlay" id="close-search"><i data-feather="x"></i></button>
-    </div>
-    <div class="search-results-area" id="search-results-area">
-        <h3 id="search-results-title"></h3>
-        <div class="suggested-grid" id="search-results-grid"></div>
-        <div class="search-explore-all">
-            <a href="products.html" id="explore-all-btn">Jelajahi Semua Produk <i data-feather="arrow-right"></i></a>
-        </div>
+    <ul>
+        <!-- Tambahkan class 'no-wrap' pada link yang panjang -->
+        <li><a href="products.html?category=new-arrivals" class="no-wrap">New Arrivals</a></li>
+        
+        <li class="dropdown">
+            <a href="#">Man</a> <!-- Hanya huruf depan kapital -->
+            <div class="mega-menu">
+                <div class="column">
+                    <h3>Sepatu</h3>
+                    <a href="#">Semua Koleksi Pria</a>
+                    <a href="#">Lari</a>
+                    <a href="#">Bola Basket</a>
+                    <a href="#">Kasual</a>
+                    <a href="#">Sandal & Fit Flop</a>
+                    <a href="#">All Black shoes</a>
+                    <a href="#">All White shoes</a>
+                </div>
+                <div class="column">
+                    <h3>Pakaian</h3>
+                    <a href="#">Semua Koleksi Pria</a>
+                    <a href="#">Kaos</a>
+                    <a href="#">Celana Pendek</a>
+                    <a href="#">Celana Panjang</a>
+                    <a href="#">Hoodie</a>
+                    <a href="#">Jaket</a>
+                </div>
+                <div class="column">
+                    <h3>Aksesoris</h3>
+                    <a href="#">Semua Koleksi Pria</a>
+                    <a href="#">Topi</a>
+                    <a href="#">Tas</a>
+                    <a href="#">Kaos Kaki</a>
+                    <a href="#">Perawatan Sepatu</a>
+                    <a href="#">Alat Olahraga</a>
+                    <a href="#">Crocs Jibbitz</a>
+                </div>
+                <div class="column">
+                    <h3>Icons</h3>
+                    <a href="#">Nike Air Max</a>
+                    <a href="#">New Balance 530</a>
+                    <a href="#">Adistar</a>
+                    <a href="#">Asics GT-2160</a>
+                    <a href="#">Handball Spezial</a>
+                    <a href="#">Adizero Evo SL</a>
+                </div>
+            </div>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">Woman</a> <!-- Hanya huruf depan kapital -->
+            <div class="mega-menu">
+                <div class="column"><h3>Kategori Woman</h3><a href="#">Contoh 1</a></div>
+            </div>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">Kids</a> <!-- Hanya huruf depan kapital -->
+            <div class="mega-menu">
+                <div class="column"><h3>Kategori Kids</h3><a href="#">Contoh 1</a></div>
+            </div>
+        </li>
+
+        <li class="dropdown">
+            <a href="#">Brands</a> <!-- Hanya huruf depan kapital -->
+            <div class="mega-menu">
+                <div class="column"><h3>Kategori Brands</h3><a href="#">Contoh 1</a></div>
+            </div>
+        </li>
+
+        <!-- Tambahkan class 'no-wrap' pada link yang panjang -->
+        <li><a href="products.html?category=coming-soon" class="no-wrap">Coming Soon</a></li>
+    </ul>
+    
+    <div class="menu">
+        <button class="search-btn"><i data-feather="search"></i> <span>SEARCH</span></button>
+        <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
+        <button class="wishlist-btn"><i data-feather="heart"></i></button>
+        <a href="/public/Login/login.html"><button class="user-btn"><i data-feather="user"></i></button></a>
     </div>
 </div>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="search-overlay">
+        <div class="search-overlay-header">
+            <form id="search-form" class="search-form-overlay">
+                <input type="text" placeholder="Search Products..." id="search-input" autocomplete="off">
+                <button type="button" id="clear-search" class="clear-btn">CLEAR</button>
+                <button type="submit" class="search-submit"><i data-feather="search"></i></button>
+            </form>
+            <button type="button" class="close-search-overlay" id="close-search"><i data-feather="x"></i></button>
+        </div>
+        <div class="search-results-area" id="search-results-area">
+            <h3 id="search-results-title"></h3>
+            <div class="suggested-grid" id="search-results-grid"></div>
+            <div class="search-explore-all">
+                <a href="products.html" id="explore-all-btn">Jelajahi Semua Produk <i data-feather="arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
 </nav>
 <section class="hero">
     <div class="slideshow">
