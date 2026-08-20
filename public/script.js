@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     feather.replace();
     const filterButtons = document.querySelectorAll('.filters button');
     filterButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             filterButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             console.log('Filtering trending shoes by:', this.innerText);
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     const wishlistBtns = document.querySelectorAll('.wishlist');
     wishlistBtns.forEach(btn => {
-        btn.addEventListener('click', function(event) {
+        btn.addEventListener('click', function (event) {
             event.stopPropagation();
             const icon = this.querySelector('i');
             if (this.classList.contains('active')) {
@@ -24,30 +24,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    document.body.addEventListener('click', function(e) {
+        const card = e.target.closest('.product-card');
+        if (!card) return;
+        if (e.target.closest('.wishlist') || e.target.closest('button')) return;
+
+        const nameEl = card.querySelector('.product-name');
+        const imgEl = card.querySelector('img');
+        const priceEl = card.querySelector('.product-price p') || card.querySelector('.product-price');
+        const brandEl = card.querySelector('.product-brand');
+        const catEl = card.querySelector('.product-category');
+        
+        const params = new URLSearchParams();
+        if (nameEl && nameEl.innerText) params.set('dummy_name', nameEl.innerText.trim());
+        if (imgEl && imgEl.src) params.set('dummy_img', imgEl.src);
+        if (priceEl && priceEl.innerText) params.set('dummy_price', priceEl.innerText.trim());
+        if (brandEl && brandEl.innerText) params.set('dummy_brand', brandEl.innerText.trim());
+        if (catEl && catEl.innerText) params.set('dummy_cat', catEl.innerText.trim());
+        
+        window.location.href = '/public/products/products.html?' + params.toString();
+    });
 
     const productCards = document.querySelectorAll('.product-card');
-    productCards.forEach(card => {
-        card.addEventListener('click', function() {
-            const nameEl = card.querySelector('.product-name');
-            const imgEl = card.querySelector('img');
-            const priceEl = card.querySelector('.product-price p') || card.querySelector('.product-price');
-            const brandEl = card.querySelector('.product-brand');
-            const catEl = card.querySelector('.product-category');
-            
-            const params = new URLSearchParams();
-            if (nameEl) params.set('dummy_name', nameEl.innerText);
-            if (imgEl) params.set('dummy_img', imgEl.src);
-            if (priceEl) params.set('dummy_price', priceEl.innerText);
-            if (brandEl) params.set('dummy_brand', brandEl.innerText);
-            if (catEl) params.set('dummy_cat', catEl.innerText);
-            
-            window.location.href = '/public/products/products.html?' + params.toString();
-        });
-        card.style.cursor = 'pointer';
-    });
+    productCards.forEach(card => card.style.cursor = 'pointer');
     const spotlightItems = document.querySelectorAll('.spotlight-nav li');
     spotlightItems.forEach((item, index) => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', function () {
             spotlightItems.forEach(i => i.classList.remove('active'));
             this.classList.add('active');
             console.log('Spotlight category selected:', this.innerText);
@@ -119,7 +121,7 @@ function detectBrand(product) {
         { brand: "Common Projects", keywords: ["common projects"] },
         { brand: "Golden Goose", keywords: ["golden goose"] },
     ];
-for (const entry of brandKeywords) {
+    for (const entry of brandKeywords) {
         if (entry.keywords.some(k => nameStr.includes(k))) {
             return entry.brand;
         }
@@ -163,9 +165,7 @@ function renderSearchResults(query, products) {
         const brand = detectBrand(p).toLowerCase();
         return name.includes(q) || brand.includes(q);
     }).slice(0, 6);
-
     searchResultsArea.classList.add('active');
-
     if (matches.length === 0) {
         if (searchResultsTitle) searchResultsTitle.textContent = `Tidak ada hasil untuk "${query}"`;
         searchResultsGrid.innerHTML = `<p class="search-results-empty">Coba kata kunci lain, misalnya nama brand atau tipe sepatu.</p>`;
@@ -195,7 +195,7 @@ function renderSearchResults(query, products) {
 }
 let searchDebounceTimer = null;
 if (searchInput) {
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function () {
         const query = this.value.trim();
         clearTimeout(searchDebounceTimer);
         searchDebounceTimer = setTimeout(async () => {
@@ -205,7 +205,7 @@ if (searchInput) {
     });
 }
 if (searchBtn && searchOverlay) {
-    searchBtn.addEventListener('click', function(e) {
+    searchBtn.addEventListener('click', function (e) {
         e.preventDefault();
         searchOverlay.classList.add('active');
         document.body.classList.add('no-scroll');
@@ -215,20 +215,20 @@ if (searchBtn && searchOverlay) {
     });
 }
 if (closeSearchBtn) {
-    closeSearchBtn.addEventListener('click', function() {
+    closeSearchBtn.addEventListener('click', function () {
         searchOverlay.classList.remove('active');
         document.body.classList.remove('no-scroll');
     });
 }
 if (clearBtn) {
-    clearBtn.addEventListener('click', function() {
+    clearBtn.addEventListener('click', function () {
         searchInput.value = '';
         searchInput.focus();
         renderSearchResults('', allProductsCache || []);
     });
 }
 if (searchForm) {
-    searchForm.addEventListener('submit', function(e) {
+    searchForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const query = searchInput.value.trim();
         if (query) {
@@ -236,17 +236,17 @@ if (searchForm) {
         }
     });
 }
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
         searchOverlay.classList.remove('active');
         document.body.classList.remove('no-scroll');
     }
 });
 const spotlightItems = document.querySelectorAll('.spotlight-nav li');
-const spotlightImage = document.getElementById('spotlight-display'); 
+const spotlightImage = document.getElementById('spotlight-display');
 const spotlightDesc = document.getElementById('spotlight-description');
 spotlightItems.forEach((item) => {
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
         spotlightItems.forEach(i => i.classList.remove('active'));
         this.classList.add('active');
         const newImageSource = this.getAttribute('data-image');
@@ -257,11 +257,10 @@ spotlightItems.forEach((item) => {
         if (newDescription) {
             spotlightDesc.innerText = newDescription;
         }
-        
+
         console.log('Spotlight category selected:', this.innerText);
     });
 });
-
 document.addEventListener('DOMContentLoaded', () => {
     const btnPrev = document.getElementById('btn-prev-product');
     const btnNext = document.getElementById('btn-next-product');
@@ -323,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (productGrid) {
-        productGrid.addEventListener('click', function(e) {
+        productGrid.addEventListener('click', function (e) {
             const wishlistBtn = e.target.closest('.wishlist');
             if (wishlistBtn) {
                 if (wishlistBtn.classList.contains('active')) {
@@ -368,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const roleEl = document.getElementById('testimonial-role');
     const btnPrevTestimonial = document.getElementById('btn-prev-testimonial');
     const btnNextTestimonial = document.getElementById('btn-next-testimonial');
-    if(quoteEl && imgEl) {
+    if (quoteEl && imgEl) {
         quoteEl.style.transition = 'opacity 0.3s ease';
         imgEl.style.transition = 'opacity 0.3s ease';
     }

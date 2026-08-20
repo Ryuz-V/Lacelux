@@ -11,7 +11,6 @@ function detectBrand(product) {
     ];
     const matchedKnown = knownBrands.find(b => b.toLowerCase() === rawBrand.toLowerCase());
     if (matchedKnown) return matchedKnown;
-
     const brandKeywords = [
         { brand: "Nike", keywords: ["nike", "jordan", "dunk", "air force", "af1", "air max", "blazer", "pegasus", "react", "zoom", "vapormax", "cortez", "waffle"] },
         { brand: "Adidas", keywords: ["adidas", "yeezy", "samba", "gazelle", "stan smith", "ultraboost", "boost", "primeknit", "nmd", "forum", "campus", "ozweego"] },
@@ -51,7 +50,6 @@ function detectBrand(product) {
         { brand: "Common Projects", keywords: ["common projects"] },
         { brand: "Golden Goose", keywords: ["golden goose"] },
     ];
-
 for (const entry of brandKeywords) {
         if (entry.keywords.some(k => nameStr.includes(k))) {
             return entry.brand;
@@ -59,7 +57,6 @@ for (const entry of brandKeywords) {
     }
     return "Indie";
 }
-
 document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryParam = urlParams.get("category");
@@ -67,7 +64,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const pageTitle = document.getElementById("category-page-title");
     const countInfo = document.querySelector("#product-count-info span");
     const gridContainer = document.getElementById("catalog-products-grid");
-
 if (pageTitle && searchParam) {
         pageTitle.textContent = `HASIL PENCARIAN: "${searchParam}"`;
     } else if (pageTitle && categoryParam) {
@@ -107,9 +103,12 @@ if (pageTitle && searchParam) {
             return;
         }
         productsToDisplay.forEach(item => {
-            let displayPrice = item.price || item.harga || "Rp 0";
+            let displayPrice = item.price || item.harga || 0;
             if (typeof displayPrice === 'number') {
-                displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
+                displayPrice = '$' + (displayPrice / 15500).toFixed(2);
+            } else if (typeof displayPrice === 'string') {
+                let num = parseInt(displayPrice.replace(/[^0-9]/g, ''));
+                if (!isNaN(num)) displayPrice = '$' + (num / 15500).toFixed(2);
             }
             const imageSrc = item.imageUrl || item.image || item.img || item.image_url || 'https://placehold.co/300x300?text=No+Image';
             const cardHtml = `
@@ -191,7 +190,6 @@ function matchCategory(product, queryCat) {
                 l = i;
             }
         }
-
         const nextDisabled = currentPage === totalPages ? "disabled" : "";
         html += `<a href="#" class="page-text ${nextDisabled ? "disabled" : "underline"}" data-action="next">Next</a>`;
         html += `<a href="#" class="page-arrow ${nextDisabled}" data-action="next"><i data-feather="chevrons-right"></i></a>`;
@@ -215,7 +213,6 @@ function matchCategory(product, queryCat) {
             });
         });
     }
-
     function showCurrentPage() {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
@@ -232,7 +229,8 @@ function matchCategory(product, queryCat) {
     const sortSelect = document.getElementById("sort-select");
     const sizeButtons = document.querySelectorAll(".size-btn");
     const colorSwatches = document.querySelectorAll(".color-swatch");
-    const priceRangeInput = document.getElementById("price-range-input");
+    const priceMinInput = document.getElementById("price-min");
+    const priceMaxInput = document.getElementById("price-max");
 
     function applyFilters() {
         const selectedGenders = Array.from(genderCheckboxes).filter(i => i.checked).map(i => i.value.toLowerCase());
@@ -243,6 +241,10 @@ function matchCategory(product, queryCat) {
         const selectedColors = Array.from(colorSwatches)
             .filter(swatch => swatch.classList.contains("active"))
             .map(swatch => swatch.getAttribute("title").toLowerCase());
+        
+        const minPrice = priceMinInput && priceMinInput.value !== "" ? parseFloat(priceMinInput.value) : NaN;
+        const maxPrice = priceMaxInput && priceMaxInput.value !== "" ? parseFloat(priceMaxInput.value) : NaN;
+
         let result = filterBySearch(filterByCategory(allProducts, categoryParam), searchParam);
         if (selectedGenders.length > 0) {
             result = result.filter(p => {
@@ -284,12 +286,19 @@ function matchCategory(product, queryCat) {
             });
         }
 
+        if (!isNaN(minPrice)) {
+            result = result.filter(p => (parsePrice(p.price || p.harga) / 15500) >= minPrice);
+        }
+        if (!isNaN(maxPrice)) {
+            result = result.filter(p => (parsePrice(p.price || p.harga) / 15500) <= maxPrice);
+        }
+
         if (sortSelect) {
             const sortVal = sortSelect.value;
             if (sortVal === "price-low") {
-                result.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+                result.sort((a, b) => parsePrice(a.price || a.harga) - parsePrice(b.price || b.harga));
             } else if (sortVal === "price-high") {
-                result.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+                result.sort((a, b) => parsePrice(b.price || b.harga) - parsePrice(a.price || a.harga));
             }
         }
         
@@ -321,6 +330,20 @@ function matchCategory(product, queryCat) {
             applyFilters();
         });
     });
+
+    let priceDebounceTimer = null;
+    if (priceMinInput) {
+        priceMinInput.addEventListener("input", function() {
+            clearTimeout(priceDebounceTimer);
+            priceDebounceTimer = setTimeout(applyFilters, 500);
+        });
+    }
+    if (priceMaxInput) {
+        priceMaxInput.addEventListener("input", function() {
+            clearTimeout(priceDebounceTimer);
+            priceDebounceTimer = setTimeout(applyFilters, 500);
+        });
+    }
 
     const navSearchInput = document.getElementById("navbar-search-input");
     const navSearchSubmit = document.getElementById("navbar-search-submit");

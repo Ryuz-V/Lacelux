@@ -69,9 +69,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const products = await response.json();
         const selectedProduct = products.find(product => String(product._id) === String(productId));
         if (selectedProduct) {
-            let displayPrice = selectedProduct.price || selectedProduct.harga || "Rp 0";
+            let displayPrice = selectedProduct.price || selectedProduct.harga || 0;
             if (typeof displayPrice === 'number') {
-                displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
+                displayPrice = '$' + (displayPrice / 15500).toFixed(2);
+            } else if (typeof displayPrice === 'string') {
+                let num = parseInt(displayPrice.replace(/[^0-9]/g, ''));
+                if (!isNaN(num)) displayPrice = '$' + (num / 15500).toFixed(2);
             }
 let determinedCategory = "Unisex";
 const productInfo = ((selectedProduct.category || "") + " " + (selectedProduct.gender || "") + " " + (selectedProduct.name || "")).toLowerCase();
@@ -92,7 +95,7 @@ const mappedData = {
     category: determinedCategory,
     sku: selectedProduct._id || "-",
     price: displayPrice,
-    oldPrice: selectedProduct.oldPrice || "Rp. 1.549.000",
+    oldPrice: selectedProduct.oldPrice || "$99.00",
     discount: selectedProduct.discount || "30% OFF",
     rating: selectedProduct.rating || 4.3,
     reviewCount: selectedProduct.reviewCount || 375,
@@ -138,7 +141,7 @@ const mappedData = {
                 title: urlParams.get('dummy_name'),
                 category: urlParams.get('dummy_cat') || 'Unisex',
                 sku: "DUMMY-" + Math.floor(Math.random() * 100000),
-                price: urlParams.get('dummy_price') || "Rp. 1.500.000",
+                price: urlParams.get('dummy_price') || "$95.00",
                 oldPrice: "",
                 discount: "",
                 rating: 4.8,
