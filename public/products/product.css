@@ -663,6 +663,14 @@ body {
     position: relative;
 }
 
+@media(min-width: 768px) {
+    .gallery-section {
+        position: sticky;
+        top: 130px; /* Accounts for fixed navbar */
+        align-self: flex-start;
+    }
+}
+
 .thumbnail-container img {
     border-radius: 4px;
     border: 1px solid #eaeaea;
@@ -789,17 +797,17 @@ body {
 
 .info-box {
     background-color: #f9fafb;
-    border-radius: 4px;
     padding: 16px;
     display: flex;
     gap: 12px;
     margin-bottom: 15px;
-    align-items: flex-start;
+    align-items: center;
     font-size: 0.85rem;
     color: #333;
 }
 
-.info-box svg {
+.info-box svg,
+.info-box img {
     width: 20px;
     height: 20px;
     color: #555;
@@ -821,6 +829,13 @@ body {
 
 .scan-box {
     margin-bottom: 15px;
+    align-items: center;
+}
+
+.scan-box img.info-icon {
+    width: 16px;
+    height: 16px;
+    filter: grayscale(100%) opacity(0.5);
 }
 
 .shipping-box {
@@ -845,13 +860,20 @@ body {
 }
 
 .quantity-select {
-    width: 100px;
-    padding: 10px;
+    width: 120px;
+    padding: 10px 35px 10px 15px;
     border: 1px solid #d1d5db;
-    border-radius: 4px;
     font-size: 1rem;
     outline: none;
     font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    background-color: #fff;
+    cursor: pointer;
 }
 
 .action-buttons {
