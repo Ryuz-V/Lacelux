@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const countInfo = document.querySelector("#product-count-info span");
     const gridContainer = document.getElementById("catalog-products-grid");
 if (pageTitle && searchParam) {
-        pageTitle.textContent = `HASIL PENCARIAN: "${searchParam}"`;
+        pageTitle.textContent = `SEARCH RESULTS: "${searchParam}"`;
     } else if (pageTitle && categoryParam) {
         let formattedTitle = categoryParam.replace("-", " ").toUpperCase();
         if (formattedTitle === "PRIA") formattedTitle = "MAN";
@@ -98,7 +98,7 @@ if (pageTitle && searchParam) {
         if (!productsToDisplay || productsToDisplay.length === 0) {
             gridContainer.innerHTML = `
                 <p style="grid-column: 1/-1; text-align: center; color: #888; padding: 3rem 0;">
-                    Tidak ada produk yang sesuai dengan filter.
+                    No products match the filter.
                 </p>`;
             return;
         }
@@ -119,10 +119,10 @@ if (pageTitle && searchParam) {
                     </div>
                     <div class="product-info">
                         <p class="product-brand">${detectBrand(item)}</p>
-                        <h3 class="product-name">${item.name || 'Tanpa Nama'}</h3>
+                        <h3 class="product-name">${item.name || 'Unnamed'}</h3>
                         <div class="product-details">
                             <p class="product-category">${detectGender(item).toUpperCase()}</p>
-                            <p class="product-color-count">Warna : ${item.color || '-'}</p>
+                            <p class="product-color-count">Color : ${item.color || '-'}</p>
                         </div>
                         <div class="product-price">
                             <p>${displayPrice}</p>
@@ -419,7 +419,7 @@ function matchCategory(product, queryCat) {
             }
             if (navSearchGrid) {
                 if (matches.length === 0) {
-                    navSearchGrid.innerHTML = `<p class="search-no-result">Tidak ada produk yang cocok dengan "${query}"</p>`;
+                    navSearchGrid.innerHTML = `<p class="search-no-result">No products match your search.</p>`;
                 } else {
                     navSearchGrid.innerHTML = matches.slice(0, 6).map(item => {
                         const imageSrc = item.imageUrl || item.image || item.img || item.image_url || 'https://placehold.co/300x300?text=No+Image';
@@ -432,7 +432,7 @@ function matchCategory(product, queryCat) {
                                 <div class="search-product-thumb">
                                     <img src="${imageSrc}" alt="${item.name || 'Sepatu'}" loading="lazy">
                                 </div>
-                                <h4 class="search-product-name">${item.name || 'Tanpa Nama'}</h4>
+                                <h4 class="search-product-name">${item.name || 'Unnamed'}</h4>
                                 <p class="search-product-price">${displayPrice}</p>
                             </div>
                         `;
@@ -493,13 +493,13 @@ function matchCategory(product, queryCat) {
 function detectGender(product) {
     const nameStr = ((product.name || product.title || "")).toLowerCase();
     if (nameStr.includes("kids") || nameStr.includes(" gs ") || nameStr.includes(" ps ") || nameStr.includes(" td ") || nameStr.includes("boys") || nameStr.includes("girls") || nameStr.includes("anak")) {
-        return "Anak - Anak";
+        return "Kids";
     }
     if (nameStr.includes("women") || nameStr.includes("wmns") || nameStr.includes("wanita") || nameStr.includes("ladies")) {
-        return "Wanita";
+        return "Women";
     }
     if (nameStr.includes("men") || nameStr.includes("mens") || nameStr.includes("pria") || nameStr.includes("laki")) {
-        return "Pria";
+        return "Men";
     }
     return "Unisex";
 }
@@ -514,3 +514,4 @@ const brandSearchInput = document.getElementById("brand-search-input");
             });
         });
     }
+

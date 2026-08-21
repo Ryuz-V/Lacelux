@@ -91,9 +91,9 @@ let determinedBrand = detectBrand(selectedProduct);
 // 3. Mapping data akhir
 const mappedData = {
     brand: determinedBrand, // Sekarang menggunakan hasil deteksi pintar
-    title: selectedProduct.name || selectedProduct.title || "Tanpa Nama",
+    title: selectedProduct.name || selectedProduct.title || "Unnamed",
     category: determinedCategory,
-    sku: selectedProduct._id || "-",
+    sku: Math.floor(1000 + Math.random() * 9000) + "-" + Math.random().toString(36).substring(2,6).toUpperCase() + Math.floor(10000 + Math.random() * 90000) + "C",
     price: displayPrice,
     oldPrice: selectedProduct.oldPrice || "$99.00",
     discount: selectedProduct.discount || "30% OFF",
@@ -140,7 +140,7 @@ const mappedData = {
                 brand: urlParams.get('dummy_brand') || 'Lacelux',
                 title: urlParams.get('dummy_name'),
                 category: urlParams.get('dummy_cat') || 'Unisex',
-                sku: "DUMMY-" + Math.floor(Math.random() * 100000),
+                sku: Math.floor(1000 + Math.random() * 9000) + "-" + Math.random().toString(36).substring(2,6).toUpperCase() + Math.floor(10000 + Math.random() * 90000) + "C",
                 price: urlParams.get('dummy_price') || "$95.00",
                 oldPrice: "",
                 discount: "",
@@ -243,7 +243,7 @@ function populateData(data) {
     document.getElementById("product-old-price").textContent = data.oldPrice;
     document.getElementById("product-discount").textContent = data.discount;
     
-    document.getElementById("product-rating").innerHTML = `★★★★☆ <span style="color:#2563eb;text-decoration:underline;cursor:pointer;margin-right:10px">${data.rating} (${data.reviewCount})</span> <a href="#" class="write-review-link">Write a review</a>`;
+    document.getElementById("product-rating").innerHTML = `<span class="rating-stars-large">★★★★☆</span> <span style="color:#2563eb;text-decoration:underline;cursor:pointer;margin-right:10px">${data.rating} (${data.reviewCount})</span> <a href="#" class="write-review-link">Write a review</a>`;
     
     // Render Gambar & Thumbnail
     document.getElementById("main-image").src = data.images[0];
@@ -374,3 +374,4 @@ function switchTab(tabId) {
     document.querySelector(`button[onclick="switchTab('${tabId}')"]`).classList.add('active');
     document.getElementById(tabId).classList.add('active');
 }
+

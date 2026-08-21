@@ -125,8 +125,10 @@ body {
 
 .product-sku {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: #111;
     margin-bottom: 16px;
+    line-height: 1.2;
+    text-transform: uppercase;
 }
 
 .price-wrapper {
@@ -164,6 +166,13 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.product-rating .rating-stars-large {
+    font-size: 1.5rem;
+    color: #4b5563;
+    text-decoration: none;
+    cursor: default;
 }
 
 .product-rating span {
