@@ -51,7 +51,7 @@ function detectBrand(product) {
         { brand: "Common Projects", keywords: ["common projects"] },
         { brand: "Golden Goose", keywords: ["golden goose"] },
     ];
-for (const entry of brandKeywords) {
+    for (const entry of brandKeywords) {
         if (entry.keywords.some(k => nameStr.includes(k))) {
             return entry.brand;
         }
@@ -70,40 +70,64 @@ document.addEventListener("DOMContentLoaded", async () => {
         const selectedProduct = products.find(product => String(product._id) === String(productId));
         if (selectedProduct) {
             let displayPrice = selectedProduct.price || selectedProduct.harga || 0;
+            let numPrice = 0;
             if (typeof displayPrice === 'number') {
-                displayPrice = '$' + (displayPrice / 15500).toFixed(2);
+                numPrice = displayPrice;
+                displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             } else if (typeof displayPrice === 'string') {
                 let num = parseInt(displayPrice.replace(/[^0-9]/g, ''));
-                if (!isNaN(num)) displayPrice = '$' + (num / 15500).toFixed(2);
+                if (!isNaN(num)) {
+                    numPrice = num;
+                    displayPrice = 'Rp. ' + numPrice.toLocaleString('id-ID');
+                }
             }
-let determinedCategory = "Unisex";
-const productInfo = ((selectedProduct.category || "") + " " + (selectedProduct.gender || "") + " " + (selectedProduct.name || "")).toLowerCase();
 
-if (productInfo.includes("wanita") || productInfo.includes("women") || productInfo.includes("girl")) {
-    determinedCategory = "Women";
-} else if (productInfo.includes("pria") || productInfo.includes("men") || productInfo.includes("boy")) {
-    determinedCategory = "Men";
-} else if (productInfo.includes("anak") || productInfo.includes("kids") || productInfo.includes("toddler")) {
-    determinedCategory = "Kids";
-}
-let determinedBrand = detectBrand(selectedProduct);
+            // Pseudo-random discount logic based on ID
+            let originalPrice = selectedProduct.oldPrice || "";
+            let discountText = selectedProduct.discount || "";
 
-// 3. Mapping data akhir
-const mappedData = {
-    brand: determinedBrand, // Sekarang menggunakan hasil deteksi pintar
-    title: selectedProduct.name || selectedProduct.title || "Unnamed",
-    category: determinedCategory,
-    sku: Math.floor(1000 + Math.random() * 9000) + "-" + Math.random().toString(36).substring(2,6).toUpperCase() + Math.floor(10000 + Math.random() * 90000) + "C",
-    price: displayPrice,
-    oldPrice: selectedProduct.oldPrice || "$99.00",
-    discount: selectedProduct.discount || "30% OFF",
-    rating: selectedProduct.rating || 4.3,
-    reviewCount: selectedProduct.reviewCount || 375,
-    images: [
-        selectedProduct.imageUrl || selectedProduct.image || "https://placehold.co/600x400?text=No+Image"
-    ],
-    sizes: selectedProduct.sizes || ["US 6.5", "US 7", "US 8", "US 8.5", "US 9", "US 10"],
-    description: selectedProduct.description || `
+            if (!originalPrice && productId) {
+                let idCharCodeSum = 0;
+                for (let i = 0; i < productId.length; i++) {
+                    idCharCodeSum += productId.charCodeAt(i);
+                }
+
+                if (idCharCodeSum % 3 === 0) { // Beberapa produk mendapat diskon
+                    let discountPercent = (idCharCodeSum % 4 === 0) ? 50 : 30;
+                    let originalNum = Math.floor(numPrice / (1 - (discountPercent / 100)));
+                    originalPrice = 'Rp. ' + originalNum.toLocaleString('id-ID');
+                    discountText = `${discountPercent}% OFF`;
+                }
+            }
+
+            let determinedCategory = "Unisex";
+            const productInfo = ((selectedProduct.category || "") + " " + (selectedProduct.gender || "") + " " + (selectedProduct.name || "")).toLowerCase();
+
+            if (productInfo.includes("wanita") || productInfo.includes("women") || productInfo.includes("girl")) {
+                determinedCategory = "Women";
+            } else if (productInfo.includes("pria") || productInfo.includes("men") || productInfo.includes("boy")) {
+                determinedCategory = "Men";
+            } else if (productInfo.includes("anak") || productInfo.includes("kids") || productInfo.includes("toddler")) {
+                determinedCategory = "Kids";
+            }
+            let determinedBrand = detectBrand(selectedProduct);
+
+            // 3. Mapping data akhir
+            const mappedData = {
+                brand: determinedBrand,
+                title: selectedProduct.name || selectedProduct.title || "Unnamed",
+                category: determinedCategory,
+                sku: Math.floor(1000 + Math.random() * 9000) + "-" + Math.random().toString(36).substring(2, 6).toUpperCase() + Math.floor(10000 + Math.random() * 90000) + "C",
+                price: displayPrice,
+                oldPrice: originalPrice,
+                discount: discountText,
+                rating: selectedProduct.rating || 4.3,
+                reviewCount: selectedProduct.reviewCount || 375,
+                images: [
+                    selectedProduct.imageUrl || selectedProduct.image || "https://placehold.co/600x400?text=No+Image"
+                ],
+                sizes: selectedProduct.sizes || ["US 6.5", "US 7", "US 8", "US 8.5", "US 9", "US 10"],
+                description: selectedProduct.description || `
         <h3>${determinedBrand} ${selectedProduct.name || "Produk"}</h3>
         <ul>
             <li>There may be a 1-2cm difference in measurements depending on the development and manufacturing process.</li>
@@ -113,23 +137,23 @@ const mappedData = {
             <li>Actual colors may vary. This is due to the fact that every computer monitor has a different capability to display colors, we cannot guarantee that the color you see accurately portrays the true color of the product.</li>
         </ul>
     `,
-    reviews: selectedProduct.reviews || [
-        {
-            user: "CampTheHit",
-            date: "8 days ago",
-            title: "Super comfy",
-            text: "Very comfy and true to size. Already got 2 and will definitely get more!",
-            source: "Originally posted on Brand Site"
-        },
-        {
-            user: "SalmaH",
-            date: "14 days ago",
-            title: "I love it",
-            text: "Runs a little big but nothing too serious. Look just as pictured.",
-            source: "Originally posted on Brand Site"
-        }
-    ]
-};
+                reviews: selectedProduct.reviews || [
+                    {
+                        user: "CampTheHit",
+                        date: "8 days ago",
+                        title: "Super comfy",
+                        text: "Very comfy and true to size. Already got 2 and will definitely get more!",
+                        source: "Originally posted on Brand Site"
+                    },
+                    {
+                        user: "SalmaH",
+                        date: "14 days ago",
+                        title: "I love it",
+                        text: "Runs a little big but nothing too serious. Look just as pictured.",
+                        source: "Originally posted on Brand Site"
+                    }
+                ]
+            };
 
             populateData(mappedData);
             switchTab('details');
@@ -140,7 +164,7 @@ const mappedData = {
                 brand: urlParams.get('dummy_brand') || 'Lacelux',
                 title: urlParams.get('dummy_name'),
                 category: urlParams.get('dummy_cat') || 'Unisex',
-                sku: Math.floor(1000 + Math.random() * 9000) + "-" + Math.random().toString(36).substring(2,6).toUpperCase() + Math.floor(10000 + Math.random() * 90000) + "C",
+                sku: Math.floor(1000 + Math.random() * 9000) + "-" + Math.random().toString(36).substring(2, 6).toUpperCase() + Math.floor(10000 + Math.random() * 90000) + "C",
                 price: urlParams.get('dummy_price') || "$95.00",
                 oldPrice: "",
                 discount: "",
@@ -240,11 +264,25 @@ function populateData(data) {
     document.getElementById("product-title").textContent = data.title;
     document.getElementById("product-category-sku").textContent = `${data.category} | ${data.sku}`;
     document.getElementById("product-price").textContent = data.price;
-    document.getElementById("product-old-price").textContent = data.oldPrice;
-    document.getElementById("product-discount").textContent = data.discount;
-    
+
+    const oldPriceEl = document.getElementById("product-old-price");
+    if (data.oldPrice) {
+        oldPriceEl.textContent = data.oldPrice;
+        oldPriceEl.style.display = "inline";
+    } else {
+        oldPriceEl.style.display = "none";
+    }
+
+    const discountEl = document.getElementById("product-discount");
+    if (data.discount) {
+        discountEl.textContent = data.discount;
+        discountEl.style.display = "inline";
+    } else {
+        discountEl.style.display = "none";
+    }
+
     document.getElementById("product-rating").innerHTML = `<span class="rating-stars-large">★★★★☆</span> <span style="color:#2563eb;text-decoration:underline;cursor:pointer;margin-right:10px">${data.rating} (${data.reviewCount})</span> <a href="#" class="write-review-link">Write a review</a>`;
-    
+
     // Render Gambar & Thumbnail
     document.getElementById("main-image").src = data.images[0];
     const thumbnailContainer = document.getElementById("thumbnails");
@@ -252,7 +290,7 @@ function populateData(data) {
         const imgEl = document.createElement("img");
         imgEl.src = imgSrc;
         if (index === 0) imgEl.classList.add("active-thumb");
-        
+
         imgEl.onclick = () => {
             document.getElementById("main-image").src = imgSrc;
             Array.from(thumbnailContainer.children).forEach(child => child.classList.remove("active-thumb"));
@@ -270,7 +308,7 @@ function populateData(data) {
         sizeBtn.onclick = () => {
             Array.from(sizeGrid.children).forEach(child => child.classList.remove("selected"));
             sizeBtn.classList.add("selected");
-            
+
             const cartBtn = document.getElementById("add-to-cart-btn");
             cartBtn.classList.remove("disabled");
             cartBtn.removeAttribute("disabled");
@@ -282,7 +320,7 @@ function populateData(data) {
     document.getElementById("review-count").textContent = `(${data.reviewCount})`;
 
     renderReviews(data);
-    
+
     // Update breadcrumb
     const breadcrumb = document.querySelector('.breadcrumb');
     if (breadcrumb) {
@@ -315,10 +353,10 @@ function renderReviews(data) {
     const starStr = '★'.repeat(stars) + '☆'.repeat(5 - stars);
     const overallScore = document.getElementById('overall-score');
     const overallStars = document.getElementById('overall-stars');
-    const overallLink  = document.getElementById('overall-link');
+    const overallLink = document.getElementById('overall-link');
     if (overallScore) overallScore.textContent = data.rating;
     if (overallStars) overallStars.textContent = starStr;
-    if (overallLink)  overallLink.textContent  = `${data.reviewCount} Reviews`;
+    if (overallLink) overallLink.textContent = `${data.reviewCount} Reviews`;
 
     // Review total label
     const totalLabel = document.getElementById('review-total-label');

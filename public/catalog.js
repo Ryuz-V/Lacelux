@@ -50,7 +50,7 @@ function detectBrand(product) {
         { brand: "Common Projects", keywords: ["common projects"] },
         { brand: "Golden Goose", keywords: ["golden goose"] },
     ];
-for (const entry of brandKeywords) {
+    for (const entry of brandKeywords) {
         if (entry.keywords.some(k => nameStr.includes(k))) {
             return entry.brand;
         }
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const pageTitle = document.getElementById("category-page-title");
     const countInfo = document.querySelector("#product-count-info span");
     const gridContainer = document.getElementById("catalog-products-grid");
-if (pageTitle && searchParam) {
+    if (pageTitle && searchParam) {
         pageTitle.textContent = `SEARCH RESULTS: "${searchParam}"`;
     } else if (pageTitle && categoryParam) {
         let formattedTitle = categoryParam.replace("-", " ").toUpperCase();
@@ -102,14 +102,46 @@ if (pageTitle && searchParam) {
                 </p>`;
             return;
         }
-        productsToDisplay.forEach(item => {
+        productsToDisplay.forEach((item, index) => {
             let displayPrice = item.price || item.harga || 0;
+            let numPrice = 0;
             if (typeof displayPrice === 'number') {
-                displayPrice = '$' + (displayPrice / 15500).toFixed(2);
+                numPrice = displayPrice;
+                displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             } else if (typeof displayPrice === 'string') {
                 let num = parseInt(displayPrice.replace(/[^0-9]/g, ''));
-                if (!isNaN(num)) displayPrice = '$' + (num / 15500).toFixed(2);
+                if (!isNaN(num)) {
+                    numPrice = num;
+                    displayPrice = 'Rp. ' + numPrice.toLocaleString('id-ID');
+                }
             }
+
+            // Logika diskon untuk beberapa produk (misal produk ke 1, 4, 7, dll)
+            let oldPriceHtml = '';
+            let discountHtml = '';
+            let originalPrice = item.oldPrice;
+            let discountText = item.discount;
+
+            if (!originalPrice && (index % 3 === 0)) { // Memberikan diskon ke beberapa produk
+                let discountPercent = 30; // Bebas diskonnya
+                if (index % 4 === 0) discountPercent = 50;
+
+                let originalNum = Math.floor(numPrice / (1 - (discountPercent / 100)));
+                originalPrice = 'Rp. ' + originalNum.toLocaleString('id-ID');
+                discountText = `${discountPercent}% OFF`;
+            }
+
+            let priceContent = `<p>${displayPrice}</p>`;
+            if (originalPrice && discountText) {
+                priceContent = `
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="color: #dc2626; font-weight: bold; font-size: 1.1rem;">${displayPrice}</span>
+                        <span style="color: #9ca3af; text-decoration: line-through; font-size: 0.875rem;">${originalPrice}</span>
+                        <span style="background-color: #fee2e2; color: #dc2626; font-size: 0.75rem; font-weight: bold; padding: 2px 6px;">${discountText}</span>
+                    </div>
+                `;
+            }
+
             const imageSrc = item.imageUrl || item.image || item.img || item.image_url || 'https://placehold.co/300x300?text=No+Image';
             const cardHtml = `
                 <div class="product-card" onclick="window.location.href='/products/products.html?id=${item._id}'">
@@ -125,7 +157,7 @@ if (pageTitle && searchParam) {
                             <p class="product-color-count">Color : ${item.color || '-'}</p>
                         </div>
                         <div class="product-price">
-                            <p>${displayPrice}</p>
+                            ${priceContent}
                         </div>
                     </div>
                 </div>
@@ -146,18 +178,18 @@ if (pageTitle && searchParam) {
             return [];
         }
     }
-function matchCategory(product, queryCat) {
-    if (!queryCat) return true;
-    const q = queryCat.toLowerCase();
-    const pGen = detectGender(product).toLowerCase();
-    if (q === "pria" || q === "men" || q === "man") return pGen.includes("pria");
-    if (q === "wanita" || q === "women") return pGen.includes("wanita");
-    if (q === "anak" || q === "kids") return pGen.includes("anak");
-    if (q === "unisex") return pGen.includes("unisex");
-    // Ganti "new-arrivals" di dalam array ini menjadi "all-shoes"
-    if (["all-shoes", "eksklusif", "brands", "sale", "coming-soon"].includes(q)) return true;
-    return pGen.includes(q);
-}
+    function matchCategory(product, queryCat) {
+        if (!queryCat) return true;
+        const q = queryCat.toLowerCase();
+        const pGen = detectGender(product).toLowerCase();
+        if (q === "pria" || q === "men" || q === "man") return pGen.includes("pria");
+        if (q === "wanita" || q === "women") return pGen.includes("wanita");
+        if (q === "anak" || q === "kids") return pGen.includes("anak");
+        if (q === "unisex") return pGen.includes("unisex");
+        // Ganti "new-arrivals" di dalam array ini menjadi "all-shoes"
+        if (["all-shoes", "eksklusif", "brands", "sale", "coming-soon"].includes(q)) return true;
+        return pGen.includes(q);
+    }
     function filterByCategory(products, queryCat) {
         if (!queryCat) return products;
         return products.filter(p => matchCategory(p, queryCat));
@@ -196,7 +228,7 @@ function matchCategory(product, queryCat) {
         paginationContainer.innerHTML = html;
         if (window.feather) feather.replace();
         paginationContainer.querySelectorAll("a").forEach(btn => {
-            btn.addEventListener("click", function(e) {
+            btn.addEventListener("click", function (e) {
                 e.preventDefault();
                 if (this.classList.contains("disabled")) return;
                 const action = this.getAttribute("data-action");
@@ -241,7 +273,7 @@ function matchCategory(product, queryCat) {
         const selectedColors = Array.from(colorSwatches)
             .filter(swatch => swatch.classList.contains("active"))
             .map(swatch => swatch.getAttribute("title").toLowerCase());
-        
+
         const minPrice = priceMinInput && priceMinInput.value !== "" ? parseFloat(priceMinInput.value) : NaN;
         const maxPrice = priceMaxInput && priceMaxInput.value !== "" ? parseFloat(priceMaxInput.value) : NaN;
 
@@ -280,7 +312,7 @@ function matchCategory(product, queryCat) {
                 } else if (p.size) {
                     prodSizes = [String(p.size).toLowerCase()];
                 } else {
-                    return false; 
+                    return false;
                 }
                 return selectedSizes.some(selectedSize => prodSizes.includes(selectedSize));
             });
@@ -301,12 +333,12 @@ function matchCategory(product, queryCat) {
                 result.sort((a, b) => parsePrice(b.price || b.harga) - parsePrice(a.price || a.harga));
             }
         }
-        
-        currentList = result; 
-        currentPage = 1;     
-        showCurrentPage();    
+
+        currentList = result;
+        currentPage = 1;
+        showCurrentPage();
     }
-    
+
     function parsePrice(val) {
         if (typeof val === 'number') return val;
         if (!val) return 0;
@@ -316,16 +348,16 @@ function matchCategory(product, queryCat) {
     genderCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     brandCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     if (sortSelect) sortSelect.addEventListener("change", applyFilters);
-    
+
     sizeButtons.forEach(btn => {
-        btn.addEventListener("click", function() {
+        btn.addEventListener("click", function () {
             this.classList.toggle("active");
             applyFilters();
         });
     });
 
     colorSwatches.forEach(swatch => {
-        swatch.addEventListener("click", function() {
+        swatch.addEventListener("click", function () {
             this.classList.toggle("active");
             applyFilters();
         });
@@ -333,13 +365,13 @@ function matchCategory(product, queryCat) {
 
     let priceDebounceTimer = null;
     if (priceMinInput) {
-        priceMinInput.addEventListener("input", function() {
+        priceMinInput.addEventListener("input", function () {
             clearTimeout(priceDebounceTimer);
             priceDebounceTimer = setTimeout(applyFilters, 500);
         });
     }
     if (priceMaxInput) {
-        priceMaxInput.addEventListener("input", function() {
+        priceMaxInput.addEventListener("input", function () {
             clearTimeout(priceDebounceTimer);
             priceDebounceTimer = setTimeout(applyFilters, 500);
         });
@@ -448,19 +480,19 @@ function matchCategory(product, queryCat) {
             if (window.feather) feather.replace();
         }
         let navSearchDebounce = null;
-        navSearchInput.addEventListener("input", function() {
+        navSearchInput.addEventListener("input", function () {
             clearTimeout(navSearchDebounce);
             const query = this.value.trim();
             navSearchDebounce = setTimeout(() => renderNavSearch(query), 200);
         });
-        navSearchInput.addEventListener("focus", function() {
+        navSearchInput.addEventListener("focus", function () {
             if (this.value.trim()) renderNavSearch(this.value.trim());
         });
         function goToSearchPage() {
             const query = navSearchInput.value.trim();
             if (query) window.location.href = `products.html?search=${encodeURIComponent(query)}`;
         }
-        navSearchInput.addEventListener("keydown", function(e) {
+        navSearchInput.addEventListener("keydown", function (e) {
             if (e.key === "Enter") {
                 e.preventDefault();
                 goToSearchPage();
@@ -470,20 +502,20 @@ function matchCategory(product, queryCat) {
             }
         });
         if (navSearchSubmit) {
-            navSearchSubmit.addEventListener("click", function(e) {
+            navSearchSubmit.addEventListener("click", function (e) {
                 e.preventDefault();
                 goToSearchPage();
             });
         }
         if (navSearchClear) {
-            navSearchClear.addEventListener("click", function() {
+            navSearchClear.addEventListener("click", function () {
                 navSearchInput.value = "";
                 navSearchResults.classList.remove("active");
                 navSearchClear.style.display = "none";
                 navSearchInput.focus();
             });
         }
-        document.addEventListener("click", function(e) {
+        document.addEventListener("click", function (e) {
             if (!e.target.closest(".search-bar")) {
                 navSearchResults.classList.remove("active");
             }
@@ -504,14 +536,14 @@ function detectGender(product) {
     return "Unisex";
 }
 const brandSearchInput = document.getElementById("brand-search-input");
-    if (brandSearchInput) {
-        brandSearchInput.addEventListener("input", function() {
-            const val = this.value.toLowerCase();
-            document.querySelectorAll(".brand-list .custom-checkbox").forEach(label => {
-                const text = label.querySelector("span").textContent.toLowerCase();
-                // Tampilkan jika cocok, sembunyikan jika tidak
-                label.style.display = text.includes(val) ? "flex" : "none";
-            });
+if (brandSearchInput) {
+    brandSearchInput.addEventListener("input", function () {
+        const val = this.value.toLowerCase();
+        document.querySelectorAll(".brand-list .custom-checkbox").forEach(label => {
+            const text = label.querySelector("span").textContent.toLowerCase();
+            // Tampilkan jika cocok, sembunyikan jika tidak
+            label.style.display = text.includes(val) ? "flex" : "none";
         });
-    }
+    });
+}
 
