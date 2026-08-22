@@ -166,8 +166,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 category: urlParams.get('dummy_cat') || 'Unisex',
                 sku: Math.floor(1000 + Math.random() * 9000) + "-" + Math.random().toString(36).substring(2, 6).toUpperCase() + Math.floor(10000 + Math.random() * 90000) + "C",
                 price: urlParams.get('dummy_price') || "$95.00",
-                oldPrice: "",
-                discount: "",
+                oldPrice: urlParams.get('dummy_old_price') || "",
+                discount: urlParams.get('dummy_discount') || "",
                 rating: 4.8,
                 reviewCount: 120,
                 images: [
@@ -263,12 +263,19 @@ function populateData(data) {
     document.getElementById("product-brand").textContent = data.brand;
     document.getElementById("product-title").textContent = data.title;
     document.getElementById("product-category-sku").textContent = `${data.category} | ${data.sku}`;
-    document.getElementById("product-price").textContent = data.price;
+    const priceEl = document.getElementById("product-price");
+    priceEl.textContent = data.price;
+    priceEl.style.color = "#dc2626";
+    priceEl.style.fontSize = "1.4rem";
+    priceEl.style.fontWeight = "bold";
 
     const oldPriceEl = document.getElementById("product-old-price");
     if (data.oldPrice) {
         oldPriceEl.textContent = data.oldPrice;
         oldPriceEl.style.display = "inline";
+        oldPriceEl.style.color = "#000000";
+        oldPriceEl.style.fontSize = "0.85rem";
+        oldPriceEl.style.textDecoration = "line-through";
     } else {
         oldPriceEl.style.display = "none";
     }
@@ -277,6 +284,12 @@ function populateData(data) {
     if (data.discount) {
         discountEl.textContent = data.discount;
         discountEl.style.display = "inline";
+        discountEl.style.backgroundColor = "#fee2e2";
+        discountEl.style.color = "#dc2626";
+        discountEl.style.fontSize = "0.75rem";
+        discountEl.style.fontWeight = "bold";
+        discountEl.style.padding = "4px 8px";
+        discountEl.style.borderRadius = "4px";
     } else {
         discountEl.style.display = "none";
     }

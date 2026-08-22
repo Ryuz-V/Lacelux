@@ -38,7 +38,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const params = new URLSearchParams();
         if (nameEl && nameEl.innerText) params.set('dummy_name', nameEl.innerText.trim());
         if (imgEl && imgEl.src) params.set('dummy_img', imgEl.src);
-        if (priceEl && priceEl.innerText) params.set('dummy_price', priceEl.innerText.trim());
+        
+        const priceSpans = card.querySelectorAll('.product-price span');
+        if (priceSpans.length >= 3) {
+            params.set('dummy_price', priceSpans[0].innerText.trim());
+            params.set('dummy_old_price', priceSpans[1].innerText.trim());
+            params.set('dummy_discount', priceSpans[2].innerText.trim());
+        } else if (priceEl && priceEl.innerText) {
+            params.set('dummy_price', priceEl.innerText.trim());
+        }
+        
         if (brandEl && brandEl.innerText) params.set('dummy_brand', brandEl.innerText.trim());
         if (catEl && catEl.innerText) params.set('dummy_cat', catEl.innerText.trim());
         
