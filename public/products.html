@@ -231,11 +231,17 @@
 <main class="catalog-container">
         <aside class="filter-sidebar">
             <h3 class="filter-main-title">Filters</h3>
-            <div class="filter-group">
-                <div class="filter-header">
-                    <span>Gender</span>
-                </div>
-                <div class="filter-options">
+            <div class="filter-box">
+                <div class="filter-group open">
+                    <div class="filter-header">
+                        <span>Gender</span>
+                        <span class="toggle-icon">
+                            <i data-feather="x" class="icon-close"></i>
+                            <i data-feather="plus" class="icon-open"></i>
+                        </span>
+                    </div>
+                    <div class="filter-content">
+                        <div class="filter-options">
                     <label class="custom-checkbox">
                         <input type="checkbox" value="pria" class="filter-gender">
                         <span>Man</span>
@@ -253,16 +259,22 @@
                         <span>Kids</span>
                     </label>
                 </div>
-            </div>
-            <div class="filter-group">
-                <div class="filter-header">
-                    <span>Brand</span>
-                </div>
-                <div class="filter-search-box">
-                    <i data-feather="search"></i>
-                    <input type="text" id="brand-search-input" placeholder="Search Brand...">
-                </div>
-                <div class="filter-options brand-list">
+                        </div>
+                    </div>
+                <div class="filter-group">
+                    <div class="filter-header">
+                        <span>Brand</span>
+                        <span class="toggle-icon">
+                            <i data-feather="x" class="icon-close"></i>
+                            <i data-feather="plus" class="icon-open"></i>
+                        </span>
+                    </div>
+                    <div class="filter-content">
+                        <div class="filter-search-box">
+                            <i data-feather="search"></i>
+                            <input type="text" id="brand-search-input" placeholder="Search Brand...">
+                        </div>
+                        <div class="filter-options brand-list">
                     <label class="custom-checkbox">
                         <input type="checkbox" value="nike" class="filter-brand">
                         <span>Nike</span>
@@ -292,12 +304,18 @@
                         <span>Indie</span>
                     </label>
                 </div>
-            </div>
-            <div class="filter-group">
-                <div class="filter-header">
-                    <span>Size</span>
-                </div>
-                <div class="size-grid">
+                        </div>
+                    </div>
+                <div class="filter-group">
+                    <div class="filter-header">
+                        <span>Size</span>
+                        <span class="toggle-icon">
+                            <i data-feather="x" class="icon-close"></i>
+                            <i data-feather="plus" class="icon-open"></i>
+                        </span>
+                    </div>
+                    <div class="filter-content">
+                        <div class="size-grid">
                     <button class="size-btn">US 7</button>
                     <button class="size-btn">US 8</button>
                     <button class="size-btn">US 9</button>
@@ -305,12 +323,18 @@
                     <button class="size-btn">EU 40</button>
                     <button class="size-btn">EU 41</button>
                 </div>
-            </div>
-            <div class="filter-group">
-                <div class="filter-header">
-                    <span>Color</span>
-                </div>
-                <div class="color-swatches-grid">
+                        </div>
+                    </div>
+                <div class="filter-group">
+                    <div class="filter-header">
+                        <span>Color</span>
+                        <span class="toggle-icon">
+                            <i data-feather="x" class="icon-close"></i>
+                            <i data-feather="plus" class="icon-open"></i>
+                        </span>
+                    </div>
+                    <div class="filter-content">
+                        <div class="color-swatches-grid">
                     <span class="color-swatch" style="background-color: #ffffff; border: 1px solid #ccc;" title="Putih"></span>
                     <span class="color-swatch" style="background-color: #000000;" title="Hitam"></span>
                     <span class="color-swatch" style="background-color: #808080;" title="Abu-abu"></span>
@@ -319,16 +343,24 @@
                     <span class="color-swatch" style="background-color: #a52a2a;" title="Coklat"></span>
                     <span class="color-swatch" style="background-color: #f5f5dc;" title="Krem"></span>
                 </div>
-            </div>
-            <div class="filter-group">
-                <div class="filter-header">
-                    <span>Price</span>
-                </div>
-                <div class="price-range-inputs">
+                        </div>
+                    </div>
+                <div class="filter-group">
+                    <div class="filter-header">
+                        <span>Price</span>
+                        <span class="toggle-icon">
+                            <i data-feather="x" class="icon-close"></i>
+                            <i data-feather="plus" class="icon-open"></i>
+                        </span>
+                    </div>
+                    <div class="filter-content">
+                        <div class="price-range-inputs">
                     <input type="number" id="price-min" placeholder="$ Min">
                     <span>-</span>
                     <input type="number" id="price-max" placeholder="$ Max">
                 </div>
+                        </div>
+                    </div>
             </div>
         </aside>
     <section class="catalog-main">

@@ -107,30 +107,46 @@ document.addEventListener("DOMContentLoaded", async () => {
             let numPrice = 0;
             if (typeof displayPrice === 'number') {
                 numPrice = displayPrice;
-                displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             } else if (typeof displayPrice === 'string') {
                 let num = parseInt(displayPrice.replace(/[^0-9]/g, ''));
                 if (!isNaN(num)) {
                     numPrice = num;
-                    displayPrice = 'Rp. ' + numPrice.toLocaleString('id-ID');
                 }
             }
 
-            // Logika diskon untuk beberapa produk (misal produk ke 1, 4, 7, dll)
+            if (numPrice > 10000) {
+                numPrice = Math.floor(numPrice / 15000);
+            }
+            displayPrice = '$' + numPrice.toFixed(2);
+
             let oldPriceHtml = '';
             let discountHtml = '';
             let originalPrice = item.oldPrice;
             let discountText = item.discount;
-
-            if (!originalPrice && (index % 3 === 0)) { // Memberikan diskon ke beberapa produk
-                let discountPercent = 30; // Bebas diskonnya
-                if (index % 4 === 0) discountPercent = 50;
-
-                let originalNum = Math.floor(numPrice / (1 - (discountPercent / 100)));
-                originalPrice = 'Rp. ' + originalNum.toLocaleString('id-ID');
-                discountText = `${discountPercent}% OFF`;
+            
+            if (originalPrice) {
+                let origNum = 0;
+                if (typeof originalPrice === 'number') {
+                    origNum = originalPrice;
+                } else if (typeof originalPrice === 'string') {
+                    let num = parseInt(originalPrice.replace(/[^0-9]/g, ''));
+                    if (!isNaN(num)) origNum = num;
+                }
+                if (origNum > 10000) {
+                    origNum = Math.floor(origNum / 15000);
+                }
+                if (origNum > 0) {
+                    originalPrice = '$' + origNum.toFixed(2);
+                }
             }
 
+            if (!originalPrice && (index % 3 === 0)) {
+                let discountPercent = 30;
+                if (index % 4 === 0) discountPercent = 50;
+                let originalNum = Math.floor(numPrice / (1 - (discountPercent / 100)));
+                originalPrice = '$' + originalNum.toFixed(2);
+                discountText = `${discountPercent}% OFF`;
+            }
             let priceContent = `<p>${displayPrice}</p>`;
             if (originalPrice && discountText) {
                 priceContent = `
@@ -273,10 +289,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const selectedColors = Array.from(colorSwatches)
             .filter(swatch => swatch.classList.contains("active"))
             .map(swatch => swatch.getAttribute("title").toLowerCase());
-
         const minPrice = priceMinInput && priceMinInput.value !== "" ? parseFloat(priceMinInput.value) : NaN;
         const maxPrice = priceMaxInput && priceMaxInput.value !== "" ? parseFloat(priceMaxInput.value) : NaN;
-
         let result = filterBySearch(filterByCategory(allProducts, categoryParam), searchParam);
         if (selectedGenders.length > 0) {
             result = result.filter(p => {
@@ -293,7 +307,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return selectedBrands.some(b => brand === b);
             });
         }
-
         if (selectedColors.length > 0) {
             result = result.filter(p => {
                 if (!p.color) return false;
@@ -301,7 +314,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return selectedColors.some(selectedColor => prodColors.includes(selectedColor));
             });
         }
-
         if (selectedSizes.length > 0) {
             result = result.filter(p => {
                 let prodSizes = [];
@@ -317,14 +329,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return selectedSizes.some(selectedSize => prodSizes.includes(selectedSize));
             });
         }
-
         if (!isNaN(minPrice)) {
             result = result.filter(p => (parsePrice(p.price || p.harga) / 15500) >= minPrice);
         }
         if (!isNaN(maxPrice)) {
             result = result.filter(p => (parsePrice(p.price || p.harga) / 15500) <= maxPrice);
         }
-
         if (sortSelect) {
             const sortVal = sortSelect.value;
             if (sortVal === "price-low") {
@@ -333,36 +343,30 @@ document.addEventListener("DOMContentLoaded", async () => {
                 result.sort((a, b) => parsePrice(b.price || b.harga) - parsePrice(a.price || a.harga));
             }
         }
-
         currentList = result;
         currentPage = 1;
         showCurrentPage();
     }
-
     function parsePrice(val) {
         if (typeof val === 'number') return val;
         if (!val) return 0;
         return parseFloat(val.toString().replace(/[^0-9]/g, '')) || 0;
     }
-
     genderCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     brandCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
     if (sortSelect) sortSelect.addEventListener("change", applyFilters);
-
     sizeButtons.forEach(btn => {
         btn.addEventListener("click", function () {
             this.classList.toggle("active");
             applyFilters();
         });
     });
-
     colorSwatches.forEach(swatch => {
         swatch.addEventListener("click", function () {
             this.classList.toggle("active");
             applyFilters();
         });
     });
-
     let priceDebounceTimer = null;
     if (priceMinInput) {
         priceMinInput.addEventListener("input", function () {
@@ -376,7 +380,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             priceDebounceTimer = setTimeout(applyFilters, 500);
         });
     }
-
     const navSearchInput = document.getElementById("navbar-search-input");
     const navSearchSubmit = document.getElementById("navbar-search-submit");
     const navSearchClear = document.getElementById("navbar-search-clear");
@@ -384,7 +387,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const navSearchKeywords = document.getElementById("navbar-search-keywords");
     const navSearchGrid = document.getElementById("navbar-search-grid");
     const navExploreAllBtn = document.getElementById("btn-explore-all");
-
     if (navSearchInput && navSearchResults) {
         if (searchParam) navSearchInput.value = searchParam;
         function highlightMatch(text, query) {
@@ -541,9 +543,16 @@ if (brandSearchInput) {
         const val = this.value.toLowerCase();
         document.querySelectorAll(".brand-list .custom-checkbox").forEach(label => {
             const text = label.querySelector("span").textContent.toLowerCase();
-            // Tampilkan jika cocok, sembunyikan jika tidak
             label.style.display = text.includes(val) ? "flex" : "none";
         });
     });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".filter-group .filter-header").forEach(header => {
+        header.addEventListener("click", () => {
+            const group = header.closest(".filter-group");
+            group.classList.toggle("open");
+        });
+    });
+});

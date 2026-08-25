@@ -73,18 +73,37 @@ document.addEventListener("DOMContentLoaded", async () => {
             let numPrice = 0;
             if (typeof displayPrice === 'number') {
                 numPrice = displayPrice;
-                displayPrice = 'Rp. ' + displayPrice.toLocaleString('id-ID');
             } else if (typeof displayPrice === 'string') {
                 let num = parseInt(displayPrice.replace(/[^0-9]/g, ''));
                 if (!isNaN(num)) {
                     numPrice = num;
-                    displayPrice = 'Rp. ' + numPrice.toLocaleString('id-ID');
                 }
             }
+
+            if (numPrice > 10000) {
+                numPrice = Math.floor(numPrice / 15000);
+            }
+            displayPrice = '$' + numPrice.toFixed(2);
 
             // Pseudo-random discount logic based on ID
             let originalPrice = selectedProduct.oldPrice || "";
             let discountText = selectedProduct.discount || "";
+
+            if (originalPrice) {
+                let origNum = 0;
+                if (typeof originalPrice === 'number') {
+                    origNum = originalPrice;
+                } else if (typeof originalPrice === 'string') {
+                    let num = parseInt(originalPrice.replace(/[^0-9]/g, ''));
+                    if (!isNaN(num)) origNum = num;
+                }
+                if (origNum > 10000) {
+                    origNum = Math.floor(origNum / 15000);
+                }
+                if (origNum > 0) {
+                    originalPrice = '$' + origNum.toFixed(2);
+                }
+            }
 
             if (!originalPrice && productId) {
                 let idCharCodeSum = 0;
@@ -95,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (idCharCodeSum % 3 === 0) { // Beberapa produk mendapat diskon
                     let discountPercent = (idCharCodeSum % 4 === 0) ? 50 : 30;
                     let originalNum = Math.floor(numPrice / (1 - (discountPercent / 100)));
-                    originalPrice = 'Rp. ' + originalNum.toLocaleString('id-ID');
+                    originalPrice = '$' + originalNum.toFixed(2);
                     discountText = `${discountPercent}% OFF`;
                 }
             }
@@ -209,8 +228,8 @@ const scrapedData = {
     title: "Nike Dunk Low Women's Basketball Shoes - Photon Dust",
     category: "Women",
     sku: "0886-NIKDD1503103",
-    price: "Rp. 1.084.300",
-    oldPrice: "Rp. 1.549.000",
+    price: "$72.00",
+    oldPrice: "$103.00",
     discount: "30% OFF",
     rating: 4.3,
     reviewCount: 375,
