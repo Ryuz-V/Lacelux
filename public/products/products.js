@@ -156,22 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <li>Actual colors may vary. This is due to the fact that every computer monitor has a different capability to display colors, we cannot guarantee that the color you see accurately portrays the true color of the product.</li>
         </ul>
     `,
-                reviews: selectedProduct.reviews || [
-                    {
-                        user: "CampTheHit",
-                        date: "8 days ago",
-                        title: "Super comfy",
-                        text: "Very comfy and true to size. Already got 2 and will definitely get more!",
-                        source: "Originally posted on Brand Site"
-                    },
-                    {
-                        user: "SalmaH",
-                        date: "14 days ago",
-                        title: "I love it",
-                        text: "Runs a little big but nothing too serious. Look just as pictured.",
-                        source: "Originally posted on Brand Site"
-                    }
-                ]
+                reviews: selectedProduct.reviews || generatedReviews
             };
 
             populateData(mappedData);
@@ -188,7 +173,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 oldPrice: urlParams.get('dummy_old_price') || "",
                 discount: urlParams.get('dummy_discount') || "",
                 rating: 4.8,
-                reviewCount: 120,
+                reviewCount: 20,
                 images: [
                     urlParams.get('dummy_img') || "https://placehold.co/600x400?text=No+Image",
                     urlParams.get('dummy_img') || "https://placehold.co/600x400?text=No+Image",
@@ -223,6 +208,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+const generateDummyReviews = () => {
+    const reviews = [];
+    const names = ["CampTheHit", "SalmaH", "AlexB", "Jordan12", "SneakerHead99", "MariaT", "JohnDoe", "ShoeLover", "ChrisP", "DavidG", "SarahM", "MichaelS", "EmilyR", "DanielK", "JessicaW", "MatthewL", "AshleyC", "KevinB", "AmandaJ", "BrianM"];
+    for(let i=0; i<20; i++) {
+        reviews.push({
+            user: names[i] || `User${i}`,
+            date: `${(i % 14) + 1} days ago`,
+            title: i % 2 === 0 ? "Super comfy" : "I love it",
+            text: i % 2 === 0 ? "Dunk low very comfy and true to size. Already got 2 and will definitely get more!" : "Runs a little big but nothing too serious. Look just as pictured.",
+            source: "Originally posted on Nike"
+        });
+    }
+    return reviews;
+};
+const generatedReviews = generateDummyReviews();
+
 const scrapedData = {
     brand: "Nike",
     title: "Nike Dunk Low Women's Basketball Shoes - Photon Dust",
@@ -249,22 +250,7 @@ const scrapedData = {
             <li>Actual colors may vary. This is due to the fact that every computer monitor has a different capability to display colors, we cannot guarantee that the color you see accurately portrays the true color of the product.</li>
         </ul>
     `,
-    reviews: [
-        {
-            user: "CampTheHit",
-            date: "8 days ago",
-            title: "Super comfy",
-            text: "Dunk low very comfy and true to size. Already got 2 and will definitely get more!",
-            source: "Originally posted on Nike"
-        },
-        {
-            user: "SalmaH",
-            date: "14 days ago",
-            title: "I love it",
-            text: "Runs a little big but nothing too serious. Look just as pictured.",
-            source: "Originally posted on Nike"
-        }
-    ]
+    reviews: generatedReviews
 };
 
 
@@ -390,9 +376,7 @@ function renderReviews(data) {
     if (overallStars) overallStars.textContent = starStr;
     if (overallLink) overallLink.textContent = `${data.reviewCount} Reviews`;
 
-    // Review total label
-    const totalLabel = document.getElementById('review-total-label');
-    if (totalLabel) totalLabel.textContent = `1 – 10 of ${data.reviewCount} Reviews`;
+    // We will update total label in updateReviewList instead
 
     // Star input interactivity
     const starBoxes = document.querySelectorAll('#star-input .star-box');
@@ -417,24 +401,80 @@ function renderReviews(data) {
         });
     });
 
-    // Review List
+    // Review List & Pagination
+    let currentPage = 1;
+    const reviewsPerPage = 10;
+    const totalReviews = data.reviews.length;
+    const totalPages = Math.ceil(totalReviews / reviewsPerPage);
+
     const reviewList = document.getElementById("review-list");
-    data.reviews.forEach(review => {
-        const revEl = document.createElement("div");
-        revEl.className = "review-item";
-        revEl.innerHTML = `
-            <div class="review-user">${review.user}</div>
-            <div class="review-body">
-                <div class="review-meta">★★★★★ ${review.date}</div>
-                <div class="review-title-text">${review.title}</div>
-                <div class="review-desc">${review.text}</div>
-                <div class="review-source">
-                    <span style="font-weight: bold; font-style: italic;">✔</span> ${review.source}
+    const totalLabel = document.getElementById('review-total-label');
+    const pageInfo = document.getElementById('review-page-info');
+    let prevBtn = document.getElementById("prev-page");
+    let nextBtn = document.getElementById("next-page");
+
+    if (prevBtn) {
+        const newPrevBtn = prevBtn.cloneNode(true);
+        prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+        prevBtn = newPrevBtn;
+    }
+    if (nextBtn) {
+        const newNextBtn = nextBtn.cloneNode(true);
+        nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+        nextBtn = newNextBtn;
+    }
+
+    function updateReviewList() {
+        if (!reviewList) return;
+        reviewList.innerHTML = '';
+        
+        const start = (currentPage - 1) * reviewsPerPage;
+        const end = Math.min(start + reviewsPerPage, totalReviews);
+        
+        if (totalLabel) totalLabel.textContent = `${start + 1} – ${end} of ${data.reviewCount} Reviews`;
+        if (pageInfo) pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+
+        if (prevBtn) prevBtn.disabled = currentPage === 1;
+        if (nextBtn) nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+
+        const currentReviews = data.reviews.slice(start, end);
+        currentReviews.forEach(review => {
+            const revEl = document.createElement("div");
+            revEl.className = "review-item";
+            revEl.innerHTML = `
+                <div class="review-user">${review.user}</div>
+                <div class="review-body">
+                    <div class="review-meta">★★★★★ ${review.date}</div>
+                    <div class="review-title-text">${review.title}</div>
+                    <div class="review-desc">${review.text}</div>
+                    <div class="review-source">
+                        <span style="font-weight: bold; font-style: italic;">✔</span> ${review.source}
+                    </div>
                 </div>
-            </div>
-        `;
-        reviewList.appendChild(revEl);
-    });
+            `;
+            reviewList.appendChild(revEl);
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateReviewList();
+            }
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateReviewList();
+            }
+        });
+    }
+
+    updateReviewList();
 }
 
 function switchTab(tabId) {
