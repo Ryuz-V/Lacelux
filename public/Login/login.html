@@ -28,19 +28,19 @@
                 </div>
 
                 <!-- Form Login -->
-                <form onsubmit="event.preventDefault();">
+                <form id="loginForm">
                     
                     <div class="input-group">
                         <label>Email</label>
                         <div class="input-wrapper">
-                            <input type="email" class="input-field" placeholder="johndoe@example.com">
+                            <input type="email" id="loginEmail" class="input-field" placeholder="johndoe@example.com" required>
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label>Password</label>
                         <div class="input-wrapper">
-                            <input type="password" class="input-field" placeholder="Password">
+                            <input type="password" id="loginPassword" class="input-field" placeholder="Password" required>
                             <i class="fa-regular fa-eye-slash toggle-password"></i>
                         </div>
                     </div>
@@ -54,6 +54,7 @@
                     </div>
 
                     <button type="submit" class="btn-submit">Login</button>
+                    <p id="loginError" style="color: red; margin-top: 10px; display: none;"></p>
                 </form>
                 <!-- Divider -->
                 <div class="divider">
@@ -97,6 +98,38 @@
     feather.replace();
 </script>
 <script src="/public/script.js"></script>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const errorElement = document.getElementById('loginError');
+        
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                // Save token to localStorage
+                localStorage.setItem('token', data.token);
+                // Redirect to homepage
+                window.location.href = '/';
+            } else {
+                errorElement.textContent = data.message || 'Email atau password salah.';
+                errorElement.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            errorElement.textContent = 'Tidak dapat terhubung ke server.';
+            errorElement.style.display = 'block';
+        }
+    });
+</script>
 </body>
 </html>
 

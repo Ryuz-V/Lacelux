@@ -1,4 +1,48 @@
+// Auth State Management
+async function checkAuthState() {
+    const token = localStorage.getItem('token');
+    const userLinks = document.querySelectorAll('a[href="/public/Login/login.html"]');
+    
+    if (token) {
+        try {
+            const response = await fetch('/api/auth/me', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
+            if (response.ok) {
+                const user = await response.json();
+                console.log('Logged in as:', user.fullName);
+                
+                // Update User icon to Logout and show Avatar
+                userLinks.forEach(link => {
+                    link.removeAttribute('href'); // Remove link to login
+                    link.style.cursor = 'pointer';
+                    link.title = 'Logout (' + user.fullName + ')';
+                    
+                    // Replace the icon with a default user image (using ui-avatars)
+                    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=111&color=fff&size=32`;
+                    link.innerHTML = `<button class="user-btn" style="padding: 0; border-radius: 50%; overflow: hidden; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: transparent;"><img src="${avatarUrl}" alt="${user.fullName}" style="width: 100%; height: 100%; object-fit: cover;"></button>`;
+                    
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if(confirm('Apakah Anda ingin logout?')) {
+                            localStorage.removeItem('token');
+                            window.location.reload();
+                        }
+                    });
+                });
+            } else {
+                // Token invalid
+                localStorage.removeItem('token');
+            }
+        } catch (error) {
+            console.error('Error checking auth:', error);
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+    checkAuthState();
     feather.replace();
     const filterButtons = document.querySelectorAll('.filters button');
     filterButtons.forEach(btn => {

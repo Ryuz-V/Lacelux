@@ -18,26 +18,26 @@
                     <h1 class="greeting">Create Account</h1>
                     <p class="subtitle">Start Your Experience With Us</p>
                 </div>
-                <form onsubmit="event.preventDefault();">
+                <form id="signupForm">
                     
                     <div class="input-group">
                         <label>Full Name</label>
                         <div class="input-wrapper">
-                            <input type="text" class="input-field" placeholder="Jonh Doe">
+                            <input type="text" id="signupName" class="input-field" placeholder="Jonh Doe" required>
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label>Email</label>
                         <div class="input-wrapper">
-                            <input type="email" class="input-field" placeholder="john.doe@example.com">
+                            <input type="email" id="signupEmail" class="input-field" placeholder="john.doe@example.com" required>
                         </div>
                     </div>
 
                     <div class="input-group">
                         <label>Password</label>
                         <div class="input-wrapper">
-                            <input type="password" class="input-field" placeholder="Password">
+                            <input type="password" id="signupPassword" class="input-field" placeholder="Password" required>
                             <i class="fa-regular fa-eye-slash toggle-password"></i>
                         </div>
                     </div>
@@ -50,6 +50,7 @@
                     </div>
 
                     <button type="submit" class="btn-submit">Sign Up</button>
+                    <p id="signupError" style="color: red; margin-top: 10px; display: none;"></p>
                 </form>
                 <!-- Divider -->
                 <div class="divider">
@@ -97,6 +98,39 @@
             feather.replace();
         </script>
     <script src="/public/script.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const errorElement = document.getElementById('signupError');
+            
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Save token to localStorage to auto-login
+                    localStorage.setItem('token', data.token);
+                    alert('Registrasi berhasil! Anda akan dialihkan ke halaman utama.');
+                    window.location.href = '/';
+                } else {
+                    errorElement.textContent = data.message || 'Terjadi kesalahan saat registrasi.';
+                    errorElement.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorElement.textContent = 'Tidak dapat terhubung ke server.';
+                errorElement.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
 
