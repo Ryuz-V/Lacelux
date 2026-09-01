@@ -118,7 +118,6 @@
                 if (response.ok) {
                     // Save token to localStorage to auto-login
                     localStorage.setItem('token', data.token);
-                    alert('Registrasi berhasil! Anda akan dialihkan ke halaman utama.');
                     window.location.href = '/';
                 } else {
                     errorElement.textContent = data.message || 'Terjadi kesalahan saat registrasi.';

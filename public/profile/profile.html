@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="user-header">
+                <img src="https://ui-avatars.com/api/?name=Kazi+Mahbub&background=f9a826&color=fff" alt="Profile" class="avatar">
+                <div class="user-info">
+                    <span class="greeting">Hello</span>
+                    <h3 class="user-name">Kazi Mahbub</h3>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#"><i data-feather="user"></i> My Accounts</a></li>
+                    <li><a href="#"><i data-feather="shopping-bag"></i> My Orders</a></li>
+                    <li><a href="#"><i data-feather="slash"></i> Returns & Cancel</a></li>
+                    <li><a href="#"><i data-feather="star"></i> My Rating & Reviews</a></li>
+                    <li><a href="#"><i data-feather="heart"></i> My Wishlist</a></li>
+                    <li><a href="#"><i data-feather="credit-card"></i> Payment</a></li>
+                    <li><a href="#"><i data-feather="key"></i> Change Password</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="main-header">
+                <h2>Personal Information</h2>
+                <a href="#" class="edit-link"><i data-feather="edit"></i> Change Profile Information</a>
+            </div>
+
+            <div class="profile-details">
+                <div class="profile-pic-edit">
+                    <img src="https://ui-avatars.com/api/?name=Kazi+Mahbub&background=f9a826&color=fff" alt="Profile">
+                    <button class="edit-btn"><i data-feather="edit-2"></i></button>
+                </div>
+
+                <form class="profile-form">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" value="Kazi Mahbub" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date Of Birth</label>
+                        <div class="input-with-icon">
+                            <input type="text" value="20/01/2022" readonly>
+                            <i data-feather="calendar"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group gender-group">
+                        <label>Gender</label>
+                        <div class="radio-options">
+                            <label class="radio-container male-radio">
+                                <input type="radio" name="gender" value="male" checked>
+                                <span class="checkmark"></span>
+                                Male
+                            </label>
+                            <label class="radio-container female-radio">
+                                <input type="radio" name="gender" value="female">
+                                <span class="checkmark"></span>
+                                Female
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="input-with-icon-left">
+                            <span class="flag-icon">🇹🇷</span>
+                            <input type="text" value="+90-123456789" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="abcd1234@email.com" readonly>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

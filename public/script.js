@@ -14,21 +14,91 @@ async function checkAuthState() {
                 console.log('Logged in as:', user.fullName);
                 
                 // Update User icon to Logout and show Avatar
-                userLinks.forEach(link => {
-                    link.removeAttribute('href'); // Remove link to login
-                    link.style.cursor = 'pointer';
-                    link.title = 'Logout (' + user.fullName + ')';
-                    
-                    // Replace the icon with a default user image (using ui-avatars)
-                    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=111&color=fff&size=32`;
-                    link.innerHTML = `<button class="user-btn" style="padding: 0; border-radius: 50%; overflow: hidden; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: transparent;"><img src="${avatarUrl}" alt="${user.fullName}" style="width: 100%; height: 100%; object-fit: cover;"></button>`;
-                    
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        if(confirm('Apakah Anda ingin logout?')) {
-                            localStorage.removeItem('token');
-                            window.location.reload();
+                // Add CSS for dropdown if not exists
+                const styleId = 'user-dropdown-style';
+                if (!document.getElementById(styleId)) {
+                    const style = document.createElement('style');
+                    style.id = styleId;
+                    style.textContent = `
+                        .user-dropdown-wrapper { position: relative; display: inline-block; }
+                        .user-dropdown-menu {
+                            display: none;
+                            position: absolute;
+                            right: 0;
+                            top: 100%;
+                            background: white;
+                            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                            border-radius: 4px;
+                            width: 150px;
+                            z-index: 1000;
+                            flex-direction: column;
+                            overflow: hidden;
+                            margin-top: 10px;
                         }
+                        .user-dropdown-wrapper:hover .user-dropdown-menu,
+                        .user-dropdown-wrapper.active .user-dropdown-menu {
+                            display: flex;
+                        }
+                        .user-dropdown-menu .dropdown-item {
+                            padding: 10px 15px;
+                            text-decoration: none;
+                            color: #333;
+                            display: block;
+                            font-size: 14px;
+                            border-bottom: 1px solid #eee;
+                            transition: background 0.2s;
+                        }
+                        .user-dropdown-menu .dropdown-item:last-child {
+                            border-bottom: none;
+                        }
+                        .user-dropdown-menu .dropdown-item:hover {
+                            background-color: #f5f5f5;
+                        }
+                        .user-dropdown-menu .logout-btn {
+                            color: #d9534f;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+                userLinks.forEach(link => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'user-dropdown-wrapper';
+                    
+                    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=111&color=fff&size=32`;
+                    
+                    wrapper.innerHTML = `
+                        <button class="user-btn" title="Account (${user.fullName})" style="padding: 0; border-radius: 50%; overflow: hidden; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; cursor: pointer;">
+                            <img src="${avatarUrl}" alt="${user.fullName}" style="width: 100%; height: 100%; object-fit: cover;">
+                        </button>
+                        <div class="user-dropdown-menu">
+                            <a href="/public/profile/profile.html" class="dropdown-item profile-btn">Profile</a>
+                            <a href="/public/myorder/myorder.html" class="dropdown-item order-btn">My Order</a>
+                            <a href="#" class="dropdown-item logout-btn">Log out</a>
+                        </div>
+                    `;
+
+                    link.parentNode.replaceChild(wrapper, link);
+
+                    // Toggle active class on click for mobile/click support
+                    const btn = wrapper.querySelector('.user-btn');
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        wrapper.classList.toggle('active');
+                    });
+
+                    // Hide dropdown when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!wrapper.contains(e.target)) {
+                            wrapper.classList.remove('active');
+                        }
+                    });
+
+                    // Logout logic
+                    wrapper.querySelector('.logout-btn').addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('token');
+                        window.location.reload();
                     });
                 });
             } else {
