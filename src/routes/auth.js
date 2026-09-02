@@ -106,4 +106,41 @@ router.get('/me', async (req, res) => {
     }
 });
 
+// Update current user profile
+router.put('/profile', async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ message: 'Token tidak tersedia' });
+        }
+
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, JWT_SECRET);
+        
+        const { fullName, username, dateOfBirth, gender, phoneNumber } = req.body;
+        
+        const updateData = {};
+        if (fullName) updateData.fullName = fullName;
+        if (username !== undefined) updateData.username = username;
+        if (dateOfBirth !== undefined) updateData.dateOfBirth = dateOfBirth;
+        if (gender !== undefined) updateData.gender = gender;
+        if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+        
+        const updatedUser = await User.findByIdAndUpdate(
+            decoded.userId,
+            updateData,
+            { new: true, runValidators: true }
+        ).select('-password');
+        
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User tidak ditemukan' });
+        }
+        
+        res.json({ message: 'Profil berhasil diperbarui', user: updatedUser });
+    } catch (error) {
+        console.error('Update profile error:', error);
+        res.status(500).json({ message: 'Gagal memperbarui profil' });
+    }
+});
+
 module.exports = router;

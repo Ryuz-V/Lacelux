@@ -8,28 +8,30 @@
 body {
     background-color: #f7f9fb;
     color: #333;
-    padding: 40px 20px;
+    padding-top: 120px;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column;
     min-height: 100vh;
 }
 
 .profile-container {
     display: flex;
-    max-width: 1000px;
+    max-width: 1600px;
     width: 100%;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-    overflow: hidden;
+    gap: 30px;
+    align-items: flex-start;
+    margin: 0 auto 60px;
+    padding: 0 20px;
+    flex: 1;
 }
 
 /* Sidebar */
 .sidebar {
     width: 280px;
+    flex-shrink: 0;
     background-color: #fff;
-    border-right: 1px solid #f0f0f0;
+    overflow: hidden;
+    border: 1px solid #eaeaea;
 }
 
 .user-header {
@@ -60,6 +62,16 @@ body {
     font-size: 16px;
     font-weight: 700;
     color: #111;
+}
+
+.sidebar-nav {
+    position: static;
+    height: auto;
+    width: auto;
+    padding: 0;
+    display: block;
+    background-color: transparent;
+    z-index: 1;
 }
 
 .sidebar-nav ul {
@@ -106,6 +118,7 @@ body {
     flex: 1;
     padding: 30px 40px;
     background-color: #fff;
+    border: 1px solid #eaeaea;
 }
 
 .main-header {
@@ -140,7 +153,7 @@ body {
 
 /* Profile Form Area */
 .profile-details {
-    max-width: 500px;
+    max-width: 100%;
 }
 
 .profile-pic-edit {

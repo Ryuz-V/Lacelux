@@ -73,7 +73,7 @@ async function checkAuthState() {
                         </button>
                         <div class="user-dropdown-menu">
                             <a href="/public/profile/profile.html" class="dropdown-item profile-btn">Profile</a>
-                            <a href="/public/myorder/myorder.html" class="dropdown-item order-btn">My Order</a>
+                            <a href="/public/profile/profile.html#my-orders" class="dropdown-item order-btn">My Order</a>
                             <a href="#" class="dropdown-item logout-btn">Log out</a>
                         </div>
                     `;

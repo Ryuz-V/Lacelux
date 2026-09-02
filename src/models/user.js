@@ -7,6 +7,12 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    username: {
+        type: String,
+        trim: true,
+        unique: true,
+        sparse: true
+    },
     email: {
         type: String,
         required: true,
@@ -17,6 +23,16 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    dateOfBirth: {
+        type: String,
+    },
+    gender: {
+        type: String,
+        enum: ['male', 'female', 'other'],
+    },
+    phoneNumber: {
+        type: String,
     }
 }, { timestamps: true });
 
