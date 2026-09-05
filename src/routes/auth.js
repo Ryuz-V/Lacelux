@@ -116,8 +116,7 @@ router.put('/profile', async (req, res) => {
 
         const token = authHeader.split(' ')[1];
         const decoded = jwt.verify(token, JWT_SECRET);
-        
-        const { fullName, username, dateOfBirth, gender, phoneNumber } = req.body;
+        const { fullName, username, dateOfBirth, gender, phoneNumber, avatar } = req.body;
         
         const updateData = {};
         if (fullName) updateData.fullName = fullName;
@@ -125,6 +124,7 @@ router.put('/profile', async (req, res) => {
         if (dateOfBirth !== undefined) updateData.dateOfBirth = dateOfBirth;
         if (gender !== undefined) updateData.gender = gender;
         if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+        if (avatar !== undefined) updateData.avatar = avatar;
         
         const updatedUser = await User.findByIdAndUpdate(
             decoded.userId,

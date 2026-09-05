@@ -1,7 +1,7 @@
 // Auth State Management
 async function checkAuthState() {
     const token = localStorage.getItem('token');
-    const userLinks = document.querySelectorAll('a[href="/public/Login/login.html"]');
+    const userLinks = document.querySelectorAll('a[href*="Login/login.html"]');
     
     if (token) {
         try {
@@ -65,7 +65,8 @@ async function checkAuthState() {
                     const wrapper = document.createElement('div');
                     wrapper.className = 'user-dropdown-wrapper';
                     
-                    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=111&color=fff&size=32`;
+                    const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=111&color=fff&size=32`;
+                    const avatarUrl = user.avatar || defaultAvatar;
                     
                     wrapper.innerHTML = `
                         <button class="user-btn" title="Account (${user.fullName})" style="padding: 0; border-radius: 50%; overflow: hidden; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: transparent; cursor: pointer;">
@@ -184,11 +185,15 @@ const categories = document.querySelector("#categories");
 let lastScrollY = window.scrollY;
 window.addEventListener("scroll", () => {
     const currentScrollY = window.scrollY;
-    const categoriesTop = categories.offsetTop;
+    if (categories) {
+        const categoriesTop = categories.offsetTop;
+    }
     if (currentScrollY > 50) {
-        navbar.classList.add("scrolled");
+        if (navbar) navbar.classList.add("scrolled");
     } else {
-        navbar.classList.remove("scrolled");
+        if (navbar && !window.location.pathname.includes('profile.html')) {
+            navbar.classList.remove("scrolled");
+        }
     }
     lastScrollY = currentScrollY;
 });

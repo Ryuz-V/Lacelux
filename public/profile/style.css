@@ -97,9 +97,10 @@ body {
     transition: all 0.3s;
 }
 
-.sidebar-nav li a i {
-    width: 18px;
-    height: 18px;
+.sidebar-nav li a i,
+.sidebar-nav li a svg {
+    width: 16px;
+    height: 16px;
     margin-right: 12px;
 }
 
@@ -163,7 +164,7 @@ body {
     margin-bottom: 30px;
 }
 
-.profile-pic-edit img {
+.profile-pic-edit > img {
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -175,8 +176,8 @@ body {
     bottom: 0;
     right: 0;
     background: #fff;
-    border: 2px solid #10b981;
-    color: #10b981;
+    border: 2px solid #000;
+    color: #000;
     width: 26px;
     height: 26px;
     border-radius: 50%;
@@ -293,14 +294,9 @@ body {
     border: 1px solid #d1d5db;
 }
 
-.male-radio input:checked ~ .checkmark {
+.radio-container input:checked ~ .checkmark {
     background-color: #10b981;
     border-color: #10b981;
-}
-
-.female-radio input:checked ~ .checkmark {
-    background-color: #9ca3af;
-    border-color: #9ca3af;
 }
 
 .checkmark:after {

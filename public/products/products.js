@@ -485,3 +485,31 @@ function switchTab(tabId) {
     document.getElementById(tabId).classList.add('active');
 }
 
+// Buy Now Button Logic
+document.addEventListener("DOMContentLoaded", () => {
+    // Need a slight delay or interval in case the button is rendered asynchronously or wait for other DOMContentLoaded
+    setTimeout(() => {
+        const buyBtn = document.querySelector('.btn-buy');
+        if (buyBtn) {
+            buyBtn.addEventListener('click', () => {
+                const title = document.getElementById('main-title') ? document.getElementById('main-title').innerText : '';
+                const price = document.querySelector('.current-price') ? document.querySelector('.current-price').innerText : '';
+                const imgEl = document.getElementById('main-product-img');
+                const img = imgEl ? imgEl.src : '';
+                const sizeEl = document.querySelector('.size-box.selected');
+                const size = sizeEl ? sizeEl.innerText : 'Default';
+                const qty = document.getElementById('quantity') ? document.getElementById('quantity').value : '1';
+
+                const payUrl = new URL(window.location.origin + '/public/payment/payment.html');
+                payUrl.searchParams.set('name', title);
+                payUrl.searchParams.set('price', price);
+                payUrl.searchParams.set('img', img);
+                payUrl.searchParams.set('size', size);
+                payUrl.searchParams.set('qty', qty);
+                
+                window.location.href = payUrl.toString();
+            });
+        }
+    }, 500);
+});
+

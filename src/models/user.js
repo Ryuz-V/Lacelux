@@ -33,6 +33,9 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
+    },
+    avatar: {
+        type: String
     }
 }, { timestamps: true });
 

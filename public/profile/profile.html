@@ -200,7 +200,7 @@
         <button class="search-btn"><i data-feather="search"></i> <span>SEARCH</span></button>
         <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
         <button class="wishlist-btn"><i data-feather="heart"></i></button>
-        <a href="../Login/login.html"><button class="user-btn"><i data-feather="user"></i></button></a>
+        <a href="../Login/login.html" id="nav-user-link"><button class="user-btn" id="nav-user-btn"><i data-feather="user"></i></button></a>
     </div>
 </div>
     <div class="search-overlay" id="search-overlay">
@@ -230,9 +230,9 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="user-header">
-                <img src="https://ui-avatars.com/api/?name=Kazi+Mahbub&background=f9a826&color=fff" alt="Profile" class="avatar">
+                <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff" alt="Profile" class="avatar" id="sidebar-avatar">
                 <div class="user-info">
-                    <span class="greeting">Hello</span>
+                    <span class="greeting">Hello!</span>
                     <h3 class="user-name">Kazi Mahbub</h3>
                 </div>
             </div>
@@ -240,11 +240,10 @@
                 <ul>
                     <li class="active" id="nav-my-accounts"><a href="#my-accounts"><i data-feather="user"></i> My Accounts</a></li>
                     <li id="nav-my-orders"><a href="#my-orders"><i data-feather="shopping-bag"></i> My Orders</a></li>
-                    <li><a href="../#"><i data-feather="slash"></i> Returns & Cancel</a></li>
-                    <li><a href="../#"><i data-feather="star"></i> My Rating & Reviews</a></li>
-                    <li><a href="../#"><i data-feather="heart"></i> My Wishlist</a></li>
-                    <li><a href="../#"><i data-feather="credit-card"></i> Payment</a></li>
-                    <li><a href="../#"><i data-feather="key"></i> Change Password</a></li>
+                    <li><a href="../#"><i data-feather="slash"></i> Your Cart</a></li>
+                    <li><a href="../#"><i data-feather="star"></i> My Wishlist</a></li>
+                    <li><a href="../#"><i data-feather="heart"></i> Notification</a></li>
+                    <li><a href="../#"><i data-feather="key"></i> Settings</a></li>
                 </ul>
             </nav>
         </aside>
@@ -254,22 +253,28 @@
             <div id="section-my-accounts" class="profile-section">
             <div class="main-header">
                 <h2>Personal Information</h2>
-                <a href="#" class="edit-link" id="edit-profile-btn"><i data-feather="edit"></i> Change Profile Information</a>
             </div>
 
             <div class="profile-details">
                 <div class="profile-pic-edit">
-                    <img src="https://ui-avatars.com/api/?name=Kazi+Mahbub&background=f9a826&color=fff" alt="Profile">
-                    <button class="edit-btn"><i data-feather="edit-2"></i></button>
+                    <img id="main-avatar" src="https://ui-avatars.com/api/?name=User&background=111&color=fff" alt="Profile">
+                    <button type="button" class="edit-btn" id="edit-avatar-btn"><img src="/public/asset/edit.png" alt="edit" style="width: 14px; height: 14px; filter: brightness(0);"></button>
+                    <input type="file" id="avatar-input" style="display: none;" accept="image/*">
                 </div>
 
                 <form class="profile-form">
                     <div class="form-group">
-                        <label>Name</label>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <label style="margin-bottom: 0;">Name</label>
+                            <a href="#" class="edit-field-btn" data-target="input-fullName" style="font-size: 13px; color: #2b7af0; text-decoration: none;">Change Information</a>
+                        </div>
                         <input type="text" id="input-fullName" name="fullName" readonly>
                     </div>
                     <div class="form-group">
-                        <label>Username</label>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <label style="margin-bottom: 0;">Username</label>
+                            <a href="#" class="edit-field-btn" data-target="input-username" style="font-size: 13px; color: #2b7af0; text-decoration: none;">Change Information</a>
+                        </div>
                         <input type="text" id="input-username" name="username" readonly>
                     </div>
 
@@ -295,16 +300,35 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Phone Number</label>
-                        <div class="input-with-icon-left">
-                            <span class="flag-icon">🇹🇷</span>
-                            <input type="text" id="input-phoneNumber" name="phoneNumber" readonly>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <label style="margin-bottom: 0;">Phone Number</label>
+                            <a href="#" class="edit-field-btn" data-target="input-phoneNumber" style="font-size: 13px; color: #2b7af0; text-decoration: none;">Change Information</a>
+                        </div>
+                        <div class="input-with-icon-left" style="position: relative; overflow: visible;">
+                            <div id="country-selector" style="cursor: pointer; display: flex; align-items: center; padding: 0 12px; border-right: 1px solid #eaeaea; height: 100%; min-height: 48px;">
+                                <span id="selected-flag">🇺🇸</span>
+                                <span id="selected-dial-code" style="margin-left: 6px; font-size: 14px; color: #555;">+1</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px; color: #888;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </div>
+                            
+                            <div id="country-dropdown" style="display: none; position: absolute; top: 100%; left: 0; width: 300px; max-height: 280px; background: #fff; border: 1px solid #eaeaea; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 100; flex-direction: column; margin-top: 5px;">
+                                <div style="padding: 10px; border-bottom: 1px solid #f3f4f6;">
+                                    <input type="text" id="country-search" placeholder="Search country..." style="width: 100%; padding: 8px 12px; border: 1px solid #eaeaea; border-radius: 6px; outline: none; font-size: 14px; box-sizing: border-box; background: #fff;">
+                                </div>
+                                <ul id="country-list" style="list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1;">
+                                </ul>
+                            </div>
+                            
+                            <input type="text" id="input-phoneNumber" name="phoneNumber" readonly style="border: none; padding: 0 16px; flex: 1; outline: none; background: transparent; font-size: 14px; min-width: 0;">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="input-email" name="email" readonly disabled>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <label style="margin-bottom: 0;">Email</label>
+                            <a href="#" class="edit-field-btn" data-target="input-email" style="font-size: 13px; color: #2b7af0; text-decoration: none;">Change Information</a>
+                        </div>
+                        <input type="email" id="input-email" name="email" readonly>
                     </div>
                 
                     <div class="form-group" style="margin-top: 20px;">
@@ -439,6 +463,164 @@
                     
                     // Update header name
                     document.querySelector('.user-name').textContent = user.fullName;
+
+                    // Update Avatars
+                    const nameParam = encodeURIComponent(user.fullName || 'User');
+                    const defaultAvatar = `https://ui-avatars.com/api/?name=${nameParam}&background=111&color=fff`;
+                    const avatarUrl = user.avatar || defaultAvatar;
+                    const sidebarAvatar = document.getElementById('sidebar-avatar');
+                    const mainAvatar = document.getElementById('main-avatar');
+                    if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
+                    if (mainAvatar) mainAvatar.src = avatarUrl;
+                    const navUserLink = document.getElementById('nav-user-link');
+                    if (navUserLink) {
+                        navUserLink.href = 'profile.html';
+                    }
+
+                    // --- Phone Number Country Selector Logic ---
+                    const countries = [
+                        { name: "United States", code: "US", dialCode: "+1", flag: "🇺🇸" },
+                        { name: "Indonesia", code: "ID", dialCode: "+62", flag: "🇮🇩" },
+                        { name: "United Kingdom", code: "GB", dialCode: "+44", flag: "🇬🇧" },
+                        { name: "Malaysia", code: "MY", dialCode: "+60", flag: "🇲🇾" },
+                        { name: "Singapore", code: "SG", dialCode: "+65", flag: "🇸🇬" },
+                        { name: "Australia", code: "AU", dialCode: "+61", flag: "🇦🇺" },
+                        { name: "India", code: "IN", dialCode: "+91", flag: "🇮🇳" },
+                        { name: "Japan", code: "JP", dialCode: "+81", flag: "🇯🇵" },
+                        { name: "China", code: "CN", dialCode: "+86", flag: "🇨🇳" },
+                        { name: "South Korea", code: "KR", dialCode: "+82", flag: "🇰🇷" },
+                        { name: "Turkey", code: "TR", dialCode: "+90", flag: "🇹🇷" },
+                        { name: "Brazil", code: "BR", dialCode: "+55", flag: "🇧🇷" },
+                        { name: "France", code: "FR", dialCode: "+33", flag: "🇫🇷" },
+                        { name: "Germany", code: "DE", dialCode: "+49", flag: "🇩🇪" }
+                    ];
+
+                    const countrySelector = document.getElementById('country-selector');
+                    const countryDropdown = document.getElementById('country-dropdown');
+                    const countryList = document.getElementById('country-list');
+                    const countrySearch = document.getElementById('country-search');
+                    const selectedFlag = document.getElementById('selected-flag');
+                    const selectedDialCode = document.getElementById('selected-dial-code');
+                    const phoneInput = document.getElementById('input-phoneNumber');
+
+                    let currentCountry = countries[0]; // Default US
+
+                    function renderCountryList(filteredCountries) {
+                        countryList.innerHTML = '';
+                        filteredCountries.forEach(country => {
+                            const li = document.createElement('li');
+                            li.style.cssText = 'padding: 10px 15px; display: flex; align-items: center; cursor: pointer; font-size: 14px; transition: background 0.2s;';
+                            li.onmouseover = () => li.style.background = '#f5f8ff';
+                            li.onmouseout = () => li.style.background = 'transparent';
+                            
+                            li.innerHTML = `
+                                <span style="margin-right: 10px; font-size: 18px;">${country.flag}</span>
+                                <span style="flex: 1; color: #333;">${country.name} (${country.code})</span>
+                                <span style="color: #888;">${country.dialCode}</span>
+                            `;
+                            
+                            li.addEventListener('click', () => {
+                                selectCountry(country);
+                                countryDropdown.style.display = 'none';
+                            });
+                            
+                            countryList.appendChild(li);
+                        });
+                    }
+
+                    function selectCountry(country) {
+                        currentCountry = country;
+                        selectedFlag.textContent = country.flag;
+                        selectedDialCode.textContent = country.dialCode;
+                    }
+
+                    // Initialize
+                    renderCountryList(countries);
+                    selectCountry(countries[0]); // default to US
+
+                    // Toggle dropdown
+                    countrySelector.addEventListener('click', (e) => {
+                        if (phoneInput.hasAttribute('readonly')) return; // Don't open if not in edit mode
+                        const isVisible = countryDropdown.style.display === 'flex';
+                        countryDropdown.style.display = isVisible ? 'none' : 'flex';
+                        if (!isVisible) {
+                            countrySearch.value = '';
+                            renderCountryList(countries);
+                            countrySearch.focus();
+                        }
+                    });
+
+                    // Search filter
+                    countrySearch.addEventListener('input', (e) => {
+                        const term = e.target.value.toLowerCase();
+                        const filtered = countries.filter(c => 
+                            c.name.toLowerCase().includes(term) || 
+                            c.code.toLowerCase().includes(term) ||
+                            c.dialCode.includes(term)
+                        );
+                        renderCountryList(filtered);
+                    });
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!countrySelector.contains(e.target) && !countryDropdown.contains(e.target)) {
+                            countryDropdown.style.display = 'none';
+                        }
+                    });
+
+                    // Auto-detect typed country code in input
+                    phoneInput.addEventListener('input', (e) => {
+                        let val = e.target.value;
+                        
+                        if (val.startsWith('+')) {
+                            // Check max length of country code (up to 4 chars)
+                            for (let i = 4; i > 0; i--) {
+                                if (val.length >= i) {
+                                    const code = val.substring(0, i);
+                                    const found = countries.find(c => c.dialCode === code);
+                                    if (found) {
+                                        selectCountry(found);
+                                        e.target.value = val.substring(i).trim();
+                                        break;
+                                    }
+                                }
+                            }
+                        } else if (val.startsWith('62')) {
+                            const found = countries.find(c => c.dialCode === '+62');
+                            if (found) {
+                                selectCountry(found);
+                                e.target.value = val.substring(2).trim();
+                            }
+                        } else if (val.startsWith('08') || val.startsWith('8')) {
+                            // Indonesian mobile logic assist
+                            const found = countries.find(c => c.dialCode === '+62');
+                            if (found) {
+                                selectCountry(found);
+                                if (val.startsWith('08')) {
+                                    e.target.value = val.substring(1).trim(); // Keep the 8, strip the 0
+                                }
+                            }
+                        }
+                    });
+
+                    // Format phone number when fetching user data initially
+                    if (user.phoneNumber) {
+                        let phoneStr = user.phoneNumber;
+                        let matched = false;
+                        // Try to find if it starts with any known dial code
+                        for(let c of countries) {
+                            if(phoneStr.startsWith(c.dialCode)) {
+                                selectCountry(c);
+                                phoneInput.value = phoneStr.substring(c.dialCode.length);
+                                matched = true;
+                                break;
+                            }
+                        }
+                        if(!matched) {
+                            phoneInput.value = phoneStr; // fallback
+                        }
+                    }
+
                 } else {
                     console.error('Failed to load profile');
                 }
@@ -446,21 +628,76 @@
                 console.error(err);
             }
 
-            // Edit Profile logic
-            const editBtn = document.getElementById('edit-profile-btn');
-            const saveBtn = document.getElementById('save-profile-btn');
-            const inputs = document.querySelectorAll('.profile-form input[type="text"]');
-            const radios = document.querySelectorAll('.profile-form input[type="radio"]');
+            let base64Avatar = null;
+            const avatarInput = document.getElementById('avatar-input');
+            const editAvatarBtn = document.getElementById('edit-avatar-btn');
             
-            // Initially disable radios
-            radios.forEach(r => r.disabled = true);
+            if (editAvatarBtn && avatarInput) {
+                editAvatarBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    avatarInput.click();
+                });
+                
+                avatarInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            base64Avatar = event.target.result;
+                            const mainAvatar = document.getElementById('main-avatar');
+                            if (mainAvatar) mainAvatar.src = base64Avatar;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
 
-            editBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                inputs.forEach(input => input.removeAttribute('readonly'));
-                radios.forEach(r => r.disabled = false);
-                saveBtn.style.display = 'block';
-                editBtn.style.display = 'none';
+            // Edit Profile logic
+            const saveBtn = document.getElementById('save-profile-btn');
+            const nameInput = document.getElementById('input-fullName');
+            const usernameInput = document.getElementById('input-username');
+            
+            // Show save button when any input changes
+            const allFormInputs = document.querySelectorAll('.profile-form input');
+            allFormInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    saveBtn.style.display = 'block';
+                });
+                input.addEventListener('change', () => {
+                    saveBtn.style.display = 'block';
+                });
+            });
+
+            // Auto-save on gender change
+            const genderRadios = document.querySelectorAll('input[name="gender"]');
+            genderRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    saveBtn.style.display = 'block';
+                    const form = document.querySelector('.profile-form');
+                    form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                });
+            });
+
+            // Individual field edit logic
+            const editFieldBtns = document.querySelectorAll('.edit-field-btn');
+            editFieldBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = btn.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    
+                    if (btn.textContent === 'Change Information') {
+                        if (input) {
+                            input.removeAttribute('readonly');
+                            input.focus();
+                        }
+                        btn.textContent = 'Save Change';
+                    } else if (btn.textContent === 'Save Change') {
+                        btn.textContent = 'Saving...';
+                        const form = document.querySelector('.profile-form');
+                        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                    }
+                });
             });
 
             // Save Profile logic
@@ -470,12 +707,24 @@
                 saveBtn.textContent = 'Saving...';
                 
                 const formData = new FormData(form);
+                let combinedPhone = formData.get('phoneNumber');
+                if (combinedPhone && typeof currentCountry !== 'undefined') {
+                    // Prepend dialCode if it doesn't already have it
+                    let cleanPhone = combinedPhone.replace(/[^0-9]/g, '');
+                    if (cleanPhone) {
+                        combinedPhone = currentCountry.dialCode + cleanPhone;
+                    }
+                }
+                
                 const data = {
                     fullName: formData.get('fullName'),
                     username: formData.get('username'),
-                    phoneNumber: formData.get('phoneNumber'),
+                    phoneNumber: combinedPhone,
                     gender: formData.get('gender')
                 };
+                if (base64Avatar) {
+                    data.avatar = base64Avatar;
+                }
 
                 try {
                     const res = await fetch('http://localhost:3000/api/auth/profile', {
@@ -488,21 +737,35 @@
                     });
 
                     if (res.ok) {
-                        alert('Profile updated successfully!');
                         const result = await res.json();
                         
                         // Update UI
                         document.querySelector('.user-name').textContent = result.user.fullName;
+                        if (result.user.avatar) {
+                            const sidebarAvatar = document.getElementById('sidebar-avatar');
+                            if (sidebarAvatar) sidebarAvatar.src = result.user.avatar;
+                        } else {
+                            const nameParam = encodeURIComponent(result.user.fullName || 'User');
+                            const defaultAvatar = `https://ui-avatars.com/api/?name=${nameParam}&background=111&color=fff`;
+                            const sidebarAvatar = document.getElementById('sidebar-avatar');
+                            if (sidebarAvatar) sidebarAvatar.src = defaultAvatar;
+                            const mainAvatar = document.getElementById('main-avatar');
+                            if (mainAvatar) mainAvatar.src = defaultAvatar;
+                        }
                         
-                        // Re-lock form
-                        inputs.forEach(input => input.setAttribute('readonly', true));
-                        radios.forEach(r => r.disabled = true);
+                        // Reset all edit buttons and lock inputs
+                        document.querySelectorAll('.edit-field-btn').forEach(b => {
+                            b.textContent = 'Change Information';
+                        });
+                        document.querySelectorAll('.profile-form input[type="text"], .profile-form input[type="email"]').forEach(input => {
+                            input.setAttribute('readonly', true);
+                        });
+                        
+                        // Hide main save button
                         saveBtn.style.display = 'none';
                         saveBtn.textContent = 'Save Changes';
-                        editBtn.style.display = 'flex';
                     } else {
                         const err = await res.json();
-                        alert('Error: ' + err.message);
                         saveBtn.textContent = 'Save Changes';
                     }
                 } catch (err) {
