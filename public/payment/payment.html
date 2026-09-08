@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
-    <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
@@ -268,28 +267,100 @@
             </div>
             <div class="checkout-box payment-methods-box">
                 <h2>Payment Method</h2>
-                <div class="payment-options">
-                    <label class="payment-option">
-                        <input type="radio" name="payment_method" value="credit_card" checked>
-                        <span class="option-content">
-                            <i data-feather="credit-card"></i>
-                            Credit Card
-                        </span>
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="payment_method" value="bank_transfer">
-                        <span class="option-content">
-                            <i data-feather="briefcase"></i>
-                            Bank Transfer
-                        </span>
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="payment_method" value="ewallet">
-                        <span class="option-content">
-                            <i data-feather="smartphone"></i>
-                            E-Wallet
-                        </span>
-                    </label>
+                <div class="payment-accordion" id="payment-accordion">
+                    <!-- Default method selected is visa inside cc -->
+                    <input type="hidden" name="payment_method" id="payment_method_input" value="visa">
+
+                    <!-- Credit Card Category -->
+                    <div class="accordion-item active" data-category="cc">
+                        <div class="accordion-header">
+                            <span class="header-title">Credit Card</span>
+                            <i data-feather="chevron-down" class="accordion-arrow"></i>
+                        </div>
+                        <div class="accordion-body">
+                            <div class="payment-option-list">
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="visa" checked>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" class="payment-logo">
+                                    <span>Visa</span>
+                                </label>
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="mastercard">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="payment-logo">
+                                    <span>Mastercard</span>
+                                </label>
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="jcb">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/JCB_logo.svg" alt="JCB" class="payment-logo">
+                                    <span>JCB</span>
+                                </label>
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="amex">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" alt="Amex" class="payment-logo">
+                                    <span>American Express</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Category -->
+                    <div class="accordion-item" data-category="bt">
+                        <div class="accordion-header">
+                            <span class="header-title">Bank Transfer</span>
+                            <i data-feather="chevron-down" class="accordion-arrow"></i>
+                        </div>
+                        <div class="accordion-body">
+                            <div class="payment-option-list">
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="swift">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c4/Swift_logo.svg" alt="SWIFT" class="payment-logo">
+                                    <span>SWIFT</span>
+                                </label>
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="tt">
+                                    <i data-feather="briefcase" class="payment-icon"></i>
+                                    <span>Telegraphic Transfer</span>
+                                </label>
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="loc">
+                                    <i data-feather="file-text" class="payment-icon"></i>
+                                    <span>Letter of Credit</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- E-Wallet Category -->
+                    <div class="accordion-item" data-category="ew">
+                        <div class="accordion-header">
+                            <span class="header-title">E-Wallet</span>
+                            <i data-feather="chevron-down" class="accordion-arrow"></i>
+                        </div>
+                        <div class="accordion-body">
+                            <div class="payment-option-list">
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="paypal">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" class="payment-logo">
+                                    <span>PayPal</span>
+                                </label>
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="applepay">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" alt="Apple Pay" class="payment-logo">
+                                    <span>Apple Pay</span>
+                                </label>
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="googlepay">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="Google Pay" class="payment-logo">
+                                    <span>Google Pay / Google Wallet</span>
+                                </label>
+                                <label class="payment-radio">
+                                    <input type="radio" name="payment_agent" value="alipay">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Alipay_logo.svg" alt="Alipay" class="payment-logo">
+                                    <span>Alipay</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -358,6 +429,35 @@
             alert('Your order for ' + pName + ' has been placed successfully!');
             window.location.href = '../index.html';
         });
+
+        // Accordion Logic
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        const hiddenInput = document.getElementById('payment_method_input');
+        const radioInputs = document.querySelectorAll('input[name="payment_agent"]');
+        
+        if (accordionItems.length > 0 && hiddenInput) {
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                
+                header.addEventListener('click', () => {
+                    // Close other accordions
+                    accordionItems.forEach(i => {
+                        if (i !== item) i.classList.remove('active');
+                    });
+                    // Toggle current accordion
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Handle radio selection
+            radioInputs.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        hiddenInput.value = e.target.value;
+                    }
+                });
+            });
+        }
     });
 </script>
 <script src="../script.js"></script>
