@@ -485,29 +485,73 @@ function switchTab(tabId) {
     document.getElementById(tabId).classList.add('active');
 }
 
-// Buy Now Button Logic
+// Buy Now & Add to Cart Logic
 document.addEventListener("DOMContentLoaded", () => {
     // Need a slight delay or interval in case the button is rendered asynchronously or wait for other DOMContentLoaded
     setTimeout(() => {
+        const titleEl = document.getElementById('main-title');
+        const priceEl = document.querySelector('.current-price');
+        const imgEl = document.getElementById('main-product-img');
+        
+        const getProductData = () => {
+            const title = titleEl ? titleEl.innerText : '';
+            const priceText = priceEl ? priceEl.innerText : '';
+            const img = imgEl ? imgEl.src : '';
+            const sizeEl = document.querySelector('.size-box.selected');
+            const size = sizeEl ? sizeEl.innerText : 'Default';
+            const qty = document.getElementById('quantity') ? document.getElementById('quantity').value : '1';
+            
+            // Clean price: Rp. 1.899.000 -> 1899000
+            let numericPrice = parseInt(priceText.replace(/[^0-9]/g, ''));
+            if (isNaN(numericPrice)) numericPrice = 0;
+            
+            return { title, priceText, numericPrice, img, size, qty: parseInt(qty) || 1 };
+        };
+
         const buyBtn = document.querySelector('.btn-buy');
         if (buyBtn) {
             buyBtn.addEventListener('click', () => {
-                const title = document.getElementById('main-title') ? document.getElementById('main-title').innerText : '';
-                const price = document.querySelector('.current-price') ? document.querySelector('.current-price').innerText : '';
-                const imgEl = document.getElementById('main-product-img');
-                const img = imgEl ? imgEl.src : '';
-                const sizeEl = document.querySelector('.size-box.selected');
-                const size = sizeEl ? sizeEl.innerText : 'Default';
-                const qty = document.getElementById('quantity') ? document.getElementById('quantity').value : '1';
-
+                const data = getProductData();
                 const payUrl = new URL(window.location.origin + '/public/payment/payment.html');
-                payUrl.searchParams.set('name', title);
-                payUrl.searchParams.set('price', price);
-                payUrl.searchParams.set('img', img);
-                payUrl.searchParams.set('size', size);
-                payUrl.searchParams.set('qty', qty);
+                payUrl.searchParams.set('name', data.title);
+                payUrl.searchParams.set('price', data.priceText);
+                payUrl.searchParams.set('img', data.img);
+                payUrl.searchParams.set('size', data.size);
+                payUrl.searchParams.set('qty', data.qty);
                 
                 window.location.href = payUrl.toString();
+            });
+        }
+
+        const cartBtn = document.getElementById('add-to-cart-btn');
+        if (cartBtn) {
+            cartBtn.addEventListener('click', (e) => {
+                // If it's disabled or blocked, prevent action
+                if (cartBtn.classList.contains('disabled') || cartBtn.hasAttribute('disabled')) {
+                    alert('Please select a size first.');
+                    return;
+                }
+                
+                const data = getProductData();
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                // Check if already in cart with same size
+                const existingItem = cart.find(item => item.name === data.title && item.size === data.size);
+                if (existingItem) {
+                    existingItem.quantity += data.qty;
+                } else {
+                    cart.push({
+                        name: data.title,
+                        price: data.numericPrice,
+                        image: data.img,
+                        size: data.size,
+                        quantity: data.qty,
+                        brand: 'Lacelux' // Or parse from UI if needed
+                    });
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                window.location.href = '../profile/profile.html#your-cart';
             });
         }
     }, 500);
