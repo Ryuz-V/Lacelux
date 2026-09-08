@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lacelux</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="/public/style.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
@@ -34,15 +34,15 @@
             </div>
         </div>
         <div class="nav-icons">
-            <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
+            <a href="/public/profile/profile.html#your-cart"><button class="cart-btn"><i data-feather="shopping-cart"></i></button></a>
             <button class="wishlist-btn"><i data-feather="heart"></i></button>
             <a href="/public/Login/login.html"><button class="user-btn"><i data-feather="user"></i></button></a>
         </div>
     </div>
     <div class="navbar-bottom">
         <ul>
-            <li><a href="products.html?category=all-shoes">New Arrivals</a></li>
-            <li><a href="products.html?category=eksklusif">Exclusive</a></li>
+            <li><a href="/public/products.html?category=all-shoes">New Arrivals</a></li>
+            <li><a href="/public/products.html?category=eksklusif">Exclusive</a></li>
             <li class="dropdown">
                 <a href="#">Man</a>
                 <div class="mega-menu">
@@ -175,7 +175,7 @@
                 </div>
             </li>
     
-            <li><a href="products.html?category=coming-soon">Coming Soon</a></li>
+            <li><a href="/public/products.html?category=coming-soon">Coming Soon</a></li>
     
             <li class="dropdown">
                 <a href="#">Brands</a>
@@ -220,7 +220,7 @@
                     </div>
                 </div>
             </li>
-            <li><a href="products.html?category=sale" class="sale-link">SALE</a></li>
+            <li><a href="/public/products.html?category=sale" class="sale-link">SALE</a></li>
         </ul>
     </div>
 </nav>
@@ -426,8 +426,20 @@
         document.getElementById('summary-total').innerText = '$' + total.toFixed(2);
         
         document.getElementById('order-btn').addEventListener('click', () => {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            orders.push({
+                name: pName,
+                price: numPrice,
+                image: pImg,
+                size: pSize,
+                qty: qty,
+                status: 'Processing',
+                date: new Date().toLocaleDateString('id-ID')
+            });
+            localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.removeItem('cart');
             alert('Your order for ' + pName + ' has been placed successfully!');
-            window.location.href = '../index.html';
+            window.location.href = '/public/profile/profile.html#my-orders';
         });
 
         // Accordion Logic
@@ -460,6 +472,6 @@
         }
     });
 </script>
-<script src="../script.js"></script>
+<script src="/public/script.js"></script>
 </body>
 </html>

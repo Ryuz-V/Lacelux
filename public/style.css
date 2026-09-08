@@ -2417,7 +2417,7 @@ body.catalog-page {
 }
 
 .nav-icons button:hover {
-    transform: scale(1.1);
+    color: #555;
 }
 
 .nav-icons button i {

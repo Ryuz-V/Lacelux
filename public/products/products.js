@@ -489,15 +489,11 @@ function switchTab(tabId) {
 document.addEventListener("DOMContentLoaded", () => {
     // Need a slight delay or interval in case the button is rendered asynchronously or wait for other DOMContentLoaded
     setTimeout(() => {
-        const titleEl = document.getElementById('main-title');
-        const priceEl = document.querySelector('.current-price');
-        const imgEl = document.getElementById('main-product-img');
-        
         const getProductData = () => {
-            const title = titleEl ? titleEl.innerText : '';
-            const priceText = priceEl ? priceEl.innerText : '';
-            const img = imgEl ? imgEl.src : '';
-            const sizeEl = document.querySelector('.size-box.selected');
+            const title = document.querySelector('.product-title') ? document.querySelector('.product-title').innerText : 'Unknown Product';
+            const priceText = document.querySelector('.product-price') ? document.querySelector('.product-price').innerText : '0';
+            const img = document.getElementById('main-image') ? document.getElementById('main-image').src : '';
+            const sizeEl = document.querySelector('.size-btn.selected');
             const size = sizeEl ? sizeEl.innerText : 'Default';
             const qty = document.getElementById('quantity') ? document.getElementById('quantity').value : '1';
             

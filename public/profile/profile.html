@@ -198,7 +198,7 @@
     </ul>
     <div class="menu">
         <button class="search-btn"><i data-feather="search"></i> <span>SEARCH</span></button>
-        <button class="cart-btn"><i data-feather="shopping-cart"></i></button>
+        <a href="/public/profile/profile.html#your-cart"><button class="cart-btn"><i data-feather="shopping-cart"></i></button></a>
         <button class="wishlist-btn"><i data-feather="heart"></i></button>
         <a href="../Login/login.html" id="nav-user-link"><button class="user-btn" id="nav-user-btn"><i data-feather="user"></i></button></a>
     </div>
@@ -833,6 +833,7 @@
                 const nav = document.getElementById('nav-my-orders');
                 if(sec) sec.style.display = 'block';
                 if(nav) nav.classList.add('active');
+                renderOrders();
             } else if (hash === '#your-cart') {
                 const sec = document.getElementById('section-your-cart');
                 const nav = document.getElementById('nav-your-cart');
@@ -855,6 +856,37 @@
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
             }).format(number).replace('Rp', 'Rp. ');
+        }
+
+        function renderOrders() {
+            const section = document.getElementById('section-my-orders');
+            const details = section.querySelector('.profile-details');
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            if (orders.length === 0) {
+                details.innerHTML = '<p style="padding: 20px 0; color: #666; font-size: 16px;">You have no orders yet.</p>';
+                return;
+            }
+            
+            let html = '<div style="display:flex; flex-direction:column; gap:15px; margin-bottom: 30px;">';
+            orders.forEach(order => {
+                html += `
+                    <div style="border: 1px solid #eee; border-radius: 8px; padding: 15px; display: flex; gap: 15px; align-items: center;">
+                        <img src="${order.image}" style="width:80px; height:80px; object-fit:cover; border-radius:4px;">
+                        <div style="flex:1;">
+                            <h3 style="margin:0 0 5px; font-size:16px;">${order.name}</h3>
+                            <p style="margin:0; font-size:13px; color:#666;">Size: ${order.size} | Qty: ${order.qty}</p>
+                            <p style="margin:5px 0 0; font-size:14px; font-weight:600;">${formatCurrency(order.price * order.qty)}</p>
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="display:inline-block; padding:4px 8px; background:#e8f5e9; color: #2e7d32; border-radius:4px; font-size:12px; font-weight:600;">${order.status || 'Processing'}</span>
+                            <p style="margin:5px 0 0; font-size:12px; color:#999;">${order.date || ''}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            details.innerHTML = html;
         }
 
         function renderCart() {
