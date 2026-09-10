@@ -375,10 +375,10 @@
                 <div class="cart-summary-box" id="cart-summary-box" style="margin-top: 30px; border: 1px solid #ddd; padding: 20px; display: none;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                         <div style="flex: 1; padding-right: 20px;">
-                            <label style="font-size: 14px; display: block; margin-bottom: 8px;">Discount Code</label>
+                            <label style="margin-top: 10px; font-size: 14px; display: block; margin-bottom: 8px;">Discount Code</label>
                             <div style="display: flex; gap: 10px;">
-                                <input type="text" placeholder="Enter discount code" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-family: 'Poppins', sans-serif;">
-                                <button type="button" style="padding: 10px 20px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-family: 'Poppins', sans-serif;">Apply</button>
+                                <input type="text" placeholder="Enter discount code" style="flex: 1; margin-top: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-family: 'Poppins', sans-serif;">
+                                <button type="button" style="margin-top: 10px; padding: 10px 20px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-family: 'Poppins', sans-serif;">Apply</button>
                             </div>
                         </div>
                         <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;">
@@ -850,12 +850,12 @@
 
         // Format currency helper
         function formatCurrency(number) {
-            return new Intl.NumberFormat('id-ID', {
+            return new Intl.NumberFormat('en-US', {
                 style: 'currency',
-                currency: 'IDR',
+                currency: 'USD',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
-            }).format(number).replace('Rp', 'Rp. ');
+            }).format(number);
         }
 
         function renderOrders() {
@@ -981,9 +981,7 @@
         document.getElementById('cart-checkout-btn').addEventListener('click', () => {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             if (cart.length > 0) {
-                // You can pass the first item or let payment.html handle the cart
-                const firstItem = cart[0];
-                window.location.href = `../payment/payment.html?name=${encodeURIComponent(firstItem.name)}&price=${encodeURIComponent(firstItem.price)}&img=${encodeURIComponent(firstItem.image)}&size=${encodeURIComponent(firstItem.size || 'UK 5')}&qty=${encodeURIComponent(firstItem.quantity)}`;
+                window.location.href = `../payment/payment.html?source=cart`;
             }
         });
 

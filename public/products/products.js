@@ -497,8 +497,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const size = sizeEl ? sizeEl.innerText : 'Default';
             const qty = document.getElementById('quantity') ? document.getElementById('quantity').value : '1';
             
-            // Clean price: Rp. 1.899.000 -> 1899000
-            let numericPrice = parseInt(priceText.replace(/[^0-9]/g, ''));
+            // Clean price: $159.00 -> 159.00
+            let numericPrice = parseFloat(priceText.replace(/[^0-9.]/g, ''));
             if (isNaN(numericPrice)) numericPrice = 0;
             
             return { title, priceText, numericPrice, img, size, qty: parseInt(qty) || 1 };

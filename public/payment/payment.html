@@ -227,16 +227,9 @@
 <main class="checkout-container">
     <div class="checkout-content">
         <div class="checkout-left">
-            <div class="checkout-box product-details-box">
+            <div class="checkout-box product-details-box" id="product-details-container">
                 <h2>Product Details</h2>
-                <div class="product-info-row">
-                    <img id="checkout-product-img" src="" alt="Product Image">
-                    <div class="product-info-text">
-                        <h3 id="checkout-product-name">Product Name</h3>
-                        <p>Size: <span id="checkout-product-size">-</span></p>
-                        <p>Qty: <span id="checkout-product-qty">1</span></p>
-                    </div>
-                </div>
+                <!-- Product items will be injected here -->
             </div>
             <div class="checkout-box address-box">
                 <h2>Delivery Address</h2>
@@ -395,50 +388,110 @@
     feather.replace();
     
     document.addEventListener("DOMContentLoaded", () => {
+        function formatCurrency(number) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(number);
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
+        const source = urlParams.get('source');
         
-        const pName = urlParams.get('name') || 'Unknown Product';
-        const pPrice = urlParams.get('price') || '.00';
-        const pImg = urlParams.get('img') || '';
-        const pSize = urlParams.get('size') || 'N/A';
-        const pQty = urlParams.get('qty') || '1';
+        let checkoutItems = [];
         
-        document.getElementById('checkout-product-name').innerText = pName;
-        document.getElementById('checkout-product-size').innerText = pSize;
-        document.getElementById('checkout-product-qty').innerText = pQty;
-        if(pImg) document.getElementById('checkout-product-img').src = pImg;
+        if (source === 'cart') {
+            checkoutItems = JSON.parse(localStorage.getItem('cart')) || [];
+        } else {
+            const pName = urlParams.get('name') || 'Unknown Product';
+            const pPrice = urlParams.get('price') || '.00';
+            const pImg = urlParams.get('img') || '';
+            const pSize = urlParams.get('size') || 'N/A';
+            const pQty = urlParams.get('qty') || '1';
+            
+            let numPrice = parseFloat(pPrice.replace(/[^0-9.]/g, ''));
+            if(isNaN(numPrice)) numPrice = 0;
+            
+            let qty = parseInt(pQty);
+            if(isNaN(qty)) qty = 1;
+            
+            if (pName !== 'Unknown Product') {
+                checkoutItems.push({
+                    name: pName,
+                    price: numPrice,
+                    image: pImg,
+                    size: pSize,
+                    quantity: qty
+                });
+            }
+        }
         
-        // Parse price
-        let numPrice = parseFloat(pPrice.replace(/[^0-9.]/g, ''));
-        if(isNaN(numPrice)) numPrice = 0;
+        const detailsContainer = document.getElementById('product-details-container');
+        let subtotal = 0;
         
-        let qty = parseInt(pQty);
-        if(isNaN(qty)) qty = 1;
+        checkoutItems.forEach(item => {
+            const itemPrice = parseFloat(item.price) || 0;
+            const itemQty = parseInt(item.quantity) || parseInt(item.qty) || 1;
+            subtotal += (itemPrice * itemQty);
+            
+            const row = document.createElement('div');
+            row.className = 'product-info-row';
+            row.style.display = 'flex';
+            row.style.gap = '20px';
+            row.style.marginBottom = '15px';
+            row.style.paddingBottom = '15px';
+            row.style.borderBottom = '1px solid #eee';
+            
+            row.innerHTML = `
+                <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                <div class="product-info-text" style="flex: 1;">
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">${item.name}</h3>
+                    <p style="margin: 0; color: #666; font-size: 14px;">Size: ${item.size || 'N/A'}</p>
+                    <p style="margin: 0; color: #666; font-size: 14px;">Qty: ${itemQty}</p>
+                    <p style="margin: 5px 0 0 0; font-weight: 600; color: #333;">${formatCurrency(itemPrice)}</p>
+                </div>
+            `;
+            detailsContainer.appendChild(row);
+        });
         
-        const subtotal = numPrice * qty;
+        if (detailsContainer.lastElementChild && detailsContainer.lastElementChild.classList.contains('product-info-row')) {
+            detailsContainer.lastElementChild.style.borderBottom = 'none';
+        }
+        
         const shipping = 10.00;
         const tax = subtotal * 0.10;
         const total = subtotal + shipping + tax;
         
-        document.getElementById('summary-subtotal').innerText = '$' + subtotal.toFixed(2);
-        document.getElementById('summary-shipping').innerText = '$' + shipping.toFixed(2);
-        document.getElementById('summary-tax').innerText = '$' + tax.toFixed(2);
-        document.getElementById('summary-total').innerText = '$' + total.toFixed(2);
+        document.getElementById('summary-subtotal').innerText = formatCurrency(subtotal);
+        document.getElementById('summary-shipping').innerText = formatCurrency(shipping);
+        document.getElementById('summary-tax').innerText = formatCurrency(tax);
+        document.getElementById('summary-total').innerText = formatCurrency(total);
         
         document.getElementById('order-btn').addEventListener('click', () => {
             const orders = JSON.parse(localStorage.getItem('orders')) || [];
-            orders.push({
-                name: pName,
-                price: numPrice,
-                image: pImg,
-                size: pSize,
-                qty: qty,
-                status: 'Processing',
-                date: new Date().toLocaleDateString('id-ID')
+            
+            checkoutItems.forEach(item => {
+                const itemPrice = parseFloat(item.price) || 0;
+                const itemQty = parseInt(item.quantity) || parseInt(item.qty) || 1;
+                
+                orders.push({
+                    name: item.name,
+                    price: itemPrice,
+                    image: item.image,
+                    size: item.size,
+                    qty: itemQty,
+                    status: 'Processing',
+                    date: new Date().toLocaleDateString('id-ID')
+                });
             });
+            
             localStorage.setItem('orders', JSON.stringify(orders));
-            localStorage.removeItem('cart');
-            alert('Your order for ' + pName + ' has been placed successfully!');
+            if (source === 'cart') {
+                localStorage.removeItem('cart');
+            }
+            alert('Your order has been placed successfully!');
             window.location.href = '/public/profile/profile.html#my-orders';
         });
 
