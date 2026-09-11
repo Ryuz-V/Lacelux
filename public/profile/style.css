@@ -20,7 +20,7 @@ body {
     width: 100%;
     gap: 30px;
     align-items: flex-start;
-    margin: 0 auto 60px;
+    margin: 40px auto 60px;
     padding: 0 20px;
     flex: 1;
 }

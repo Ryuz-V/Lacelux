@@ -345,6 +345,30 @@ function populateData(data) {
         breadcrumb.innerHTML = `Home / <span>${data.title}</span>`;
     }
 
+    // Set wishlist attributes and active state
+    const wishlistBtn = document.querySelector('.wishlist-btn-overlay');
+    if (wishlistBtn) {
+        const productId = new URLSearchParams(window.location.search).get('id') || 'dummy-id';
+        const safePrice = typeof data.price === 'string' ? data.price.replace(/"/g, '&quot;') : data.price;
+        const safeName = typeof data.title === 'string' ? data.title.replace(/"/g, '&quot;') : 'Unnamed';
+        
+        wishlistBtn.setAttribute('data-id', productId);
+        wishlistBtn.setAttribute('data-name', safeName);
+        wishlistBtn.setAttribute('data-price', safePrice);
+        wishlistBtn.setAttribute('data-image', data.images[0]);
+
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        if (wishlist.some(w => w.id === productId)) {
+            wishlistBtn.classList.add('active');
+            wishlistBtn.style.color = '#ef4444';
+            wishlistBtn.style.fill = '#ef4444';
+        } else {
+            wishlistBtn.classList.remove('active');
+            wishlistBtn.style.color = '#111';
+            wishlistBtn.style.fill = 'none';
+        }
+    }
+
     // Refresh feather icons for new DOM elements
     if (window.feather) {
         feather.replace();

@@ -38,7 +38,7 @@
         </div>
         <div class="nav-icons">
             <a href="/public/profile/profile.html#your-cart"><button class="cart-btn"><i data-feather="shopping-cart"></i></button></a>
-            <button class="wishlist-btn"><i data-feather="heart"></i></button>
+            <a href="/public/profile/profile.html#my-wishlist"><button class="wishlist-btn"><i data-feather="heart"></i></button></a>
             <a href="/public/Login/login.html"><button class="user-btn"><i data-feather="user"></i></button></a>
         </div>
     </div>
@@ -242,7 +242,7 @@
                 <div id="thumbnails" class="thumbnail-container">
                 </div>
                 <div class="main-image-wrapper">
-                    <button class="wishlist-btn-overlay"><i data-feather="heart"></i></button>
+                    <button class="wishlist-btn-overlay" data-id="" data-name="" data-price="" data-image="" onclick="window.toggleWishlist(event, this)"><i data-feather="heart"></i></button>
                     <img id="main-image" src="" alt="Gambar Produk Utama">
                 </div>
             </div>

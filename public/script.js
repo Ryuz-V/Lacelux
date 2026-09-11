@@ -28,7 +28,7 @@ async function checkAuthState() {
                             top: 100%;
                             background: white;
                             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                            border-radius: 4px;
+                            border-radius: 0;
                             width: 150px;
                             z-index: 1000;
                             flex-direction: column;
@@ -390,6 +390,28 @@ spotlightItems.forEach((item) => {
     });
 });
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize wishlist state for all buttons
+    const wishlistBtns = document.querySelectorAll('.wishlist, .wishlist-btn-overlay');
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    
+    wishlistBtns.forEach(btn => {
+        let id = btn.getAttribute('data-id');
+        if (!id) {
+            const productCard = btn.closest('.product-card');
+            if (productCard) {
+                const name = productCard.querySelector('.product-name') ? productCard.querySelector('.product-name').textContent : '';
+                if (name) id = name.toLowerCase().replace(/\s+/g, '-');
+            }
+        }
+        if (id && wishlist.some(w => w.id === id)) {
+            btn.classList.add('active');
+            btn.style.color = '#ef4444';
+            btn.style.fill = '#ef4444';
+        }
+    });
+
+    const body = document.body;
+    const scrollUpBtn = document.getElementById('scroll-up');
     const btnPrev = document.getElementById('btn-prev-product');
     const btnNext = document.getElementById('btn-next-product');
     const productGrid = document.querySelector('.trending-section .product-grid');
@@ -449,24 +471,68 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    if (productGrid) {
-        productGrid.addEventListener('click', function (e) {
-            const wishlistBtn = e.target.closest('.wishlist');
-            if (wishlistBtn) {
-                if (wishlistBtn.classList.contains('active')) {
-                    wishlistBtn.classList.remove('active');
-                    wishlistBtn.style.color = '#111';
-                    wishlistBtn.style.fill = 'none';
-                } else {
-                    wishlistBtn.classList.add('active');
-                    wishlistBtn.style.color = '#ef4444';
-                    wishlistBtn.style.fill = '#ef4444';
-                }
-            }
-        });
-    }
     renderProducts();
 });
+
+window.toggleWishlist = function (e, wishlistBtn) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    const productCard = wishlistBtn.closest('.product-card');
+    
+    let id = wishlistBtn.getAttribute('data-id');
+    let name = wishlistBtn.getAttribute('data-name');
+    let price = wishlistBtn.getAttribute('data-price');
+    let image = wishlistBtn.getAttribute('data-image');
+
+    if (!id && productCard) {
+        name = productCard.querySelector('.product-name') ? productCard.querySelector('.product-name').textContent : 'Unnamed';
+        price = productCard.querySelector('.product-price p') ? productCard.querySelector('.product-price p').textContent : '$0.00';
+        image = productCard.querySelector('img') ? productCard.querySelector('img').src : 'https://placehold.co/300x300';
+        id = name.toLowerCase().replace(/\s+/g, '-');
+        
+        wishlistBtn.setAttribute('data-id', id);
+        wishlistBtn.setAttribute('data-name', name);
+        wishlistBtn.setAttribute('data-price', price);
+        wishlistBtn.setAttribute('data-image', image);
+    }
+    
+    if (!id) return; // Prevent saving empty ids
+
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    const index = wishlist.findIndex(w => w.id === id);
+
+    if (index > -1) {
+        // Remove from wishlist
+        wishlist.splice(index, 1);
+        wishlistBtn.classList.remove('active');
+        wishlistBtn.style.color = '#111';
+        wishlistBtn.style.fill = 'none';
+    } else {
+        // Add to wishlist
+        wishlist.push({ id, name, price, image });
+        wishlistBtn.classList.add('active');
+        wishlistBtn.style.color = '#ef4444';
+        wishlistBtn.style.fill = '#ef4444';
+    }
+    
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+
+    // Re-render if on profile page and the render function exists
+    if (typeof window.renderWishlist === 'function') {
+        window.renderWishlist();
+    }
+};
+
+document.body.addEventListener('click', function (e) {
+    const wishlistBtn = e.target.closest('.wishlist') || e.target.closest('.wishlist-btn-overlay');
+    if (wishlistBtn && !wishlistBtn.hasAttribute('onclick')) {
+        window.toggleWishlist(e, wishlistBtn);
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const testimonials = [
         {
@@ -524,5 +590,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 

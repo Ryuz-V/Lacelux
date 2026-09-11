@@ -159,9 +159,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const imageSrc = item.imageUrl || item.image || item.img || item.image_url || 'https://placehold.co/300x300?text=No+Image';
+            const safePrice = typeof item.price === 'string' ? item.price.replace(/"/g, '&quot;') : displayPrice;
+            const safeName = typeof item.name === 'string' ? item.name.replace(/"/g, '&quot;') : 'Unnamed';
+            
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const isWishlisted = wishlist.some(w => w.id === String(item._id));
+            const activeClass = isWishlisted ? 'active' : '';
+            const fillStyle = isWishlisted ? 'style="color: #ef4444; fill: #ef4444;"' : '';
+
             const cardHtml = `
-                <div class="product-card" onclick="window.location.href='/products/products.html?id=${item._id}'">
-                    <button class="wishlist" onclick="event.stopPropagation();"><i data-feather="heart"></i></button>
+                <div class="product-card" onclick="window.location.href='/public/products/products.html?id=${item._id}'">
+                    <button class="wishlist ${activeClass}" ${fillStyle} data-id="${item._id}" data-name="${safeName}" data-price="${safePrice}" data-image="${imageSrc}" onclick="window.toggleWishlist(event, this)"><i data-feather="heart"></i></button>
                     <div class="product-thumb">
                         <img src="${imageSrc}" alt="${item.name || 'Sepatu'}" loading="lazy">
                     </div>
