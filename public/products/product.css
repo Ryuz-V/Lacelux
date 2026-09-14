@@ -720,6 +720,7 @@ body {
     border: none;
     cursor: pointer;
     color: #111;
+    z-index: 10;
 }
 
 .info-section {

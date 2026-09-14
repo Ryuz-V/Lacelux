@@ -358,14 +358,28 @@ function populateData(data) {
         wishlistBtn.setAttribute('data-image', data.images[0]);
 
         const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        if (wishlist.some(w => w.id === productId)) {
+        if (wishlist.some(w => String(w.id) === String(productId))) {
             wishlistBtn.classList.add('active');
-            wishlistBtn.style.color = '#ef4444';
-            wishlistBtn.style.fill = '#ef4444';
+            wishlistBtn.style.setProperty('color', '#ef4444', 'important');
+            wishlistBtn.style.setProperty('fill', '#ef4444', 'important');
+            setTimeout(() => {
+                const svg = wishlistBtn.querySelector('svg');
+                if (svg) {
+                    svg.style.setProperty('fill', '#ef4444', 'important');
+                    svg.style.setProperty('color', '#ef4444', 'important');
+                }
+            }, 100);
         } else {
             wishlistBtn.classList.remove('active');
             wishlistBtn.style.color = '#111';
             wishlistBtn.style.fill = 'none';
+            setTimeout(() => {
+                const svg = wishlistBtn.querySelector('svg');
+                if (svg) {
+                    svg.style.fill = 'none';
+                    svg.style.color = 'currentColor';
+                }
+            }, 100);
         }
     }
 

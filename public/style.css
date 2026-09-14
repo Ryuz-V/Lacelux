@@ -2426,10 +2426,7 @@ body.catalog-page {
     stroke-width: 1.5;
 }
 
-.wishlist-btn svg, .wishlist-btn i {
-    color: #dc2626;
-    fill: #dc2626;
-}
+
 
 button.wishlist.active svg,
 button.wishlist-btn-overlay.active svg {

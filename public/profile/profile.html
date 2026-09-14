@@ -942,6 +942,9 @@
                     currentWishlist.splice(idx, 1);
                     localStorage.setItem('wishlist', JSON.stringify(currentWishlist));
                     window.renderWishlist();
+                    if (typeof window.syncWishlistIcons === 'function') {
+                        window.syncWishlistIcons();
+                    }
                 });
             });
         }

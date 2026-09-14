@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lacelux</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/public/style.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
@@ -13,8 +13,8 @@
 <nav class="custom-navbar">
     <div class="navbar-top">
         <div class="logo">
-            <a href="/public/index.html">
-                <img src="/public/asset/Logo_icon_2.png" alt="Lacelux" class="icon-black">
+            <a href="../index.html">
+                <img src="../asset/Logo_icon_2.png" alt="Lacelux" class="icon-black">
             </a>
         </div>
         <div class="search-bar" style="position: relative;">
@@ -34,15 +34,15 @@
             </div>
         </div>
         <div class="nav-icons">
-            <a href="/public/profile/profile.html#your-cart"><button class="cart-btn"><i data-feather="shopping-cart"></i></button></a>
-            <a href="/public/profile/profile.html#my-wishlist"><button class="wishlist-btn"><i data-feather="heart"></i></button></a>
-            <a href="/public/Login/login.html"><button class="user-btn"><i data-feather="user"></i></button></a>
+            <a href="../profile/profile.html#your-cart"><button class="cart-btn"><i data-feather="shopping-cart"></i></button></a>
+            <a href="../profile/profile.html#my-wishlist"><button class="wishlist-btn"><i data-feather="heart"></i></button></a>
+            <a href="../Login/login.html"><button class="user-btn"><i data-feather="user"></i></button></a>
         </div>
     </div>
     <div class="navbar-bottom">
         <ul>
-            <li><a href="/public/products.html?category=all-shoes">New Arrivals</a></li>
-            <li><a href="/public/products.html?category=eksklusif">Exclusive</a></li>
+            <li><a href="../products.html?category=all-shoes">New Arrivals</a></li>
+            <li><a href="../products.html?category=eksklusif">Exclusive</a></li>
             <li class="dropdown">
                 <a href="#">Man</a>
                 <div class="mega-menu">
@@ -175,7 +175,7 @@
                 </div>
             </li>
     
-            <li><a href="/public/products.html?category=coming-soon">Coming Soon</a></li>
+            <li><a href="../products.html?category=coming-soon">Coming Soon</a></li>
     
             <li class="dropdown">
                 <a href="#">Brands</a>
@@ -220,7 +220,7 @@
                     </div>
                 </div>
             </li>
-            <li><a href="/public/products.html?category=sale" class="sale-link">SALE</a></li>
+            <li><a href="../products.html?category=sale" class="sale-link">SALE</a></li>
         </ul>
     </div>
 </nav>
@@ -387,6 +387,39 @@
 <script>
     feather.replace();
     
+    window.forceToggleWishlist = function(e, btn) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('data-name');
+        const price = btn.getAttribute('data-price');
+        const image = btn.getAttribute('data-image');
+        
+        if (!id) return;
+        
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const index = wishlist.findIndex(w => w.id === id);
+        
+        if (index > -1) {
+            wishlist.splice(index, 1);
+            btn.classList.remove('active');
+            btn.style.color = '#111';
+            btn.style.fill = 'none';
+            const svg = btn.querySelector('svg');
+            if (svg) svg.style.fill = 'none';
+        } else {
+            wishlist.push({ id, name, price, image });
+            btn.classList.add('active');
+            btn.style.color = '#ef4444';
+            btn.style.fill = '#ef4444';
+            const svg = btn.querySelector('svg');
+            if (svg) svg.style.fill = '#ef4444';
+        }
+        
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    };
+
     document.addEventListener("DOMContentLoaded", () => {
         function formatCurrency(number) {
             return new Intl.NumberFormat('en-US', {
@@ -446,14 +479,34 @@
             
             row.innerHTML = `
                 <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
-                <div class="product-info-text" style="flex: 1;">
-                    <h3 style="margin: 0 0 5px 0; font-size: 16px;">${item.name}</h3>
+                <div class="product-info-text" style="flex: 1; position: relative;">
+                    <button class="wishlist-btn-overlay" data-id="${item.name.toLowerCase().replace(/\s+/g, '-')}" data-name="${item.name}" data-price="${itemPrice}" data-image="${item.image}" onclick="window.forceToggleWishlist(event, this)" style="position: absolute; right: 0; top: 0; background: none; border: none; cursor: pointer; color: #111; z-index: 10;">
+                        <i data-feather="heart"></i>
+                    </button>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px; padding-right: 30px;">${item.name}</h3>
                     <p style="margin: 0; color: #666; font-size: 14px;">Size: ${item.size || 'N/A'}</p>
                     <p style="margin: 0; color: #666; font-size: 14px;">Qty: ${itemQty}</p>
                     <p style="margin: 5px 0 0 0; font-weight: 600; color: #333;">${formatCurrency(itemPrice)}</p>
                 </div>
             `;
             detailsContainer.appendChild(row);
+            
+            const btn = row.querySelector('.wishlist-btn-overlay');
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            let id = btn.getAttribute('data-id');
+            if (id && wishlist.find(w => w.id === id)) {
+                btn.classList.add('active');
+                btn.style.color = '#ef4444';
+                btn.style.fill = '#ef4444';
+            }
+        });
+        
+        feather.replace();
+        
+        const activeWishlistBtns = document.querySelectorAll('.wishlist-btn-overlay.active');
+        activeWishlistBtns.forEach(btn => {
+            const svg = btn.querySelector('svg');
+            if (svg) svg.style.fill = '#ef4444';
         });
         
         if (detailsContainer.lastElementChild && detailsContainer.lastElementChild.classList.contains('product-info-row')) {
@@ -492,7 +545,7 @@
                 localStorage.removeItem('cart');
             }
             alert('Your order has been placed successfully!');
-            window.location.href = '/public/profile/profile.html#my-orders';
+            window.location.href = '../profile/profile.html#my-orders';
         });
 
         // Accordion Logic
@@ -525,6 +578,6 @@
         }
     });
 </script>
-<script src="/public/script.js"></script>
+<script src="../script.js"></script>
 </body>
 </html>
