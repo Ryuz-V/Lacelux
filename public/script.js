@@ -75,6 +75,7 @@ async function checkAuthState() {
                         <div class="user-dropdown-menu">
                             <a href="/public/profile/profile.html" class="dropdown-item profile-btn">Profile</a>
                             <a href="/public/profile/profile.html#my-orders" class="dropdown-item order-btn">My Order</a>
+                            <a href="/public/profile/profile.html#settings" class="dropdown-item settings-btn">Settings</a>
                             <a href="#" class="dropdown-item logout-btn">Log out</a>
                         </div>
                     `;
@@ -125,19 +126,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     const wishlistBtns = document.querySelectorAll('.wishlist');
     wishlistBtns.forEach(btn => {
-        btn.addEventListener('click', function (event) {
-            event.stopPropagation();
-            const icon = this.querySelector('i');
-            if (this.classList.contains('active')) {
-                this.classList.remove('active');
-                this.style.color = '#111';
-                this.style.fill = 'none';
-            } else {
-                this.classList.add('active');
-                this.style.color = '#ef4444';
-                this.style.fill = '#ef4444';
-            }
-        });
+        if (!btn.hasAttribute('onclick')) {
+            btn.addEventListener('click', function (event) {
+                window.toggleWishlist(event, this);
+            });
+        }
     });
     document.body.addEventListener('click', function(e) {
         const card = e.target.closest('.product-card');
