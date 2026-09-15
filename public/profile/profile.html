@@ -241,7 +241,7 @@
                     <li id="nav-my-orders"><a href="#my-orders"><i data-feather="shopping-bag"></i> My Orders</a></li>
                     <li id="nav-your-cart"><a href="#your-cart"><i data-feather="shopping-cart"></i> Your Cart</a></li>
                     <li id="nav-my-wishlist"><a href="#my-wishlist"><i data-feather="heart"></i> My Wishlist</a></li>
-                    <li><a href="../#"><i data-feather="bell"></i> Notification</a></li>
+                    <li id="nav-notification"><a href="#notification"><i data-feather="bell"></i> Notification</a></li>
                     <li id="nav-settings"><a href="#settings"><i data-feather="settings"></i> Settings</a></li>
                 </ul>
             </nav>
@@ -343,7 +343,10 @@
                     <h2>My Orders</h2>
                 </div>
                 <div class="profile-details">
-                    <p style="padding: 20px 0; color: #666; font-size: 16px;">You have no orders yet.</p>
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;">
+                        <img src="/public/asset/empty_notification.png" alt="No orders" style="width: 150px; height: 150px; object-fit: contain; margin-bottom: 20px;">
+                        <p style="color: #666; font-size: 16px; font-weight: 500;">Belum Ada Pesanan</p>
+                    </div>
                 </div>
             </div>
 
@@ -354,6 +357,17 @@
                 </div>
                 <div class="profile-details">
                     <p style="padding: 20px 0; color: #666; font-size: 16px;">You have no items in your wishlist yet.</p>
+                </div>
+            </div>
+
+            <!-- Notification Section -->
+            <div id="section-notification" class="profile-section" style="display: none;">
+                <div class="main-header">
+                    <h2>Notification</h2>
+                </div>
+                <div class="profile-details" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;">
+                    <img src="/public/asset/empty_notification.png" alt="No notifications" style="width: 150px; height: 150px; object-fit: contain; margin-bottom: 20px;">
+                    <p style="color: #666; font-size: 16px; font-weight: 500;">Belum Ada Update Pesanan</p>
                 </div>
             </div>
 
@@ -949,6 +963,11 @@
                 if(sec) sec.style.display = 'block';
                 if(nav) nav.classList.add('active');
                 renderCart();
+            } else if (hash === '#notification') {
+                const sec = document.getElementById('section-notification');
+                const nav = document.getElementById('nav-notification');
+                if(sec) sec.style.display = 'block';
+                if(nav) nav.classList.add('active');
             } else if (hash === '#settings') {
                 const sec = document.getElementById('section-settings');
                 const nav = document.getElementById('nav-settings');
@@ -978,7 +997,12 @@
             const orders = JSON.parse(localStorage.getItem('orders')) || [];
             
             if (orders.length === 0) {
-                details.innerHTML = '<p style="padding: 20px 0; color: #666; font-size: 16px;">You have no orders yet.</p>';
+                details.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 400px;">
+                        <img src="/public/asset/empty_notification.png" alt="No orders" style="width: 150px; height: 150px; object-fit: contain; margin-bottom: 20px;">
+                        <p style="color: #666; font-size: 16px; font-weight: 500;">Belum Ada Pesanan</p>
+                    </div>
+                `;
                 return;
             }
             
