@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.addEventListener('click', function(e) {
         const card = e.target.closest('.product-card');
         if (!card) return;
+        if (card.hasAttribute('onclick')) return; // Let inline onclick handle navigation (e.g. catalog real items)
         if (e.target.closest('.wishlist') || e.target.closest('button')) return;
 
         const nameEl = card.querySelector('.product-name');

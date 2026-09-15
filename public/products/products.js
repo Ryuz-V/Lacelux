@@ -348,7 +348,16 @@ function populateData(data) {
     // Set wishlist attributes and active state
     const wishlistBtn = document.querySelector('.wishlist-btn-overlay');
     if (wishlistBtn) {
-        const productId = new URLSearchParams(window.location.search).get('id') || 'dummy-id';
+        const urlParams = new URLSearchParams(window.location.search);
+        let productId = urlParams.get('id');
+        if (!productId) {
+            const dummyName = urlParams.get('dummy_name');
+            if (dummyName) {
+                productId = dummyName.toLowerCase().replace(/\s+/g, '-');
+            } else {
+                productId = 'dummy-id';
+            }
+        }
         const safePrice = typeof data.price === 'string' ? data.price.replace(/"/g, '&quot;') : data.price;
         const safeName = typeof data.title === 'string' ? data.title.replace(/"/g, '&quot;') : 'Unnamed';
         
