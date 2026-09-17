@@ -366,7 +366,7 @@ function populateData(data) {
         wishlistBtn.setAttribute('data-price', safePrice);
         wishlistBtn.setAttribute('data-image', data.images[0]);
 
-        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const wishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
         if (wishlist.some(w => String(w.id) === String(productId))) {
             wishlistBtn.classList.add('active');
             wishlistBtn.style.setProperty('color', '#ef4444', 'important');

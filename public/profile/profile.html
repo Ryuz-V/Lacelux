@@ -1030,7 +1030,7 @@
         window.renderWishlist = function() {
             const section = document.getElementById('section-my-wishlist');
             const details = section.querySelector('.profile-details');
-            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const wishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
             
             if (wishlist.length === 0) {
                 details.innerHTML = '<p style="padding: 20px 0; color: #666; font-size: 16px;">You have no items in your wishlist yet.</p>';
@@ -1079,9 +1079,9 @@
             details.querySelectorAll('.remove-wishlist-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const idx = e.currentTarget.getAttribute('data-index');
-                    let currentWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                    let currentWishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
                     currentWishlist.splice(idx, 1);
-                    localStorage.setItem('wishlist', JSON.stringify(currentWishlist));
+                    localStorage.setItem(window.getWishlistStorageKey(), JSON.stringify(currentWishlist));
                     window.renderWishlist();
                     if (typeof window.syncWishlistIcons === 'function') {
                         window.syncWishlistIcons();

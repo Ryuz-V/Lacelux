@@ -1,3 +1,14 @@
+window.getWishlistStorageKey = function() {
+    const token = localStorage.getItem('token');
+    if (!token) return 'wishlist';
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload && payload.userId) return 'wishlist_' + payload.userId;
+        if (payload && payload.email) return 'wishlist_' + payload.email;
+    } catch (e) {}
+    return 'wishlist';
+};
+
 // Auth State Management
 async function checkAuthState() {
     const token = localStorage.getItem('token');
@@ -386,7 +397,7 @@ spotlightItems.forEach((item) => {
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize wishlist state for all buttons
     const wishlistBtns = document.querySelectorAll('.wishlist, .wishlist-btn-overlay');
-    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    let wishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
     
     wishlistBtns.forEach(btn => {
         let id = btn.getAttribute('data-id');
@@ -456,8 +467,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sync Wishlist Icons (cross-tab and back-forward cache)
     // ----------------------------------------------------
     window.syncWishlistIcons = function() {
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const token = localStorage.getItem('token');
+        let wishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
         document.querySelectorAll('.wishlist, .wishlist-btn-overlay').forEach(btn => {
+            if (!token) {
+                btn.classList.remove('active');
+                btn.style.color = '#111';
+                btn.style.fill = 'none';
+                const svg = btn.querySelector('svg');
+                if (svg) {
+                    svg.style.fill = 'none';
+                    svg.style.color = 'currentColor';
+                }
+                return;
+            }
+
             let id = btn.getAttribute('data-id');
             let btnName = btn.getAttribute('data-name');
             if (!id || id === 'dummy-id' || id === '') {
@@ -495,7 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.addEventListener('storage', function(e) {
-        if (e.key === 'wishlist') {
+        if (e.key === window.getWishlistStorageKey()) {
             window.syncWishlistIcons();
             if (typeof window.renderWishlist === 'function') {
                 window.renderWishlist();
@@ -536,6 +560,12 @@ window.toggleWishlist = function (e, wishlistBtn) {
         e.stopPropagation();
     }
 
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/public/Login/login.html';
+        return;
+    }
+
     const productCard = wishlistBtn.closest('.product-card');
     
     let id = wishlistBtn.getAttribute('data-id');
@@ -557,7 +587,7 @@ window.toggleWishlist = function (e, wishlistBtn) {
     
     if (!id) return; // Prevent saving empty ids
 
-    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    let wishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
     const index = wishlist.findIndex(w => w.id === id);
 
     if (index > -1) {
@@ -577,7 +607,7 @@ window.toggleWishlist = function (e, wishlistBtn) {
         const svg = wishlistBtn.querySelector('svg');
         if (svg) svg.style.fill = '#ef4444';
     }
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    localStorage.setItem(window.getWishlistStorageKey(), JSON.stringify(wishlist));
 
     if (typeof window.syncWishlistIcons === 'function') {
         window.syncWishlistIcons();

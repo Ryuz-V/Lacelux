@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const safePrice = typeof item.price === 'string' ? item.price.replace(/"/g, '&quot;') : displayPrice;
             const safeName = typeof item.name === 'string' ? item.name.replace(/"/g, '&quot;') : 'Unnamed';
             
-            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const wishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
             const isWishlisted = wishlist.some(w => String(w.id) === String(item._id));
             const activeClass = isWishlisted ? 'active' : '';
             const fillStyle = isWishlisted ? 'style="color: #ef4444 !important; fill: #ef4444 !important;"' : '';
@@ -309,7 +309,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             result = result.filter(p => {
                 const gen = detectGender(p).toLowerCase();
                 return selectedGenders.some(g => {
-                    if (g === "kids") return gen.includes("anak");
+                    if (g === "man" || g === "men" || g === "pria") return gen === "men";
+                    if (g === "woman" || g === "women" || g === "wanita") return gen === "women";
+                    if (g === "kids" || g === "anak") return gen === "kids";
                     return gen.includes(g);
                 });
             });

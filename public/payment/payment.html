@@ -398,7 +398,7 @@
         
         if (!id) return;
         
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        let wishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
         const index = wishlist.findIndex(w => w.id === id);
         
         if (index > -1) {
@@ -417,7 +417,7 @@
             if (svg) svg.style.fill = '#ef4444';
         }
         
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        localStorage.setItem(window.getWishlistStorageKey(), JSON.stringify(wishlist));
     };
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -492,7 +492,7 @@
             detailsContainer.appendChild(row);
             
             const btn = row.querySelector('.wishlist-btn-overlay');
-            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            let wishlist = JSON.parse(localStorage.getItem(window.getWishlistStorageKey())) || [];
             let id = btn.getAttribute('data-id');
             if (id && wishlist.find(w => w.id === id)) {
                 btn.classList.add('active');
